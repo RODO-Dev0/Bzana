@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0f1c1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>بزانە · Bizane</title>
+<!-- Inline manifest so it can be installed to the Android home screen with no server -->
+<link rel="manifest" href='data:application/manifest+json,{"name":"Bizane · بزانە","short_name":"Bizane","start_url":"./bizane.html","display":"standalone","orientation":"portrait","background_color":"%230f1c1a","theme_color":"%230f1c1a","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Crect width=%27512%27 height=%27512%27 fill=%27%230f1c1a%27/%3E%3Ccircle cx=%27256%27 cy=%27256%27 r=%27120%27 fill=%27%23fae500%27/%3E%3C/svg%3E","sizes":"512x512","type":"image/svg+xml"}]}'>
+<style>
+  :root{
+    --bg:#0d1917;
+    --bg2:#13211e;
+    --ink:#f5efe0;
+    --muted:#9db0a8;
+    --gold:#fae500;
+    --gold-deep:#e6b400;
+    --red:#ee1c25;
+    --green:#2bb24c;
+    --card:#16221f;
+    --card2:#1d2c28;
+    --line:rgba(245,239,224,.10);
+    --shadow:0 18px 50px -18px rgba(0,0,0,.7);
+    --r:20px;
+    --ar:"Noto Kufi Arabic","Tahoma","Segoe UI",system-ui,sans-serif;
+    --en:"Trebuchet MS",ui-rounded,"Segoe UI",system-ui,-apple-system,sans-serif;
+    --font:var(--ar);
+  }
+  html[dir="ltr"]{--font:var(--en);}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--ink);
+    overflow:hidden;
+    position:fixed;inset:0;
+    -webkit-user-select:none;user-select:none;
+  }
+  /* Atmospheric mountain-night backdrop with a glowing sun */
+  .bgwrap{position:fixed;inset:0;z-index:0;overflow:hidden;}
+  .bgwrap::before{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(1100px 700px at 50% -12%, rgba(250,229,0,.16), transparent 60%),
+      radial-gradient(900px 600px at 85% 110%, rgba(43,178,76,.10), transparent 60%),
+      radial-gradient(900px 600px at 12% 108%, rgba(238,28,37,.08), transparent 60%),
+      linear-gradient(180deg,#0e1b18,#0a1412 70%);
+  }
+  .mtn{position:absolute;left:0;right:0;bottom:0;width:100%;opacity:.5;}
+  .grain{position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+  .app{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
+    max-width:520px;margin:0 auto;padding:env(safe-area-inset-top) 18px env(safe-area-inset-bottom);}
+  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:24px;}
+  .scroll::-webkit-scrollbar{display:none;}
+
+  /* Top bar */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 2px 8px;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand .name{font-weight:800;font-size:20px;letter-spacing:.3px;}
+  .brand .sub{font-size:11px;color:var(--muted);letter-spacing:1px;}
+  .iconbtn{width:42px;height:42px;border-radius:13px;border:1px solid var(--line);
+    background:var(--card);color:var(--ink);font-size:17px;display:grid;place-items:center;cursor:pointer;
+    transition:transform .12s,background .2s;}
+  .iconbtn:active{transform:scale(.92);}
+  .net{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);
+    background:var(--card);border:1px solid var(--line);padding:6px 10px;border-radius:999px;}
+  .net .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+  .net.off .dot{background:var(--gold-deep);box-shadow:0 0 10px var(--gold-deep);}
+
+  /* Sun emblem */
+  .sun{filter:drop-shadow(0 0 18px rgba(250,229,0,.35));}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .sun.spin{animation:spin 60s linear infinite;}
+
+  /* Screens */
+  .screen{display:none;animation:fade .35s ease both;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+  /* HOME */
+  .hero{text-align:center;padding:14px 0 10px;}
+  .hero h1{font-size:40px;font-weight:800;line-height:1;margin-top:14px;
+    background:linear-gradient(180deg,#fff,#f0d98a);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero p{color:var(--muted);margin-top:8px;font-size:14px;}
+  .stats{display:flex;gap:10px;margin:18px 0;}
+  .stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 8px;text-align:center;}
+  .stat .v{font-size:24px;font-weight:800;color:var(--gold);}
+  .stat .l{font-size:11px;color:var(--muted);margin-top:3px;}
+
+  .bigbtn{width:100%;border:none;border-radius:var(--r);padding:18px;font-family:inherit;
+    font-size:18px;font-weight:800;color:#1a1205;cursor:pointer;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+    box-shadow:0 14px 30px -10px rgba(250,229,0,.5);transition:transform .12s;display:flex;
+    align-items:center;justify-content:center;gap:10px;}
+  .bigbtn:active{transform:scale(.97);}
+  .bigbtn.daily{background:linear-gradient(135deg,#243a35,#19302b);color:var(--ink);
+    box-shadow:var(--shadow);border:1px solid var(--line);margin-top:12px;}
+  .bigbtn.daily .tag{margin-inline-start:auto;font-size:11px;background:var(--red);color:#fff;
+    padding:4px 9px;border-radius:999px;font-weight:700;}
+  .bigbtn.daily.done .tag{background:var(--green);}
+
+  .sectitle{font-size:13px;color:var(--muted);margin:24px 4px 12px;font-weight:700;letter-spacing:.5px;}
+  .cats{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .cat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;cursor:pointer;
+    transition:transform .12s,border-color .2s,background .2s;position:relative;overflow:hidden;}
+  .cat:active{transform:scale(.96);}
+  .cat .emoji{font-size:26px;}
+  .cat .t{font-weight:800;font-size:15px;margin-top:10px;}
+  .cat .c{font-size:11px;color:var(--muted);margin-top:3px;}
+  .cat::after{content:"";position:absolute;inset-inline-end:-30px;top:-30px;width:80px;height:80px;border-radius:50%;
+    background:var(--accent,var(--gold));opacity:.10;}
+
+  /* QUIZ */
+  .qhead{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 2px;}
+  .hearts{display:flex;gap:5px;font-size:20px;}
+  .heart{transition:transform .25s,opacity .25s;}
+  .heart.lost{opacity:.22;transform:scale(.7);filter:grayscale(1);}
+  .qscore{font-weight:800;color:var(--gold);font-size:18px;}
+  .combo{font-size:11px;color:var(--green);font-weight:700;min-height:14px;text-align:center;}
+  .progbar{height:6px;background:var(--card);border-radius:999px;overflow:hidden;margin:10px 0 4px;}
+  .progfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-deep));width:0;transition:width .3s;}
+  .timewrap{height:5px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;margin:14px 0;}
+  .timefill{height:100%;background:var(--green);width:100%;transition:width .25s linear,background .3s;}
+
+  .qcard{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);
+    border-radius:24px;padding:24px 20px;min-height:130px;display:flex;flex-direction:column;justify-content:center;
+    box-shadow:var(--shadow);position:relative;}
+  .qcat{font-size:11px;color:var(--gold);font-weight:700;letter-spacing:.5px;margin-bottom:10px;}
+  .qtext{font-size:21px;font-weight:800;line-height:1.5;}
+  .opts{display:flex;flex-direction:column;gap:11px;margin-top:16px;}
+  .opt{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;
+    font-family:inherit;font-size:16px;font-weight:600;color:var(--ink);text-align:start;cursor:pointer;
+    transition:transform .1s,background .2s,border-color .2s;display:flex;align-items:center;gap:12px;}
+  .opt:active{transform:scale(.98);}
+  .opt .k{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.06);display:grid;place-items:center;
+    font-size:13px;font-weight:800;color:var(--muted);flex-shrink:0;}
+  .opt.correct{background:rgba(43,178,76,.18);border-color:var(--green);}
+  .opt.correct .k{background:var(--green);color:#fff;}
+  .opt.wrong{background:rgba(238,28,37,.16);border-color:var(--red);}
+  .opt.wrong .k{background:var(--red);color:#fff;}
+  .opt.dim{opacity:.45;}
+
+  .factcard{background:var(--card);border:1px solid var(--line);border-inline-start:3px solid var(--gold);
+    border-radius:14px;padding:14px 16px;margin-top:16px;font-size:14px;line-height:1.6;color:var(--ink);
+    animation:fade .4s both;}
+  .factcard .lab{font-size:11px;color:var(--gold);font-weight:800;margin-bottom:4px;letter-spacing:.5px;}
+
+  /* RESULT */
+  .result{text-align:center;padding:30px 0;}
+  .result .ring{width:160px;height:160px;margin:6px auto 16px;}
+  .result h2{font-size:26px;font-weight:800;}
+  .result .big{font-size:56px;font-weight:800;color:var(--gold);line-height:1;margin:4px 0;}
+  .result .sub{color:var(--muted);font-size:14px;}
+  .rstats{display:flex;gap:10px;margin:22px 0;}
+  .rstats .stat .v{font-size:20px;color:var(--ink);}
+  .newbest{display:inline-block;background:var(--red);color:#fff;font-size:12px;font-weight:800;
+    padding:5px 12px;border-radius:999px;margin-top:10px;animation:pop .5s both;}
+  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.15);}100%{transform:scale(1);}}
+  .ghost{width:100%;border:1px solid var(--line);background:var(--card);color:var(--ink);
+    border-radius:var(--r);padding:15px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;
+    margin-top:11px;transition:transform .12s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .ghost:active{transform:scale(.97);}
+
+  /* Settings sheet */
+  .sheet{position:fixed;inset:0;z-index:30;display:none;}
+  .sheet.open{display:block;}
+  .sheet .ov{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);animation:fade .2s;}
+  .sheet .panel{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--bg2);
+    border-radius:26px 26px 0 0;border-top:1px solid var(--line);padding:10px 20px 30px;animation:up .3s ease both;}
+  @keyframes up{from{transform:translateY(100%);}to{transform:none;}}
+  .grab{width:44px;height:5px;border-radius:999px;background:var(--line);margin:6px auto 16px;}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line);}
+  .row:last-child{border:none;}
+  .row .t{font-weight:700;}
+  .row .d{font-size:12px;color:var(--muted);margin-top:2px;}
+  .seg{display:flex;background:var(--card);border-radius:12px;padding:4px;gap:4px;}
+  .seg button{border:none;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;
+    padding:8px 14px;border-radius:9px;cursor:pointer;font-size:13px;}
+  .seg button.on{background:var(--gold);color:#1a1205;}
+  .toggle{width:52px;height:30px;border-radius:999px;background:var(--card);border:1px solid var(--line);
+    position:relative;cursor:pointer;transition:background .2s;}
+  .toggle.on{background:var(--green);}
+  .toggle::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:22px;height:22px;border-radius:50%;
+    background:#fff;transition:transform .2s;}
+  html[dir="rtl"] .toggle.on::after{transform:translateX(-22px);}
+  html[dir="ltr"] .toggle.on::after{transform:translateX(22px);}
+
+  #confetti{position:fixed;inset:0;z-index:40;pointer-events:none;display:none;}
+
+  .credit{text-align:center;font-size:11px;color:var(--muted);padding:18px 0 6px;opacity:.7;}
+</style>
+</head>
+<body>
+<div class="bgwrap">
+  <div class="grain"></div>
+  <svg class="mtn" viewBox="0 0 520 220" preserveAspectRatio="none">
+    <path d="M0,220 L0,150 L70,90 L130,140 L200,60 L270,130 L330,80 L400,150 L460,100 L520,160 L520,220 Z" fill="#0a1311"/>
+    <path d="M0,220 L0,175 L90,120 L160,165 L240,110 L320,160 L400,120 L470,165 L520,135 L520,220 Z" fill="#08100e"/>
+  </svg>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <svg class="sun spin" width="34" height="34" viewBox="0 0 100 100" id="logoSun"></svg>
+      <div>
+        <div class="name">بزانە</div>
+        <div class="sub">BIZANE</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <div class="net" id="netBadge"><span class="dot"></span><span id="netText">Online</span></div>
+      <button class="iconbtn" id="openSettings">⚙</button>
+    </div>
+  </div>
+
+  <div class="scroll">
+
+    <!-- HOME -->
+    <section class="screen active" id="home">
+      <div class="hero">
+        <svg class="sun spin" width="92" height="92" viewBox="0 0 100 100" id="heroSun" style="margin:0 auto;display:block;"></svg>
+        <h1 data-t="appName">بزانە</h1>
+        <p data-t="tagline">یاری زانیاری کوردی — فێربە و خۆشی پێ ببینە</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="v" id="stStreak">0</div><div class="l" data-t="streak">زنجیرە</div></div>
+        <div class="stat"><div class="v" id="stBest">0</div><div class="l" data-t="best">باشترین</div></div>
+        <div class="stat"><div class="v" id="stPlayed">0</div><div class="l" data-t="played">وەڵامدراو</div></div>
+      </div>
+
+      <button class="bigbtn" id="playBtn">▶ <span data-t="quickplay">یاری خێرا</span></button>
+      <button class="bigbtn daily" id="dailyBtn">
+        <span data-t="daily">یاری ڕۆژانە</span>
+        <span class="tag" id="dailyTag" data-t="new">نوێ</span>
+      </button>
+
+      <div class="sectitle" data-t="categories">بەشەکان</div>
+      <div class="cats" id="catGrid"></div>
+
+      <div class="credit">v1.0 · <span data-t="madeFor">دروستکراوە بۆ کوردستان</span> ❤</div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="screen" id="quiz">
+      <div class="qhead">
+        <div class="hearts" id="hearts"></div>
+        <div class="qscore"><span id="qScore">0</span></div>
+      </div>
+      <div class="progbar"><div class="progfill" id="progFill"></div></div>
+      <div class="combo" id="comboTxt"></div>
+      <div class="timewrap"><div class="timefill" id="timeFill"></div></div>
+
+      <div class="qcard">
+        <div class="qcat" id="qCat"></div>
+        <div class="qtext" id="qText"></div>
+      </div>
+      <div class="opts" id="opts"></div>
+      <div id="factSlot"></div>
+      <button class="bigbtn" id="nextBtn" style="margin-top:16px;display:none;"><span data-t="next">دواتر</span> ←</button>
+    </section>
+
+    <!-- RESULT -->
+    <section class="screen" id="result">
+      <div class="result">
+        <svg class="ring" viewBox="0 0 120 120" id="resultRing"></svg>
+        <h2 id="rTitle"></h2>
+        <div class="big" id="rScore">0</div>
+        <div class="sub"><span data-t="points">خاڵ</span></div>
+        <div id="rBest"></div>
+        <div class="rstats">
+          <div class="stat"><div class="v" id="rCorrect">0</div><div class="l" data-t="correct">ڕاست</div></div>
+          <div class="stat"><div class="v" id="rAcc">0%</div><div class="l" data-t="accuracy">وردی</div></div>
+          <div class="stat"><div class="v" id="rStreak">0</div><div class="l" data-t="bestCombo">زنجیرە</div></div>
+        </div>
+        <button class="bigbtn" id="againBtn">↻ <span data-t="again">دووبارە</span></button>
+        <button class="ghost" id="shareBtn">↗ <span data-t="share">هاوبەشکردن</span></button>
+        <button class="ghost" id="homeBtn">⌂ <span data-t="home">سەرەتا</span></button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Settings sheet -->
+<div class="sheet" id="settings">
+  <div class="ov" data-close></div>
+  <div class="panel">
+    <div class="grab"></div>
+    <div class="row">
+      <div><div class="t" data-t="language">زمان</div><div class="d">Kurdî · English</div></div>
+      <div class="seg" id="langSeg">
+        <button data-lang="ckb" class="on">کوردی</button>
+        <button data-lang="en">EN</button>
+      </div>
+    </div>
+    <div class="row">
+      <div><div class="t" data-t="sound">دەنگ</div><div class="d" data-t="soundDesc">دەنگی یاری</div></div>
+      <div class="toggle on" id="soundToggle"></div>
+    </div>
+    <div class="row">
+      <div><div class="t" data-t="install">دامەزراندن لەسەر مۆبایل</div>
+        <div class="d" data-t="installDesc">لە مێنیوی وێبگەڕ: Add to Home Screen</div></div>
+    </div>
+    <div class="row">
+      <div><div class="t" data-t="reset">سڕینەوەی ئامار</div></div>
+      <button class="ghost" id="resetBtn" style="width:auto;margin:0;padding:9px 16px;font-size:13px;" data-t="resetBtn">سڕینەوە</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ---------- safe storage (works when downloaded; falls back to memory in sandbox) ---------- */
+const mem={};
+const store={
+  get(k){try{const v=localStorage.getItem(k);return v===null?(k in mem?mem[k]:null):v;}catch(e){return k in mem?mem[k]:null;}},
+  set(k,v){try{localStorage.setItem(k,v);}catch(e){}mem[k]=v;}
+};
+
+/* ---------- Kurdish 21-ray sun emblem ---------- */
+function buildSun(svg){
+  const c=50, n=21; let rays="";
+  for(let i=0;i<n;i++){
+    const a=(i/n)*Math.PI*2 - Math.PI/2;
+    const x1=c+Math.cos(a)*30, y1=c+Math.sin(a)*30;
+    const x2=c+Math.cos(a)*47, y2=c+Math.sin(a)*47;
+    const wa=a+0.08, wb=a-0.08;
+    const bx=c+Math.cos(wb)*30, by=c+Math.sin(wb)*30;
+    const tx=c+Math.cos(wa)*30, ty=c+Math.sin(wa)*30;
+    rays+=`<path d="M${bx} ${by} L${x2} ${y2} L${tx} ${ty} Z" fill="#fae500"/>`;
+  }
+  svg.innerHTML=rays+`<circle cx="50" cy="50" r="26" fill="#fae500"/><circle cx="50" cy="50" r="20" fill="#e6b400"/>`;
+}
+
+/* ---------- i18n (UI) ---------- */
+const STR={
+  ckb:{appName:"بزانە",tagline:"یاری زانیاری کوردی — فێربە و خۆشی پێ ببینە",
+    streak:"زنجیرەی ڕۆژانە",best:"باشترین خاڵ",played:"وەڵامی ڕاست",
+    quickplay:"یاری خێرا",daily:"یاری ڕۆژانە",new:"نوێ",done:"تەواوبوو",categories:"بەشەکان",
+    madeFor:"دروستکراوە بۆ کوردستان",next:"دواتر",points:"خاڵ",correct:"ڕاست",accuracy:"وردی",
+    bestCombo:"باشترین زنجیرە",again:"دووبارە یاری",share:"هاوبەشکردن",home:"سەرەتا",
+    language:"زمان",sound:"دەنگ",soundDesc:"کاریگەری دەنگی",install:"دامەزراندن لەسەر مۆبایل",
+    installDesc:"لە مێنیوی وێبگەڕ: زیادکردن بۆ ڕووی مۆبایل",reset:"سڕینەوەی ئامار",resetBtn:"سڕینەوە",
+    didyou:"دەتزانی؟",timeUp:"کاتت تەواوبوو!",
+    rPerfect:"نایاب! پاڵەوان",rGreat:"زۆر باش!",rGood:"باش بوو!",rOk:"دیسان هەوڵبدە",
+    newBest:"باشترین خاڵی نوێ!",online:"سەرهێڵ",offline:"دەرهێڵ — هەمووی کاردەکات",
+    shareText:n=>`من ${n} خاڵم بەدەستهێنا لە یاری بزانە! 🌞 تۆش تاقیبکەرەوە:`},
+  en:{appName:"Bizane",tagline:"The Kurdish trivia game — learn and have fun",
+    streak:"Day streak",best:"Best score",played:"Correct",
+    quickplay:"Quick play",daily:"Daily challenge",new:"NEW",done:"DONE",categories:"Categories",
+    madeFor:"Made for Kurdistan",next:"Next",points:"points",correct:"Correct",accuracy:"Accuracy",
+    bestCombo:"Best combo",again:"Play again",share:"Share",home:"Home",
+    language:"Language",sound:"Sound",soundDesc:"Sound effects",install:"Install on phone",
+    installDesc:"Browser menu → Add to Home Screen",reset:"Reset stats",resetBtn:"Reset",
+    didyou:"Did you know?",timeUp:"Time's up!",
+    rPerfect:"Flawless! Champion",rGreat:"Excellent!",rGood:"Well done!",rOk:"Try again",
+    newBest:"New best score!",online:"Online",offline:"Offline — fully working",
+    shareText:n=>`I scored ${n} points in Bizane! 🌞 Can you beat me?`}
+};
+
+/* ---------- categories ---------- */
+const CATS=[
+  {id:"history",  emoji:"🏛️",accent:"#ee1c25",ckb:"مێژوو",en:"History"},
+  {id:"geo",      emoji:"🗺️",accent:"#2bb24c",ckb:"جوگرافیا",en:"Geography"},
+  {id:"culture",  emoji:"🎶",accent:"#fae500",ckb:"کەلتوور و خواردن",en:"Culture & Food"},
+  {id:"language", emoji:"📖",accent:"#e6b400",ckb:"زمان و ئەدەب",en:"Language & Literature"},
+  {id:"people",   emoji:"⭐",accent:"#ee1c25",ckb:"کەسایەتییە ناودارەکان",en:"Famous People"},
+  {id:"general",  emoji:"🌞",accent:"#2bb24c",ckb:"گشتی",en:"General"}
+];
+
+/* ---------- question bank (Sorani + English). c = index of correct option ---------- */
+const Q=[
+  {cat:"general",ckb:"ئاڵای کوردستان چەند ڕەنگی هەیە؟",en:"How many colours are on the Kurdish flag?",
+   o:[["٢","2"],["٣ (سوور، سپی، سەوز)","3 (red, white, green)"],["٤","4"],["٥","5"]],c:1,
+   fckb:"سوور، سپی و سەوز لەگەڵ خۆرێکی زێڕین لە ناوەڕاستدا.",fen:"Red, white and green with a golden sun in the centre."},
+  {cat:"general",ckb:"خۆری ناو ئاڵای کوردی چەند تیشکی هەیە؟",en:"How many rays does the sun on the Kurdish flag have?",
+   o:[["١٢","12"],["١٨","18"],["٢١","21"],["٢٤","24"]],c:2,
+   fckb:"٢١ تیشک — ژمارەیەکی پیرۆز لە کەلتووری کوردیدا.",fen:"21 rays — a sacred number in Kurdish tradition."},
+  {cat:"general",ckb:"کوردستان بەسەر چەند وڵاتدا دابەشبووە؟",en:"Across how many countries is Kurdistan spread?",
+   o:[["٢","2"],["٣","3"],["٤ (تورکیا، ئێران، عێراق، سووریا)","4 (Turkey, Iran, Iraq, Syria)"],["٥","5"]],c:2,
+   fckb:"کورد یەکێکە لە گەورەترین نەتەوەکانی بێ دەوڵەت لە جیهاندا.",fen:"Kurds are one of the largest stateless nations in the world."},
+  {cat:"general",ckb:"وشەی «نەورۆز» بە واتای چی دێت؟",en:"What does the word “Newroz” mean?",
+   o:[["ڕۆژی نوێ","New day"],["جەژنی پاییز","Autumn feast"],["مانگی نوێ","New moon"],["شەوی درێژ","Long night"]],c:0,
+   fckb:"«نەو» = نوێ، «ڕۆز» = ڕۆژ. دەستپێکی ساڵی نوێی کوردی.",fen:"“New” + “Roz” (day) — the start of the Kurdish new year."},
+
+  {cat:"history",ckb:"نەورۆز لە چ ڕۆژێکدا دەگیرێت؟",en:"On what day is Newroz celebrated?",
+   o:[["١ی نیسان","1 April"],["٢١ی ئازار","21 March"],["١٥ی شوبات","15 February"],["١ی کانوونی دووەم","1 January"]],c:1,
+   fckb:"٢١ی ئازار، هاتنی بەهار و سەرەتای ساڵی نوێ.",fen:"21 March, the arrival of spring and the new year."},
+  {cat:"history",ckb:"بەگوێرەی ئەفسانە، کێ زەحاکی زۆردار تێکشکاند و نەورۆزی هێنا؟",
+   en:"In legend, who defeated the tyrant Zahhak and brought Newroz?",
+   o:[["سەلاحەدین","Saladin"],["کاوەی ئاسنگەر","Kawa the Blacksmith"],["قازی محەمەد","Qazi Muhammad"],["ئەحمەدی خانی","Ehmedê Xanî"]],c:1,
+   fckb:"کاوەی ئاسنگەر ئاگری سەرکەوتنی هەڵکرد — لەبەر ئەوە ئاگر هێمای نەورۆزە.",fen:"Kawa lit the fire of victory — why fire symbolises Newroz."},
+  {cat:"history",ckb:"سوڵتان سەلاحەدینی ئەیووبی لە کام نەتەوەیە بوو؟",en:"The famous Sultan Saladin was of which origin?",
+   o:[["عەرەب","Arab"],["تورک","Turkish"],["کورد","Kurdish"],["فارس","Persian"]],c:2,
+   fckb:"سەلاحەدینی کورد لە ساڵی ١١٨٧ قودسی ئازادکرد.",fen:"The Kurdish Saladin recaptured Jerusalem in 1187."},
+  {cat:"history",ckb:"کۆماری مەهاباد لە ساڵی ١٩٤٦ لەلایەن کێوە سەرۆکایەتی دەکرا؟",
+   en:"Who led the Republic of Mahabad in 1946?",
+   o:[["مستەفا بارزانی","Mustafa Barzani"],["قازی محەمەد","Qazi Muhammad"],["شێخ مەحموود","Sheikh Mahmoud"],["ئەحمەدی خانی","Ehmedê Xanî"]],c:1,
+   fckb:"کۆمارێکی کوردی کورتەماوە بوو لە ڕۆژهەڵاتی کوردستان (ئێران).",fen:"A short-lived Kurdish republic in Eastern Kurdistan (Iran)."},
+  {cat:"history",ckb:"قەڵای هەولێر بە چی ناسراوە؟",en:"Erbil Citadel is known as what?",
+   o:[["نوێترین شار","The newest city"],["یەکێک لە کۆنترین شوێنە نیشتەجێبووەکان","One of the oldest inhabited places"],["کۆگایەکی نوێ","A modern mall"],["دەریاچە","A lake"]],c:1,
+   fckb:"لە لیستی میراتی جیهانیی یونیسکۆدایە.",fen:"It is on the UNESCO World Heritage list."},
+
+  {cat:"geo",ckb:"پایتەختی هەرێمی کوردستانی عێراق چییە؟",en:"What is the capital of the Kurdistan Region of Iraq?",
+   o:[["سلێمانی","Sulaymaniyah"],["دهۆک","Duhok"],["هەولێر","Erbil (Hewlêr)"],["کەرکووک","Kirkuk"]],c:2,
+   fckb:"هەولێر، کە بە کوردی پێی دەوترێت «هەولێر».",fen:"Erbil, called Hewlêr in Kurdish."},
+  {cat:"geo",ckb:"کام دوو ڕووبارە گەورەکە بەناو خاکی کوردستاندا دەڕۆن؟",en:"Which two great rivers flow through Kurdish lands?",
+   o:[["نیل و ئەمازۆن","Nile & Amazon"],["دیجلە و فورات","Tigris & Euphrates"],["دانووب و ڕاین","Danube & Rhine"],["ڤۆلگا و دۆن","Volga & Don"]],c:1,
+   fckb:"دیجلە (Tigris) و فورات (Euphrates) سەرچاوەکانیان لە کوردستانن.",fen:"The Tigris and Euphrates have their sources in Kurdistan."},
+  {cat:"geo",ckb:"کام شار بە «پایتەختی کەلتووری» کوردانی باکوور (تورکیا) دادەنرێت؟",
+   en:"Which city is seen as the cultural capital of Kurds in Turkey?",
+   o:[["ئەنقەرە","Ankara"],["ئامەد (دیاربەکر)","Amed (Diyarbakır)"],["ئیزمیر","İzmir"],["بورسا","Bursa"]],c:1,
+   fckb:"ئامەد ناوەندێکی گرنگی کەلتوور و زمانی کوردییە.",fen:"Amed is a major centre of Kurdish culture and language."},
+  {cat:"geo",ckb:"کام شار بە بەرهەمهێنانی پێڵاوی نەریتیی «کلاش» ناسراوە؟",
+   en:"Which area is famous for making the traditional “klash” shoes?",
+   o:[["هەڵەبجە و دەوروبەر","Halabja region"],["زاخۆ","Zakho"],["کۆیە","Koya"],["ڕانیە","Ranya"]],c:0,
+   fckb:"کلاش بە دەست دروستدەکرێت و هێمای پیشەسازی نەریتیی کوردییە.",fen:"Klash are handmade and a symbol of Kurdish craftsmanship."},
+  {cat:"geo",ckb:"کام چیایە هێمایەکی گەورەیە بۆ کوردان لە باکوور؟",en:"Which mountain is a great symbol for northern Kurds?",
+   o:[["چیای ئاگری (ئارارات)","Mount Ararat (Agirî)"],["ئەڤەرێست","Everest"],["فووجی","Fuji"],["کلیمەنجارۆ","Kilimanjaro"]],c:0,
+   fckb:"بە کوردی «چیای ئاگری» ناودەبردرێت.",fen:"Called Çiyayê Agirî in Kurdish."},
+
+  {cat:"culture",ckb:"«دۆڵمە» چ جۆرە خواردنێکە؟",en:"What kind of dish is “dolma”?",
+   o:[["شیرینی","A dessert"],["سەوزە و گەڵای پڕکراو بە برنج","Vegetables/leaves stuffed with rice"],["شۆربا","A soup"],["نان","A bread"]],c:1,
+   fckb:"یەکێک لە خۆشترین خواردنە نەریتییەکانی سفرەی کوردییە.",fen:"One of the most beloved dishes on the Kurdish table."},
+  {cat:"culture",ckb:"«گۆڤەند / هەڵپەڕکێ» چییە؟",en:"What is “govend / helperkê”?",
+   o:[["جۆرە ئامێرێکی مۆسیقا","A musical instrument"],["سەماێکی نەریتیی بە دەستگرتن","A traditional group dance holding hands"],["جۆرە چایەک","A type of tea"],["جلوبەرگ","A costume"]],c:1,
+   fckb:"خەڵک ڕیز دەبن و دەست بە دەست سەما دەکەن، بەتایبەت لە نەورۆزدا.",fen:"People line up hand-in-hand and dance, especially at Newroz."},
+  {cat:"culture",ckb:"«دەف» چییە؟",en:"What is the “def” (daf)?",
+   o:[["ئامێرێکی مۆسیقای لێدراو (تەپڵ)","A frame drum"],["جۆرە خواردنێک","A food"],["جل","Clothing"],["یاری","A game"]],c:0,
+   fckb:"دەف لە مۆسیقای کوردیدا زۆر بەکاردێت، بەتایبەت لە مۆسیقای ئاینیدا.",fen:"The daf is widely used in Kurdish music, including spiritual music."},
+  {cat:"culture",ckb:"لە نەورۆزدا خەڵک چ کارێکی نەریتی دەکەن؟",en:"What do people traditionally do at Newroz?",
+   o:[["دادگیرسانی ئاگر و سەما","Light fires and dance"],["خەوتن","Sleep all day"],["خواردنی نەخواردن","Fasting only"],["هیچ","Nothing"]],c:0,
+   fckb:"ئاگر دادەگیرسێنن، جلی ڕەنگاوڕەنگ دەپۆشن و سەما دەکەن.",fen:"They light fires, wear colourful clothes and dance."},
+
+  {cat:"language",ckb:"زمانی کوردی سەر بە کام لقی زمانەکانە؟",en:"Kurdish belongs to which language family branch?",
+   o:[["زمانە سامییەکان","Semitic"],["زمانە ئێرانییەکان (هیندو-ئەورووپی)","Iranian (Indo-European)"],["زمانە تورکییەکان","Turkic"],["زمانە سینی","Sino-Tibetan"]],c:1,
+   fckb:"کوردی زمانێکی ئێرانییە، خزمی فارسی و بەلووچی.",fen:"Kurdish is an Iranian language, related to Persian and Balochi."},
+  {cat:"language",ckb:"دوو زاراوە سەرەکییەکەی زمانی کوردی کامانەن؟",en:"What are the two main dialects of Kurdish?",
+   o:[["کرمانجی و سۆرانی","Kurmanji & Sorani"],["عەرەبی و فارسی","Arabic & Persian"],["زازا و عەرەبی","Zaza & Arabic"],["تورکی و سۆرانی","Turkish & Sorani"]],c:0,
+   fckb:"کرمانجی (باکوور) و سۆرانی (ناوەند) باوترین زاراوەن.",fen:"Kurmanji (north) and Sorani (centre) are the most spoken."},
+  {cat:"language",ckb:"«مەم و زین» نووسراوی کام شاعیرە؟",en:"Who wrote the classic epic “Mem û Zîn”?",
+   o:[["ئەحمەدی خانی","Ehmedê Xanî"],["نالی","Nalî"],["گۆران","Goran"],["هەژار","Hejar"]],c:0,
+   fckb:"ساڵی ١٦٩٢ نووسراوە و بە ئەپۆسی نەتەوەیی کوردی دادەنرێت.",fen:"Written in 1692, it is seen as the Kurdish national epic."},
+  {cat:"language",ckb:"بە کوردی «سوپاس» واتای چییە؟",en:"What does the Kurdish word “Spas / Sipas” mean?",
+   o:[["سڵاو","Hello"],["سوپاس / دەستخۆش","Thank you"],["بەخێربێیت","Welcome"],["خوات لەگەڵ","Goodbye"]],c:1,
+   fckb:"«سوپاس» وشەیەکی هاوبەشە لەنێوان زاراوەکانی کوردیدا.",fen:"“Spas” is shared across Kurdish dialects."},
+  {cat:"language",ckb:"ئەلفوبێی لاتینیی کوردی (هاوار) لەلایەن کێوە دانرا؟",
+   en:"Who created the Latin (Hawar) Kurdish alphabet?",
+   o:[["جەلادەت بەدرخان","Celadet Bedirxan"],["ئەحمەدی خانی","Ehmedê Xanî"],["پیرەمێرد","Pîremêrd"],["نالی","Nalî"]],c:0,
+   fckb:"لە ساڵانی ١٩٣٠ـەوە بۆ نووسینی کرمانجی بەکاردێت.",fen:"Used since the 1930s, mainly for writing Kurmanji."},
+
+  {cat:"people",ckb:"کام دەرهێنەری کورد خەڵاتی «پاڵمی زێڕینی»ی کان بەدەستهێنا؟",
+   en:"Which Kurdish director won the Palme d'Or at Cannes?",
+   o:[["یلماز گونەی","Yılmaz Güney"],["بەهمەن قوبادی","Bahman Ghobadi"],["شوکر خانی","—"],["هیچکام","None"]],c:0,
+   fckb:"بۆ فیلمی «ڕێگا (Yol)» لە ساڵی ١٩٨٢.",fen:"For the film “Yol” in 1982."},
+  {cat:"people",ckb:"شیوان پەروەر بە چی ناسراوە؟",en:"What is Şivan Perwer famous for?",
+   o:[["گۆرانیبێژێکی ئەفسانەیی کورد","A legendary Kurdish singer"],["یاریزانی تۆپی پێ","A footballer"],["وەرزش","An athlete"],["وێنەکێش","A painter"]],c:0,
+   fckb:"دەنگی شیوان بووە هێمای بەرخۆدان و کەلتووری کوردی.",fen:"His voice became a symbol of Kurdish culture and resilience."},
+  {cat:"people",ckb:"مەستوورەی ئەردەڵان بە چی ناسراوە؟",en:"Mastura Ardalan is known as what?",
+   o:[["شاعیر و مێژوونووسێکی ژنی کورد","A Kurdish woman poet and historian"],["شاژن","A queen"],["گۆرانیبێژ","A singer"],["وەرزشوان","An athlete"]],c:0,
+   fckb:"یەکێک لە دیارترین شاعیرە ژنەکانی مێژووی کوردی.",fen:"One of the most prominent women poets in Kurdish history."},
+  {cat:"people",ckb:"ئەحمەدی خانی پێش هەموو شت بە چی دەناسرێت؟",en:"Ehmedê Xanî is best remembered as a…",
+   o:[["شاعیر و فەیلەسوف","Poet and thinker"],["پاشا","A king"],["گۆرانیبێژ","A singer"],["بازرگان","A merchant"]],c:0,
+   fckb:"نووسەری «مەم و زین» و یەکێک لە دایکبابانی ئەدەبی کوردی.",fen:"Author of “Mem û Zîn” and a father of Kurdish literature."}
+];
+
+/* ---------- state ---------- */
+let lang = store.get("lang") || "ckb";
+let soundOn = store.get("sound") !== "0";
+let state=null;
+const $=id=>document.getElementById(id);
+const T=()=>STR[lang];
+
+/* ---------- audio ---------- */
+let actx=null;
+function beep(freq,dur=.09,type="sine",vol=.18){
+  if(!soundOn) return;
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.type=type;o.frequency.value=freq;o.connect(g);g.connect(actx.destination);
+    g.gain.setValueAtTime(vol,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+dur);
+    o.start();o.stop(actx.currentTime+dur);
+  }catch(e){}
+}
+const sClick=()=>beep(520,.05,"triangle",.12);
+const sRight=()=>{beep(660,.08);setTimeout(()=>beep(880,.1),80);};
+const sWrong=()=>beep(160,.18,"sawtooth",.16);
+const sWin=()=>{[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.14),i*110));};
+
+/* ---------- i18n render ---------- */
+function applyLang(){
+  document.documentElement.lang = lang==="ckb"?"ckb":"en";
+  document.documentElement.dir = lang==="ckb"?"rtl":"ltr";
+  document.querySelectorAll("[data-t]").forEach(el=>{
+    const k=el.getAttribute("data-t"); if(T()[k]!==undefined) el.textContent=T()[k];
+  });
+  $("dailyTag").textContent = isDailyDone()? T().done : T().new;
+  $("dailyBtn").classList.toggle("done", isDailyDone());
+  document.querySelectorAll("#langSeg button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
+  renderCats();
+  updateHomeStats();
+  updateNet();
+}
+
+/* ---------- home ---------- */
+function renderCats(){
+  $("catGrid").innerHTML = CATS.map(c=>{
+    const count=Q.filter(q=>q.cat===c.id).length;
+    return `<div class="cat" data-cat="${c.id}" style="--accent:${c.accent}">
+      <div class="emoji">${c.emoji}</div>
+      <div class="t">${c[lang]}</div>
+      <div class="c">${count} ${lang==="ckb"?"پرسیار":"questions"}</div></div>`;
+  }).join("");
+  $("catGrid").querySelectorAll(".cat").forEach(el=>{
+    el.onclick=()=>{sClick();startRound(el.dataset.cat);};
+  });
+}
+function updateHomeStats(){
+  $("stStreak").textContent = store.get("streak")||0;
+  $("stBest").textContent   = store.get("best")||0;
+  $("stPlayed").textContent = store.get("played")||0;
+}
+function todayKey(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function isDailyDone(){return store.get("dailyDone")===todayKey();}
+
+/* ---------- screens ---------- */
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+  $("home").parentElement.scrollTop=0;
+}
+
+/* ---------- round logic ---------- */
+function pick(arr,n){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a.slice(0,n);}
+function seededShuffle(arr,seed){const a=[...arr];let s=seed;const rnd=()=>{s=(s*9301+49297)%233280;return s/233280;};
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function startRound(catId){
+  let qs;
+  if(catId==="daily"){
+    const seed=todayKey().split("-").reduce((a,b)=>a+ +b,0);
+    qs=seededShuffle(Q,seed).slice(0,8);
+    state={mode:"daily"};
+  }else if(catId==="all"){
+    qs=pick(Q,10); state={mode:"all"};
+  }else{
+    const pool=Q.filter(q=>q.cat===catId);
+    qs=pick(pool,Math.min(pool.length,8)); state={mode:catId};
+  }
+  state.qs=qs.map(q=>{
+    const order=pick([0,1,2,3],4);
+    return {...q, order, newC:order.indexOf(q.c)};
+  });
+  Object.assign(state,{i:0,score:0,hearts:3,combo:0,bestCombo:0,correct:0,answered:false});
+  show("quiz");
+  renderQ();
+}
+function startDaily(){ if(isDailyDone()){/*allow replay*/} startRound("daily"); }
+
+function renderHearts(){
+  $("hearts").innerHTML = [0,1,2].map(i=>`<span class="heart${i>=state.hearts?' lost':''}">❤</span>`).join("");
+}
+function renderQ(){
+  state.answered=false;
+  $("nextBtn").style.display="none";
+  $("factSlot").innerHTML="";
+  const q=state.qs[state.i];
+  const cat=CATS.find(c=>c.id===q.cat);
+  $("qCat").textContent = (cat?cat[lang]:"") ;
+  $("qText").textContent = lang==="ckb"?q.ckb:q.en;
+  $("qScore").textContent = state.score;
+  $("progFill").style.width = (state.i/state.qs.length*100)+"%";
+  $("comboTxt").textContent = state.combo>=2 ? (lang==="ckb"?`🔥 زنجیرەی ${state.combo}!`:`🔥 ${state.combo} combo!`) : "";
+  renderHearts();
+  $("opts").innerHTML = q.order.map((origIdx,pos)=>{
+    const opt=q.o[origIdx];
+    const key=["A","B","C","D"][pos];
+    return `<button class="opt" data-pos="${pos}"><span class="k">${key}</span><span>${lang==="ckb"?opt[0]:opt[1]}</span></button>`;
+  }).join("");
+  $("opts").querySelectorAll(".opt").forEach(b=>b.onclick=()=>answer(+b.dataset.pos,b));
+  startTimer();
+}
+
+let timer=null,timeLeft=0;
+function startTimer(){
+  clearInterval(timer);
+  timeLeft=20; const fill=$("timeFill");
+  fill.style.transition="none";fill.style.width="100%";fill.style.background="var(--green)";
+  void fill.offsetWidth;
+  fill.style.transition="width .25s linear, background .3s";
+  timer=setInterval(()=>{
+    timeLeft-=.25;
+    const pct=Math.max(0,timeLeft/20*100);
+    fill.style.width=pct+"%";
+    if(pct<35) fill.style.background="var(--red)";
+    else if(pct<60) fill.style.background="var(--gold)";
+    if(timeLeft<=0){clearInterval(timer);answer(-1,null);}
+  },250);
+}
+
+function answer(pos,btn){
+  if(state.answered) return;
+  state.answered=true; clearInterval(timer);
+  const q=state.qs[state.i];
+  const opts=$("opts").querySelectorAll(".opt");
+  const right = pos===q.newC;
+  opts.forEach((b,i)=>{
+    if(i===q.newC) b.classList.add("correct");
+    else if(i===pos) b.classList.add("wrong");
+    else b.classList.add("dim");
+    b.onclick=null;
+  });
+  if(right){
+    state.correct++; state.combo++; state.bestCombo=Math.max(state.bestCombo,state.combo);
+    const timeBonus=Math.round(timeLeft*4);
+    const comboBonus=(state.combo-1)*20;
+    const gained=100+timeBonus+comboBonus;
+    state.score+=gained;
+    sRight();
+    $("qScore").textContent=state.score;
+  }else{
+    state.combo=0; state.hearts--; sWrong(); renderHearts();
+    if(navigator.vibrate) try{navigator.vibrate(40);}catch(e){}
+  }
+  // fact
+  const fact = lang==="ckb"?q.fckb:q.fen;
+  $("factSlot").innerHTML=`<div class="factcard"><div class="lab">💡 ${T().didyou}</div>${fact}</div>`;
+  // next or end
+  if(state.hearts<=0){
+    setTimeout(endRound,1100);
+  }else if(state.i>=state.qs.length-1){
+    $("nextBtn").querySelector("span").textContent = lang==="ckb"?"بینینی ئەنجام":"See result";
+    $("nextBtn").style.display="flex";
+  }else{
+    $("nextBtn").querySelector("span").textContent=T().next;
+    $("nextBtn").style.display="flex";
+  }
+}
+$("nextBtn").onclick=()=>{
+  sClick();
+  if(state.i>=state.qs.length-1){endRound();return;}
+  state.i++; $("progFill").style.width=(state.i/state.qs.length*100)+"%"; renderQ();
+};
+
+/* ---------- result ---------- */
+function endRound(){
+  clearInterval(timer);
+  const total=state.qs.length;
+  const acc=Math.round(state.correct/total*100);
+  // persist
+  const played=(+ (store.get("played")||0))+state.correct;
+  store.set("played",played);
+  let best=+(store.get("best")||0);
+  let isBest=false;
+  if(state.score>best){best=state.score;store.set("best",best);isBest=true;}
+  // streak (daily only or any play counts toward daily streak if daily mode)
+  if(state.mode==="daily"){
+    handleStreak();
+    store.set("dailyDone",todayKey());
+  }
+  // ring + texts
+  const ring=$("resultRing");
+  const r=52,circ=2*Math.PI*r,off=circ*(1-acc/100);
+  ring.innerHTML=`<circle cx="60" cy="60" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+    <circle cx="60" cy="60" r="${r}" fill="none" stroke="#fae500" stroke-width="10" stroke-linecap="round"
+    stroke-dasharray="${circ}" stroke-dashoffset="${circ}" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1s ease;">
+    </circle><text x="60" y="68" text-anchor="middle" font-size="26" font-weight="800" fill="#f5efe0">${acc}%</text>`;
+  setTimeout(()=>{ring.querySelectorAll("circle")[1].setAttribute("stroke-dashoffset",off);},80);
+  let title = acc===100?T().rPerfect : acc>=70?T().rGreat : acc>=40?T().rGood : T().rOk;
+  $("rTitle").textContent=title;
+  $("rScore").textContent=state.score;
+  $("rCorrect").textContent=`${state.correct}/${total}`;
+  $("rAcc").textContent=acc+"%";
+  $("rStreak").textContent=state.bestCombo;
+  $("rBest").innerHTML = isBest?`<div class="newbest">🏆 ${T().newBest}</div>`:"";
+  show("result");
+  updateHomeStats(); applyLang();
+  if(acc>=70||isBest){sWin();confetti();}
+}
+function handleStreak(){
+  const last=store.get("lastDaily");
+  const t=new Date(); const y=new Date(t); y.setDate(t.getDate()-1);
+  const ts=todayKey();
+  const ystr=y.getFullYear()+"-"+(y.getMonth()+1)+"-"+y.getDate();
+  let s=+(store.get("streak")||0);
+  if(last===ts){/* already counted today */}
+  else if(last===ystr){s+=1;}
+  else{s=1;}
+  store.set("streak",s); store.set("lastDaily",ts);
+}
+
+/* ---------- confetti ---------- */
+function confetti(){
+  const cv=$("confetti");cv.style.display="block";
+  const ctx=cv.getContext("2d");
+  cv.width=innerWidth;cv.height=innerHeight;
+  const cols=["#fae500","#ee1c25","#2bb24c","#fff","#e6b400"];
+  const P=Array.from({length:140},()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height,
+    s:5+Math.random()*7,c:cols[Math.floor(Math.random()*cols.length)],
+    vy:2+Math.random()*4,vx:-2+Math.random()*4,rot:Math.random()*6,vr:-.2+Math.random()*.4}));
+  let frames=0;
+  (function loop(){
+    frames++;ctx.clearRect(0,0,cv.width,cv.height);
+    P.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.vr;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.c;
+      ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*1.6);ctx.restore();});
+    if(frames<160)requestAnimationFrame(loop);else cv.style.display="none";
+  })();
+}
+
+/* ---------- share ---------- */
+$("shareBtn").onclick=async()=>{
+  sClick();
+  const txt=T().shareText(state?state.score:0);
+  try{
+    if(navigator.share){await navigator.share({title:"Bizane · بزانە",text:txt});}
+    else if(navigator.clipboard){await navigator.clipboard.writeText(txt);flash(lang==="ckb"?"کۆپی کرا ✓":"Copied ✓");}
+    else flash(txt);
+  }catch(e){}
+};
+function flash(msg){
+  const d=document.createElement("div");
+  d.textContent=msg;
+  d.style.cssText="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#fae500;color:#1a1205;font-weight:800;padding:12px 22px;border-radius:999px;z-index:50;font-family:inherit;box-shadow:0 10px 30px rgba(0,0,0,.4);";
+  document.body.appendChild(d);setTimeout(()=>d.remove(),1600);
+}
+
+/* ---------- buttons ---------- */
+$("playBtn").onclick=()=>{sClick();startRound("all");};
+$("dailyBtn").onclick=()=>{sClick();startDaily();};
+$("againBtn").onclick=()=>{sClick();startRound(state?state.mode:"all");};
+$("homeBtn").onclick=()=>{sClick();show("home");updateHomeStats();applyLang();};
+
+/* ---------- settings ---------- */
+$("openSettings").onclick=()=>{sClick();$("settings").classList.add("open");};
+$("settings").querySelector("[data-close]").onclick=()=>$("settings").classList.remove("open");
+document.querySelectorAll("#langSeg button").forEach(b=>{
+  b.onclick=()=>{sClick();lang=b.dataset.lang;store.set("lang",lang);applyLang();};
+});
+$("soundToggle").onclick=function(){
+  soundOn=!soundOn;store.set("sound",soundOn?"1":"0");this.classList.toggle("on",soundOn);
+  if(soundOn)sClick();
+};
+$("resetBtn").onclick=()=>{
+  ["streak","best","played","dailyDone","lastDaily"].forEach(k=>store.set(k,"0"));
+  store.set("dailyDone","");store.set("lastDaily","");
+  updateHomeStats();applyLang();flash(lang==="ckb"?"سڕایەوە ✓":"Reset ✓");
+};
+
+/* ---------- network status ---------- */
+function updateNet(){
+  const on=navigator.onLine;
+  const b=$("netBadge");b.classList.toggle("off",!on);
+  $("netText").textContent = on?T().online:T().offline;
+}
+window.addEventListener("online",updateNet);
+window.addEventListener("offline",updateNet);
+
+/* ---------- init ---------- */
+buildSun($("logoSun"));buildSun($("heroSun"));
+$("soundToggle").classList.toggle("on",soundOn);
+applyLang();
+updateHomeStats();
+</script>
+</body>
+</html>
