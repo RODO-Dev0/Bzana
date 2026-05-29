@@ -3,269 +3,489 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#0f1c1a">
+<meta name="theme-color" content="#0b1311">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>بزانە · Bizane</title>
-<!-- Inline manifest so it can be installed to the Android home screen with no server -->
-<link rel="manifest" href='data:application/manifest+json,{"name":"Bizane · بزانە","short_name":"Bizane","start_url":"./bizane.html","display":"standalone","orientation":"portrait","background_color":"%230f1c1a","theme_color":"%230f1c1a","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Crect width=%27512%27 height=%27512%27 fill=%27%230f1c1a%27/%3E%3Ccircle cx=%27256%27 cy=%27256%27 r=%27120%27 fill=%27%23fae500%27/%3E%3C/svg%3E","sizes":"512x512","type":"image/svg+xml"}]}'>
+<link rel="manifest" href='data:application/manifest+json,{"name":"Bizane · بزانە","short_name":"Bizane","start_url":"./bizane.html","display":"standalone","orientation":"portrait","background_color":"%230b1311","theme_color":"%230b1311","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Crect width=%27512%27 height=%27512%27 fill=%27%230b1311%27/%3E%3Ccircle cx=%27256%27 cy=%27256%27 r=%27120%27 fill=%27%23f5c518%27/%3E%3C/svg%3E","sizes":"512x512","type":"image/svg+xml"}]}'>
 <style>
   :root{
-    --bg:#0d1917;
-    --bg2:#13211e;
-    --ink:#f5efe0;
-    --muted:#9db0a8;
-    --gold:#fae500;
-    --gold-deep:#e6b400;
-    --red:#ee1c25;
-    --green:#2bb24c;
-    --card:#16221f;
-    --card2:#1d2c28;
-    --line:rgba(245,239,224,.10);
-    --shadow:0 18px 50px -18px rgba(0,0,0,.7);
-    --r:20px;
-    --ar:"Noto Kufi Arabic","Tahoma","Segoe UI",system-ui,sans-serif;
-    --en:"Trebuchet MS",ui-rounded,"Segoe UI",system-ui,-apple-system,sans-serif;
+    --bg:#0b1311;--bg2:#101b18;--ink:#f4ecda;--ink2:#e7dcc4;--muted:#8c9d95;--faint:#5d6f67;
+    --gold:#f5c518;--gold2:#e0a72e;--gold-soft:rgba(245,197,24,.12);
+    --red:#e23b34;--green:#27a35a;--blue:#3f9fd4;--purple:#a07bd8;
+    --surface:#13201c;--surface2:#19281f;--raise:#1d2e26;
+    --line:rgba(244,236,218,.09);--line2:rgba(244,236,218,.14);
+    --shadow:0 22px 60px -24px rgba(0,0,0,.85);
+    --r:18px;--r-lg:24px;
+    --ar:"Noto Kufi Arabic","Baghdad","Geeza Pro","Tahoma","Segoe UI",system-ui,sans-serif;
+    --en:"Avenir Next","Futura","Trebuchet MS",ui-rounded,"Segoe UI",system-ui,-apple-system,sans-serif;
     --font:var(--ar);
+    --ease:cubic-bezier(.22,1,.36,1);
   }
   html[dir="ltr"]{--font:var(--en);}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
-  body{
-    font-family:var(--font);
-    background:var(--bg);
-    color:var(--ink);
-    overflow:hidden;
-    position:fixed;inset:0;
-    -webkit-user-select:none;user-select:none;
-  }
-  /* Atmospheric mountain-night backdrop with a glowing sun */
+  body{font-family:var(--font);background:var(--bg);color:var(--ink);overflow:hidden;
+    position:fixed;inset:0;-webkit-user-select:none;user-select:none;text-rendering:optimizeLegibility;}
+  svg{display:block;}
+  .ic{width:1em;height:1em;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:none;}
+  .ic.fill{fill:currentColor;stroke:none;}
+
+  /* ----- atmosphere ----- */
   .bgwrap{position:fixed;inset:0;z-index:0;overflow:hidden;}
-  .bgwrap::before{
-    content:"";position:absolute;inset:0;
+  .bgwrap::before{content:"";position:absolute;inset:0;
     background:
-      radial-gradient(1100px 700px at 50% -12%, rgba(250,229,0,.16), transparent 60%),
-      radial-gradient(900px 600px at 85% 110%, rgba(43,178,76,.10), transparent 60%),
-      radial-gradient(900px 600px at 12% 108%, rgba(238,28,37,.08), transparent 60%),
-      linear-gradient(180deg,#0e1b18,#0a1412 70%);
-  }
-  .mtn{position:absolute;left:0;right:0;bottom:0;width:100%;opacity:.5;}
-  .grain{position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+      radial-gradient(1200px 760px at 50% -14%, rgba(245,197,24,.15), transparent 58%),
+      radial-gradient(900px 620px at 88% 112%, rgba(39,163,90,.10), transparent 60%),
+      radial-gradient(880px 620px at 8% 110%, rgba(226,59,52,.08), transparent 60%),
+      linear-gradient(180deg,#0c1614,#091210 72%);}
+  .lattice{position:absolute;inset:-40px;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cg fill='none' stroke='%23f5c518' stroke-width='1'%3E%3Cpath d='M32 2 62 32 32 62 2 32Z'/%3E%3Cpath d='M32 18 46 32 32 46 18 32Z'/%3E%3C/g%3E%3C/svg%3E");
+    background-size:64px 64px;}
+  .grain{position:absolute;inset:0;opacity:.045;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  .mtn{position:absolute;left:0;right:0;bottom:0;width:100%;opacity:.55;}
 
   .app{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
-    max-width:520px;margin:0 auto;padding:env(safe-area-inset-top) 18px env(safe-area-inset-bottom);}
-  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:24px;}
+    max-width:540px;margin:0 auto;padding:env(safe-area-inset-top) 18px env(safe-area-inset-bottom);}
+  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:26px;}
   .scroll::-webkit-scrollbar{display:none;}
 
-  /* Top bar */
-  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 2px 8px;}
-  .brand{display:flex;align-items:center;gap:10px;}
-  .brand .name{font-weight:800;font-size:20px;letter-spacing:.3px;}
-  .brand .sub{font-size:11px;color:var(--muted);letter-spacing:1px;}
+  /* ----- top bar ----- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 2px 6px;}
+  .brand{display:flex;align-items:center;gap:11px;}
+  .brand .mark{width:40px;height:40px;}
+  .brand .name{font-weight:800;font-size:21px;letter-spacing:.4px;line-height:1;}
+  .brand .sub{font-size:10px;color:var(--gold2);letter-spacing:3px;margin-top:3px;font-family:var(--en);}
+  .tbtns{display:flex;gap:8px;align-items:center;}
   .iconbtn{width:42px;height:42px;border-radius:13px;border:1px solid var(--line);
-    background:var(--card);color:var(--ink);font-size:17px;display:grid;place-items:center;cursor:pointer;
-    transition:transform .12s,background .2s;}
-  .iconbtn:active{transform:scale(.92);}
-  .net{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);
-    background:var(--card);border:1px solid var(--line);padding:6px 10px;border-radius:999px;}
-  .net .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
-  .net.off .dot{background:var(--gold-deep);box-shadow:0 0 10px var(--gold-deep);}
+    background:var(--surface);color:var(--ink2);font-size:18px;display:grid;place-items:center;cursor:pointer;
+    transition:transform .14s var(--ease),background .2s,border-color .2s;}
+  .iconbtn:active{transform:scale(.9);background:var(--raise);}
+  .net{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted);
+    background:var(--surface);border:1px solid var(--line);padding:7px 11px;border-radius:999px;white-space:nowrap;font-size:11px;}
+  .net .ic{font-size:13px;color:var(--green);}
+  .net.off .ic{color:var(--gold2);}
 
-  /* Sun emblem */
-  .sun{filter:drop-shadow(0 0 18px rgba(250,229,0,.35));}
+  /* sun emblem */
   @keyframes spin{to{transform:rotate(360deg);}}
-  .sun.spin{animation:spin 60s linear infinite;}
+  .sun.spin{animation:spin 80s linear infinite;transform-origin:center;}
 
-  /* Screens */
-  .screen{display:none;animation:fade .35s ease both;}
+  .screen{display:none;}
   .screen.active{display:block;}
-  @keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .stagger>*{opacity:0;transform:translateY(14px);animation:rise .6s var(--ease) forwards;}
+  @keyframes rise{to{opacity:1;transform:none;}}
+  .stagger>*:nth-child(1){animation-delay:.04s}.stagger>*:nth-child(2){animation-delay:.10s}
+  .stagger>*:nth-child(3){animation-delay:.16s}.stagger>*:nth-child(4){animation-delay:.22s}
+  .stagger>*:nth-child(5){animation-delay:.28s}.stagger>*:nth-child(6){animation-delay:.34s}
+  .stagger>*:nth-child(7){animation-delay:.40s}.stagger>*:nth-child(8){animation-delay:.46s}
 
-  /* HOME */
-  .hero{text-align:center;padding:14px 0 10px;}
-  .hero h1{font-size:40px;font-weight:800;line-height:1;margin-top:14px;
-    background:linear-gradient(180deg,#fff,#f0d98a);-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .hero p{color:var(--muted);margin-top:8px;font-size:14px;}
-  .stats{display:flex;gap:10px;margin:18px 0;}
-  .stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 8px;text-align:center;}
-  .stat .v{font-size:24px;font-weight:800;color:var(--gold);}
-  .stat .l{font-size:11px;color:var(--muted);margin-top:3px;}
+  /* ----- HOME ----- */
+  .hero{text-align:center;padding:14px 0 2px;}
+  .hero .bigmark{width:92px;height:92px;margin:0 auto;}
+  .hero h1{font-size:40px;font-weight:800;line-height:1;margin-top:14px;letter-spacing:.5px;
+    background:linear-gradient(180deg,#fff,#e9c97a 90%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero p{color:var(--muted);margin-top:9px;font-size:13px;max-width:300px;margin-inline:auto;line-height:1.5;}
 
-  .bigbtn{width:100%;border:none;border-radius:var(--r);padding:18px;font-family:inherit;
-    font-size:18px;font-weight:800;color:#1a1205;cursor:pointer;position:relative;overflow:hidden;
-    background:linear-gradient(135deg,var(--gold),var(--gold-deep));
-    box-shadow:0 14px 30px -10px rgba(250,229,0,.5);transition:transform .12s;display:flex;
-    align-items:center;justify-content:center;gap:10px;}
+  .rankcard{background:
+      radial-gradient(120% 140% at 100% 0%, rgba(245,197,24,.10), transparent 50%),
+      linear-gradient(150deg,var(--surface2),var(--surface));
+    border:1px solid var(--line2);border-radius:var(--r-lg);padding:15px 16px;margin:18px 0 0;
+    display:flex;align-items:center;gap:14px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+  .rankcard .rico{font-size:26px;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;flex:none;
+    color:var(--gold);background:var(--gold-soft);border:1px solid rgba(245,197,24,.28);}
+  .rankcard .rmid{flex:1;min-width:0;}
+  .rankcard .rname{font-weight:800;font-size:17px;}
+  .rankcard .rlvl{font-size:11px;color:var(--muted);margin-top:2px;font-family:var(--en);}
+  .rankcard .rlvl b{color:var(--ink2);font-weight:700;}
+  .xpwrap{height:9px;background:rgba(0,0,0,.3);border-radius:999px;overflow:hidden;margin-top:9px;border:1px solid var(--line);}
+  .xpfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0;border-radius:999px;
+    transition:width .9s var(--ease);box-shadow:0 0 12px rgba(245,197,24,.5);}
+
+  .stats{display:flex;gap:9px;margin:14px 0;}
+  .stat{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:13px 4px 11px;text-align:center;}
+  .stat .si{font-size:15px;color:var(--gold2);margin-bottom:5px;display:flex;justify-content:center;}
+  .stat .v{font-size:20px;font-weight:800;color:var(--ink);font-family:var(--en);}
+  .stat .l{font-size:10px;color:var(--muted);margin-top:3px;}
+
+  .bigbtn{width:100%;border:none;border-radius:var(--r);padding:17px;font-family:inherit;
+    font-size:17px;font-weight:800;color:#1a1304;cursor:pointer;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,#f7cf3a,var(--gold2));
+    box-shadow:0 16px 34px -12px rgba(245,197,24,.55),inset 0 1px 0 rgba(255,255,255,.4);
+    transition:transform .14s var(--ease);display:flex;align-items:center;justify-content:center;gap:10px;}
+  .bigbtn .ic{font-size:20px;}
   .bigbtn:active{transform:scale(.97);}
-  .bigbtn.daily{background:linear-gradient(135deg,#243a35,#19302b);color:var(--ink);
-    box-shadow:var(--shadow);border:1px solid var(--line);margin-top:12px;}
-  .bigbtn.daily .tag{margin-inline-start:auto;font-size:11px;background:var(--red);color:#fff;
-    padding:4px 9px;border-radius:999px;font-weight:700;}
-  .bigbtn.daily.done .tag{background:var(--green);}
+  .bigbtn.shine::after{content:"";position:absolute;top:0;bottom:0;width:40%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+    animation:shine 3.4s var(--ease) infinite;}
+  @keyframes shine{0%{inset-inline-start:-50%}55%,100%{inset-inline-start:130%}}
 
-  .sectitle{font-size:13px;color:var(--muted);margin:24px 4px 12px;font-weight:700;letter-spacing:.5px;}
-  .cats{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .cat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;cursor:pointer;
-    transition:transform .12s,border-color .2s,background .2s;position:relative;overflow:hidden;}
-  .cat:active{transform:scale(.96);}
-  .cat .emoji{font-size:26px;}
-  .cat .t{font-weight:800;font-size:15px;margin-top:10px;}
-  .cat .c{font-size:11px;color:var(--muted);margin-top:3px;}
-  .cat::after{content:"";position:absolute;inset-inline-end:-30px;top:-30px;width:80px;height:80px;border-radius:50%;
-    background:var(--accent,var(--gold));opacity:.10;}
+  .daily{width:100%;margin-top:11px;border:1px solid var(--line2);border-radius:var(--r);padding:15px 16px;cursor:pointer;
+    background:linear-gradient(135deg,var(--surface2),var(--surface));color:var(--ink);
+    display:flex;align-items:center;gap:13px;transition:transform .14s var(--ease),border-color .2s;}
+  .daily:active{transform:scale(.98);}
+  .daily .di{width:42px;height:42px;border-radius:12px;background:rgba(63,159,212,.14);color:var(--blue);
+    display:grid;place-items:center;font-size:19px;flex:none;}
+  .daily .dt{font-weight:800;font-size:15px;}.daily .dd{font-size:11px;color:var(--muted);margin-top:2px;}
+  .daily .tag{margin-inline-start:auto;font-size:10px;background:var(--red);color:#fff;padding:5px 11px;border-radius:999px;font-weight:800;letter-spacing:.5px;}
+  .daily.done .tag{background:var(--green);}
 
-  /* QUIZ */
-  .qhead{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 2px;}
-  .hearts{display:flex;gap:5px;font-size:20px;}
-  .heart{transition:transform .25s,opacity .25s;}
-  .heart.lost{opacity:.22;transform:scale(.7);filter:grayscale(1);}
-  .qscore{font-weight:800;color:var(--gold);font-size:18px;}
-  .combo{font-size:11px;color:var(--green);font-weight:700;min-height:14px;text-align:center;}
-  .progbar{height:6px;background:var(--card);border-radius:999px;overflow:hidden;margin:10px 0 4px;}
-  .progfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-deep));width:0;transition:width .3s;}
-  .timewrap{height:5px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;margin:14px 0;}
-  .timefill{height:100%;background:var(--green);width:100%;transition:width .25s linear,background .3s;}
+  .duo{display:flex;gap:10px;margin-top:11px;}
+  .ghost{flex:1;border:1px solid var(--line);background:var(--surface);color:var(--ink2);
+    border-radius:var(--r);padding:14px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;
+    transition:transform .14s var(--ease),background .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .ghost .ic{font-size:17px;color:var(--gold2);}
+  .ghost:active{transform:scale(.96);background:var(--raise);}
 
-  .qcard{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);
-    border-radius:24px;padding:24px 20px;min-height:130px;display:flex;flex-direction:column;justify-content:center;
-    box-shadow:var(--shadow);position:relative;}
-  .qcat{font-size:11px;color:var(--gold);font-weight:700;letter-spacing:.5px;margin-bottom:10px;}
-  .qtext{font-size:21px;font-weight:800;line-height:1.5;}
-  .opts{display:flex;flex-direction:column;gap:11px;margin-top:16px;}
-  .opt{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;
-    font-family:inherit;font-size:16px;font-weight:600;color:var(--ink);text-align:start;cursor:pointer;
-    transition:transform .1s,background .2s,border-color .2s;display:flex;align-items:center;gap:12px;}
-  .opt:active{transform:scale(.98);}
-  .opt .k{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.06);display:grid;place-items:center;
-    font-size:13px;font-weight:800;color:var(--muted);flex-shrink:0;}
-  .opt.correct{background:rgba(43,178,76,.18);border-color:var(--green);}
+  .sectitle{display:flex;align-items:center;gap:9px;margin:24px 4px 13px;font-size:12px;color:var(--muted);
+    font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:var(--en);}
+  .sectitle::after{content:"";flex:1;height:1px;background:var(--line);}
+  html[dir="rtl"] .sectitle{font-family:var(--ar);letter-spacing:0;text-transform:none;font-size:13px;}
+
+  .cats{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+  .cat{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:15px;cursor:pointer;
+    transition:transform .14s var(--ease),border-color .2s;position:relative;overflow:hidden;}
+  .cat:active{transform:scale(.95);border-color:var(--line2);}
+  .cat .citile{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;
+    color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent);}
+  .cat .t{font-weight:800;font-size:14px;margin-top:11px;}
+  .cat .c{font-size:11px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:5px;}
+  .cat .c .ic{font-size:11px;}
+  .cat .mini{height:5px;background:rgba(0,0,0,.3);border-radius:999px;margin-top:10px;overflow:hidden;}
+  .cat .mini i{display:block;height:100%;background:var(--accent);width:0;border-radius:999px;transition:width .8s var(--ease);}
+  .cat::after{content:"";position:absolute;inset-inline-end:-34px;top:-34px;width:84px;height:84px;border-radius:50%;
+    background:var(--accent);opacity:.08;}
+
+  .credit{text-align:center;font-size:11px;color:var(--faint);padding:22px 0 8px;font-family:var(--en);letter-spacing:.5px;}
+
+  /* ----- back / headers ----- */
+  .back{display:inline-flex;align-items:center;gap:7px;background:none;border:none;color:var(--muted);
+    font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;padding:12px 2px;}
+  .back .ic{font-size:17px;}
+  .screen-h{font-size:24px;font-weight:800;margin:2px 2px 4px;}
+  .screen-sub{font-size:13px;color:var(--muted);margin:0 2px 18px;}
+
+  /* ----- MODE CARDS ----- */
+  .modecard{position:relative;border:1px solid var(--line2);border-radius:var(--r-lg);padding:17px;margin-bottom:13px;
+    cursor:pointer;overflow:hidden;transition:transform .15s var(--ease),border-color .2s;
+    background:linear-gradient(140deg,var(--surface2),var(--surface));}
+  .modecard:active{transform:scale(.98);}
+  .modecard::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:4px;background:var(--mc);}
+  .modecard::after{content:"";position:absolute;inset-inline-end:-40px;top:-40px;width:120px;height:120px;border-radius:50%;
+    background:var(--mc);opacity:.10;}
+  .mc-top{display:flex;align-items:center;gap:14px;}
+  .mc-tile{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:25px;flex:none;
+    color:var(--mc);background:color-mix(in srgb,var(--mc) 16%,transparent);border:1px solid color-mix(in srgb,var(--mc) 30%,transparent);}
+  .mc-name{font-weight:800;font-size:18px;}
+  .mc-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45;max-width:90%;}
+  .mc-go{margin-inline-start:auto;color:var(--faint);font-size:20px;align-self:center;}
+  .chips{display:flex;gap:7px;margin-top:13px;flex-wrap:wrap;}
+  .chip{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--ink2);
+    background:rgba(0,0,0,.25);border:1px solid var(--line);padding:5px 10px;border-radius:999px;font-family:var(--en);}
+  html[dir="rtl"] .chip{font-family:var(--ar);}
+  .chip .ic{font-size:12px;color:var(--mc);}
+
+  /* ----- QUIZ ----- */
+  .qhead{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 2px;min-height:34px;gap:10px;}
+  .hearts{display:flex;gap:6px;font-size:20px;color:var(--red);}
+  .heart{transition:transform .3s var(--ease),opacity .3s;}
+  .heart.lost{opacity:.2;transform:scale(.7);color:var(--faint);}
+  .qscore{font-weight:800;color:var(--gold);font-size:19px;display:flex;align-items:center;gap:6px;font-family:var(--en);}
+  .qscore .ic{font-size:16px;}
+  .blitzclock{font-weight:800;font-size:21px;color:var(--green);display:flex;align-items:center;gap:6px;font-family:var(--en);}
+  .blitzclock .ic{font-size:17px;}
+  .blitzclock.low{color:var(--red);animation:pulse .55s infinite;}
+  @keyframes pulse{50%{opacity:.4;}}
+  .combo{font-size:12px;color:var(--green);font-weight:800;min-height:16px;text-align:center;margin-top:3px;
+    display:flex;align-items:center;justify-content:center;gap:5px;}
+  .combo .ic{font-size:13px;}
+  .progbar{height:6px;background:var(--surface);border-radius:999px;overflow:hidden;margin:9px 0 3px;border:1px solid var(--line);}
+  .progfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0;transition:width .35s var(--ease);}
+  .timewrap{height:6px;background:rgba(0,0,0,.3);border-radius:999px;overflow:hidden;margin:12px 0;border:1px solid var(--line);}
+  .timefill{height:100%;background:var(--green);width:100%;}
+
+  .qcard{background:
+      radial-gradient(130% 130% at 100% 0%,rgba(245,197,24,.07),transparent 55%),
+      linear-gradient(160deg,var(--surface2),var(--surface));
+    border:1px solid var(--line2);border-radius:var(--r-lg);padding:22px 20px;min-height:120px;
+    display:flex;flex-direction:column;justify-content:center;box-shadow:var(--shadow);position:relative;}
+  .qtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .qcat{font-size:11px;color:var(--gold2);font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:6px;}
+  .qcat .ic{font-size:13px;}
+  .diff{display:flex;gap:4px;align-items:center;}
+  .diff i{width:7px;height:7px;border-radius:50%;background:rgba(244,236,218,.16);}
+  .diff i.on{background:var(--gold);box-shadow:0 0 6px rgba(245,197,24,.6);}
+  .qtext{font-size:20px;font-weight:800;line-height:1.55;}
+
+  .opts{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+  .opt{background:var(--surface);border:1.5px solid var(--line);border-radius:15px;padding:15px 15px;
+    font-family:inherit;font-size:15px;font-weight:600;color:var(--ink);text-align:start;cursor:pointer;
+    transition:transform .12s var(--ease),background .2s,border-color .2s,opacity .25s;
+    display:flex;align-items:center;gap:13px;}
+  .opt:active{transform:scale(.985);}
+  .opt .k{width:28px;height:28px;border-radius:9px;background:rgba(0,0,0,.28);display:grid;place-items:center;
+    font-size:13px;font-weight:800;color:var(--muted);flex:none;font-family:var(--en);transition:.2s;}
+  .opt .kx{margin-inline-start:auto;font-size:18px;opacity:0;transform:scale(.5);transition:.25s var(--ease);}
+  .opt.correct{background:rgba(39,163,90,.16);border-color:var(--green);}
   .opt.correct .k{background:var(--green);color:#fff;}
-  .opt.wrong{background:rgba(238,28,37,.16);border-color:var(--red);}
+  .opt.correct .kx{opacity:1;transform:none;color:var(--green);}
+  .opt.wrong{background:rgba(226,59,52,.15);border-color:var(--red);}
   .opt.wrong .k{background:var(--red);color:#fff;}
-  .opt.dim{opacity:.45;}
+  .opt.wrong .kx{opacity:1;transform:none;color:var(--red);}
+  .opt.dim{opacity:.34;}
+  .opt.gone{opacity:.16;pointer-events:none;text-decoration:line-through;}
 
-  .factcard{background:var(--card);border:1px solid var(--line);border-inline-start:3px solid var(--gold);
-    border-radius:14px;padding:14px 16px;margin-top:16px;font-size:14px;line-height:1.6;color:var(--ink);
-    animation:fade .4s both;}
-  .factcard .lab{font-size:11px;color:var(--gold);font-weight:800;margin-bottom:4px;letter-spacing:.5px;}
+  .lifebar{display:flex;gap:9px;margin-top:14px;}
+  .life{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px 4px 9px;
+    font-family:inherit;color:var(--ink2);font-weight:700;font-size:12px;cursor:pointer;text-align:center;
+    transition:transform .14s var(--ease),opacity .2s,border-color .2s;display:flex;flex-direction:column;gap:5px;align-items:center;}
+  .life .ic{font-size:18px;color:var(--gold);}
+  .life:active{transform:scale(.93);}
+  .life .lc{font-size:9px;color:var(--gold2);font-weight:800;font-family:var(--en);}
+  .life:disabled,.life.used{opacity:.3;pointer-events:none;}
 
-  /* RESULT */
-  .result{text-align:center;padding:30px 0;}
-  .result .ring{width:160px;height:160px;margin:6px auto 16px;}
-  .result h2{font-size:26px;font-weight:800;}
-  .result .big{font-size:56px;font-weight:800;color:var(--gold);line-height:1;margin:4px 0;}
-  .result .sub{color:var(--muted);font-size:14px;}
-  .rstats{display:flex;gap:10px;margin:22px 0;}
-  .rstats .stat .v{font-size:20px;color:var(--ink);}
-  .newbest{display:inline-block;background:var(--red);color:#fff;font-size:12px;font-weight:800;
-    padding:5px 12px;border-radius:999px;margin-top:10px;animation:pop .5s both;}
-  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.15);}100%{transform:scale(1);}}
-  .ghost{width:100%;border:1px solid var(--line);background:var(--card);color:var(--ink);
-    border-radius:var(--r);padding:15px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;
-    margin-top:11px;transition:transform .12s;display:flex;align-items:center;justify-content:center;gap:8px;}
-  .ghost:active{transform:scale(.97);}
+  .factcard{background:linear-gradient(135deg,var(--surface2),var(--surface));border:1px solid var(--line);
+    border-inline-start:3px solid var(--gold);border-radius:14px;padding:14px 15px;margin-top:14px;
+    font-size:13.5px;line-height:1.65;color:var(--ink2);animation:rise .4s var(--ease) both;}
+  .factcard .lab{font-size:11px;color:var(--gold);font-weight:800;margin-bottom:5px;letter-spacing:.4px;
+    display:flex;align-items:center;gap:6px;}
 
-  /* Settings sheet */
+  /* ladder rail */
+  .rail{display:flex;flex-direction:column-reverse;background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;overflow:hidden;margin:6px 0;}
+  .rung{display:flex;justify-content:space-between;align-items:center;padding:6px 13px;font-size:12px;
+    color:var(--muted);font-weight:700;font-family:var(--en);transition:.3s;}
+  .rung .lr{display:flex;align-items:center;gap:6px;}
+  .rung .lr .ic{font-size:11px;color:var(--blue);}
+  .rung.safe{color:var(--blue);}
+  .rung.cur{background:var(--gold-soft);color:var(--gold);}
+  .rung.passed{color:var(--green);}
+
+  /* ----- RESULT ----- */
+  .result{text-align:center;padding:18px 0;}
+  .result .ring{width:156px;height:156px;margin:6px auto 14px;}
+  .result h2{font-size:23px;font-weight:800;}
+  .result .big{font-size:54px;font-weight:800;color:var(--gold);line-height:1;margin:3px 0;font-family:var(--en);
+    text-shadow:0 0 30px rgba(245,197,24,.4);}
+  .result .sub{color:var(--muted);font-size:13px;}
+  .rpills{margin:14px 0 4px;display:flex;flex-wrap:wrap;justify-content:center;gap:7px;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;padding:7px 13px;border-radius:999px;animation:pop .5s var(--ease) both;}
+  .pill .ic{font-size:13px;}
+  .pill.best{background:var(--red);color:#fff;}
+  .pill.lb{background:var(--blue);color:#06222e;}
+  .pill.rank{background:var(--gold);color:#1a1304;}
+  @keyframes pop{0%{transform:scale(0);}68%{transform:scale(1.18);}100%{transform:scale(1);}}
+  .xpgain{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 16px;margin:14px 0;
+    display:flex;align-items:center;justify-content:center;gap:10px;}
+  .xpgain .ic{color:var(--gold);font-size:18px;}
+  .xpgain .v{font-weight:800;color:var(--gold);font-size:18px;font-family:var(--en);}
+  .rstats{display:flex;gap:9px;margin:6px 0 16px;}
+  .rstats .stat .v{font-size:17px;}
+  .resbtns .ghost,.resbtns .bigbtn{width:100%;margin-top:11px;}
+
+  /* ----- sheets ----- */
   .sheet{position:fixed;inset:0;z-index:30;display:none;}
   .sheet.open{display:block;}
-  .sheet .ov{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);animation:fade .2s;}
-  .sheet .panel{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--bg2);
-    border-radius:26px 26px 0 0;border-top:1px solid var(--line);padding:10px 20px 30px;animation:up .3s ease both;}
+  .sheet .ov{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);animation:fade .25s;}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .sheet .panel{position:absolute;left:0;right:0;bottom:0;max-width:540px;margin:0 auto;background:var(--bg2);
+    border-radius:28px 28px 0 0;border-top:1px solid var(--line2);padding:8px 20px 32px;
+    animation:up .35s var(--ease) both;max-height:84vh;overflow-y:auto;box-shadow:0 -20px 60px rgba(0,0,0,.5);}
+  .sheet .panel::-webkit-scrollbar{display:none;}
   @keyframes up{from{transform:translateY(100%);}to{transform:none;}}
-  .grab{width:44px;height:5px;border-radius:999px;background:var(--line);margin:6px auto 16px;}
-  .row{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line);}
+  .grab{width:42px;height:5px;border-radius:999px;background:var(--line2);margin:8px auto 16px;}
+  .sheet h3{font-size:19px;font-weight:800;margin-bottom:16px;text-align:center;}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid var(--line);}
   .row:last-child{border:none;}
-  .row .t{font-weight:700;}
-  .row .d{font-size:12px;color:var(--muted);margin-top:2px;}
-  .seg{display:flex;background:var(--card);border-radius:12px;padding:4px;gap:4px;}
+  .row .t{font-weight:700;display:flex;align-items:center;gap:9px;}
+  .row .t .ic{font-size:17px;color:var(--gold2);}
+  .row .d{font-size:12px;color:var(--muted);margin-top:3px;padding-inline-start:26px;}
+  .seg{display:flex;background:var(--surface);border-radius:12px;padding:4px;gap:4px;border:1px solid var(--line);}
   .seg button{border:none;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;
-    padding:8px 14px;border-radius:9px;cursor:pointer;font-size:13px;}
-  .seg button.on{background:var(--gold);color:#1a1205;}
-  .toggle{width:52px;height:30px;border-radius:999px;background:var(--card);border:1px solid var(--line);
-    position:relative;cursor:pointer;transition:background .2s;}
+    padding:8px 15px;border-radius:9px;cursor:pointer;font-size:13px;transition:.2s;}
+  .seg button.on{background:var(--gold);color:#1a1304;}
+  .toggle{width:52px;height:30px;border-radius:999px;background:var(--surface);border:1px solid var(--line2);
+    position:relative;cursor:pointer;transition:background .25s;flex:none;}
   .toggle.on{background:var(--green);}
   .toggle::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:22px;height:22px;border-radius:50%;
-    background:#fff;transition:transform .2s;}
+    background:#fff;transition:transform .25s var(--ease);}
   html[dir="rtl"] .toggle.on::after{transform:translateX(-22px);}
   html[dir="ltr"] .toggle.on::after{transform:translateX(22px);}
 
-  #confetti{position:fixed;inset:0;z-index:40;pointer-events:none;display:none;}
+  .achgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+  .ach{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:14px 12px;text-align:center;opacity:.55;transition:.3s;}
+  .ach.got{opacity:1;border-color:rgba(245,197,24,.4);
+    background:linear-gradient(160deg,rgba(245,197,24,.09),var(--surface));}
+  .ach .aico{width:44px;height:44px;border-radius:13px;margin:0 auto;display:grid;place-items:center;font-size:21px;
+    color:var(--faint);background:rgba(0,0,0,.25);}
+  .ach.got .aico{color:var(--gold);background:var(--gold-soft);}
+  .ach .at{font-weight:800;font-size:12px;margin-top:9px;}
+  .ach .ad{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.4;}
 
-  .credit{text-align:center;font-size:11px;color:var(--muted);padding:18px 0 6px;opacity:.7;}
+  .lbrow{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--line);}
+  .lbrow:last-child{border:none;}
+  .lbrow .rk{width:30px;height:30px;border-radius:9px;background:var(--surface);display:grid;place-items:center;
+    font-weight:800;font-size:13px;flex:none;font-family:var(--en);color:var(--muted);}
+  .lbrow.top1 .rk{background:var(--gold);color:#1a1304;}
+  .lbrow.top2 .rk{background:#c9cdd2;color:#1a1304;}
+  .lbrow.top3 .rk{background:#cd8a52;color:#1a1304;}
+  .lbrow .ls{font-weight:800;color:var(--gold);font-family:var(--en);font-size:16px;}
+  .lbrow .lm{font-size:11px;color:var(--muted);margin-inline-start:auto;text-align:end;}
+  .empty{text-align:center;color:var(--muted);font-size:13px;padding:30px 0;display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .empty .ic{font-size:34px;color:var(--faint);}
+
+  /* ----- overlays ----- */
+  #confetti{position:fixed;inset:0;z-index:40;pointer-events:none;display:none;}
+  .levelup{position:fixed;inset:0;z-index:55;display:none;place-items:center;
+    background:rgba(7,13,11,.8);backdrop-filter:blur(5px);animation:fade .3s;}
+  .levelup.show{display:grid;}
+  .lubox{text-align:center;animation:pop .55s var(--ease) both;}
+  .lubox .lui{width:90px;height:90px;margin:0 auto;color:var(--gold);
+    filter:drop-shadow(0 0 24px rgba(245,197,24,.6));}
+  .lubox .lut{font-size:13px;color:var(--gold);font-weight:800;letter-spacing:3px;margin-top:14px;font-family:var(--en);}
+  .lubox .lun{font-size:30px;font-weight:800;margin-top:5px;}
+  .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-130px);z-index:60;
+    background:linear-gradient(135deg,#f7cf3a,var(--gold2));color:#1a1304;font-weight:800;
+    padding:11px 17px;border-radius:16px;display:flex;align-items:center;gap:11px;
+    box-shadow:0 16px 36px rgba(0,0,0,.45);transition:transform .45s var(--ease);max-width:90%;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .toast .tico{font-size:22px;display:flex;}
+  .toast .tt{font-size:10px;opacity:.75;letter-spacing:.5px;}
+  .toast .tn{font-size:14px;}
+  /* ----- student mode ----- */
+  .daily.student .di{background:rgba(43,179,154,.16);color:#2bb39a;}
+  .tag.ai{background:linear-gradient(135deg,#2bb39a,#3f9fd4)!important;color:#04211c;letter-spacing:1px;}
+  .subjects{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:4px;}
+  .subj{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:11px 15px;
+    font-family:inherit;font-size:13px;font-weight:700;color:var(--ink2);cursor:pointer;
+    display:flex;align-items:center;gap:7px;transition:transform .14s var(--ease),border-color .2s,background .2s;}
+  .subj:active{transform:scale(.94);}
+  .subj.on{background:var(--gold-soft);border-color:rgba(245,197,24,.45);color:var(--gold);}
+  .subj.add{border-style:dashed;color:var(--muted);}
+  .subj .ic{font-size:14px;color:var(--gold2);}
+  .subj.on .ic{color:var(--gold);}
+  .deck{background:linear-gradient(140deg,var(--surface2),var(--surface));border:1px solid var(--line2);
+    border-radius:18px;padding:15px 16px;margin-bottom:11px;display:flex;align-items:center;gap:13px;
+    animation:rise .45s var(--ease) both;}
+  .deck .dico{width:46px;height:46px;border-radius:13px;background:rgba(43,179,154,.15);color:#2bb39a;
+    display:grid;place-items:center;font-size:21px;flex:none;}
+  .deck .dmid{flex:1;min-width:0;}
+  .deck .dn{font-weight:800;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .deck .dc{font-size:11px;color:var(--muted);margin-top:2px;}
+  .deck .dplay{width:42px;height:42px;border-radius:12px;border:none;background:var(--gold);color:#1a1304;
+    display:grid;place-items:center;font-size:18px;cursor:pointer;flex:none;transition:transform .14s var(--ease);}
+  .deck .dplay:active{transform:scale(.9);}
+  .deck .ddel{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);background:var(--surface);
+    color:var(--muted);display:grid;place-items:center;font-size:16px;cursor:pointer;flex:none;}
+  /* generating screen */
+  .genwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    min-height:62vh;gap:18px;}
+  .genorbit{width:120px;height:120px;animation:spin 3s linear infinite;filter:drop-shadow(0 0 26px rgba(245,197,24,.5));}
+  .gentitle{font-size:20px;font-weight:800;animation:pulse 1.6s infinite;}
+  .gensub{font-size:13px;color:var(--muted);max-width:260px;line-height:1.5;}
+
+    font-weight:800;padding:12px 22px;border-radius:999px;z-index:50;font-family:inherit;
+    box-shadow:0 12px 30px rgba(0,0,0,.45);animation:pop .4s var(--ease);}
 </style>
 </head>
 <body>
 <div class="bgwrap">
+  <div class="lattice"></div>
   <div class="grain"></div>
-  <svg class="mtn" viewBox="0 0 520 220" preserveAspectRatio="none">
-    <path d="M0,220 L0,150 L70,90 L130,140 L200,60 L270,130 L330,80 L400,150 L460,100 L520,160 L520,220 Z" fill="#0a1311"/>
-    <path d="M0,220 L0,175 L90,120 L160,165 L240,110 L320,160 L400,120 L470,165 L520,135 L520,220 Z" fill="#08100e"/>
+  <svg class="mtn" viewBox="0 0 540 220" preserveAspectRatio="none">
+    <path d="M0,220 L0,150 L70,90 L130,140 L205,58 L275,132 L335,80 L410,150 L470,98 L540,158 L540,220 Z" fill="#0a1210"/>
+    <path d="M0,220 L0,176 L92,120 L165,166 L245,110 L325,160 L405,120 L475,166 L540,134 L540,220 Z" fill="#08100d"/>
   </svg>
 </div>
-
 <canvas id="confetti"></canvas>
+<div class="levelup" id="levelup"><div class="lubox"><svg class="lui sun" id="luIcon" viewBox="0 0 100 100"></svg>
+  <div class="lut" id="luText">LEVEL UP</div><div class="lun" id="luName"></div></div></div>
+<div class="toast" id="toast"><span class="tico" id="toastIcon"></span><div><div class="tt" id="toastTop"></div><div class="tn" id="toastName"></div></div></div>
 
 <div class="app">
   <div class="topbar">
     <div class="brand">
-      <svg class="sun spin" width="34" height="34" viewBox="0 0 100 100" id="logoSun"></svg>
-      <div>
-        <div class="name">بزانە</div>
-        <div class="sub">BIZANE</div>
-      </div>
+      <svg class="mark sun spin" viewBox="0 0 100 100" id="logoSun"></svg>
+      <div><div class="name">بزانە</div><div class="sub">BIZANE</div></div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center;">
-      <div class="net" id="netBadge"><span class="dot"></span><span id="netText">Online</span></div>
-      <button class="iconbtn" id="openSettings">⚙</button>
+    <div class="tbtns">
+      <div class="net" id="netBadge"><span class="ic" id="netIcon"></span><span id="netText">Online</span></div>
+      <button class="iconbtn" id="openSettings" aria-label="settings"></button>
     </div>
   </div>
 
-  <div class="scroll">
-
+  <div class="scroll" id="scrollArea">
     <!-- HOME -->
     <section class="screen active" id="home">
-      <div class="hero">
-        <svg class="sun spin" width="92" height="92" viewBox="0 0 100 100" id="heroSun" style="margin:0 auto;display:block;"></svg>
-        <h1 data-t="appName">بزانە</h1>
-        <p data-t="tagline">یاری زانیاری کوردی — فێربە و خۆشی پێ ببینە</p>
+      <div class="stagger">
+        <div class="hero">
+          <svg class="bigmark sun spin" viewBox="0 0 100 100" id="heroSun"></svg>
+          <h1 data-t="appName">بزانە</h1>
+          <p data-t="tagline"></p>
+        </div>
+
+        <div class="rankcard">
+          <div class="rico" id="rankIco"></div>
+          <div class="rmid">
+            <div class="rname" id="rankName"></div>
+            <div class="rlvl"><span data-t="level"></span> <b id="rankLvl">1</b> · <b id="rankXp">0</b> XP <span id="rankNext"></span></div>
+            <div class="xpwrap"><div class="xpfill" id="xpFill"></div></div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div class="si" id="icStreak"></div><div class="v" id="stStreak">0</div><div class="l" data-t="streak"></div></div>
+          <div class="stat"><div class="si" id="icBest"></div><div class="v" id="stBest">0</div><div class="l" data-t="best"></div></div>
+          <div class="stat"><div class="si" id="icPlayed"></div><div class="v" id="stPlayed">0</div><div class="l" data-t="played"></div></div>
+          <div class="stat"><div class="si" id="icAch"></div><div class="v" id="stAch">0</div><div class="l" data-t="badges"></div></div>
+        </div>
+
+        <button class="bigbtn shine" id="playBtn"><span class="ic" id="icPlayBtn"></span><span data-t="play"></span></button>
+        <div class="daily" id="dailyBtn">
+          <div class="di" id="icDaily"></div>
+          <div><div class="dt" data-t="daily"></div><div class="dd" data-t="dailyDesc"></div></div>
+          <span class="tag" id="dailyTag" data-t="new"></span>
+        </div>
+        <div class="daily student" id="studentBtn">
+          <div class="di" id="icStudentHome"></div>
+          <div><div class="dt" data-t="studyMode"></div><div class="dd" data-t="studentDesc"></div></div>
+          <span class="tag ai">AI</span>
+        </div>
+        <div class="duo">
+          <button class="ghost" id="achBtn"><span class="ic" id="icAchBtn"></span><span data-t="badges"></span></button>
+          <button class="ghost" id="lbBtn"><span class="ic" id="icLbBtn"></span><span data-t="leaderboard"></span></button>
+        </div>
+
+        <div class="sectitle" data-t="categories"></div>
+        <div class="cats" id="catGrid"></div>
+        <div class="credit">v4.0 — <span data-t="madeFor"></span></div>
       </div>
+    </section>
 
-      <div class="stats">
-        <div class="stat"><div class="v" id="stStreak">0</div><div class="l" data-t="streak">زنجیرە</div></div>
-        <div class="stat"><div class="v" id="stBest">0</div><div class="l" data-t="best">باشترین</div></div>
-        <div class="stat"><div class="v" id="stPlayed">0</div><div class="l" data-t="played">وەڵامدراو</div></div>
-      </div>
-
-      <button class="bigbtn" id="playBtn">▶ <span data-t="quickplay">یاری خێرا</span></button>
-      <button class="bigbtn daily" id="dailyBtn">
-        <span data-t="daily">یاری ڕۆژانە</span>
-        <span class="tag" id="dailyTag" data-t="new">نوێ</span>
-      </button>
-
-      <div class="sectitle" data-t="categories">بەشەکان</div>
-      <div class="cats" id="catGrid"></div>
-
-      <div class="credit">v1.0 · <span data-t="madeFor">دروستکراوە بۆ کوردستان</span> ❤</div>
+    <!-- MODES -->
+    <section class="screen" id="modes">
+      <button class="back" id="modeBack"><span class="ic" id="icBack1"></span><span data-t="back"></span></button>
+      <div class="screen-h" data-t="chooseMode"></div>
+      <div class="screen-sub" data-t="chooseModeSub"></div>
+      <div id="modeList"></div>
     </section>
 
     <!-- QUIZ -->
     <section class="screen" id="quiz">
-      <div class="qhead">
-        <div class="hearts" id="hearts"></div>
-        <div class="qscore"><span id="qScore">0</span></div>
-      </div>
-      <div class="progbar"><div class="progfill" id="progFill"></div></div>
+      <div class="qhead"><div id="qLeft"></div><div id="qRight"></div></div>
       <div class="combo" id="comboTxt"></div>
-      <div class="timewrap"><div class="timefill" id="timeFill"></div></div>
-
+      <div id="railSlot"></div>
+      <div class="progbar" id="progWrap"><div class="progfill" id="progFill"></div></div>
+      <div class="timewrap" id="timeWrap"><div class="timefill" id="timeFill"></div></div>
       <div class="qcard">
-        <div class="qcat" id="qCat"></div>
+        <div class="qtop"><div class="qcat" id="qCat"></div><div class="diff" id="qDiff"></div></div>
         <div class="qtext" id="qText"></div>
       </div>
       <div class="opts" id="opts"></div>
+      <div class="lifebar" id="lifeBar"></div>
       <div id="factSlot"></div>
-      <button class="bigbtn" id="nextBtn" style="margin-top:16px;display:none;"><span data-t="next">دواتر</span> ←</button>
+      <button class="bigbtn" id="nextBtn" style="margin-top:14px;display:none;"><span data-t="next" id="nextLabel"></span><span class="ic" id="icNext"></span></button>
+      <button class="back" id="quitBtn" style="margin-top:6px;"><span class="ic" id="icQuit"></span><span data-t="quit"></span></button>
     </section>
 
     <!-- RESULT -->
@@ -274,504 +494,847 @@
         <svg class="ring" viewBox="0 0 120 120" id="resultRing"></svg>
         <h2 id="rTitle"></h2>
         <div class="big" id="rScore">0</div>
-        <div class="sub"><span data-t="points">خاڵ</span></div>
-        <div id="rBest"></div>
+        <div class="sub" id="rScoreSub"></div>
+        <div class="rpills" id="rPills"></div>
+        <div class="xpgain"><span class="ic" id="icXp"></span><span class="v" id="rXp">0</span></div>
         <div class="rstats">
-          <div class="stat"><div class="v" id="rCorrect">0</div><div class="l" data-t="correct">ڕاست</div></div>
-          <div class="stat"><div class="v" id="rAcc">0%</div><div class="l" data-t="accuracy">وردی</div></div>
-          <div class="stat"><div class="v" id="rStreak">0</div><div class="l" data-t="bestCombo">زنجیرە</div></div>
+          <div class="stat"><div class="v" id="rCorrect">0</div><div class="l" data-t="correct"></div></div>
+          <div class="stat"><div class="v" id="rAcc">0%</div><div class="l" data-t="accuracy"></div></div>
+          <div class="stat"><div class="v" id="rCombo">0</div><div class="l" data-t="bestCombo"></div></div>
         </div>
-        <button class="bigbtn" id="againBtn">↻ <span data-t="again">دووبارە</span></button>
-        <button class="ghost" id="shareBtn">↗ <span data-t="share">هاوبەشکردن</span></button>
-        <button class="ghost" id="homeBtn">⌂ <span data-t="home">سەرەتا</span></button>
+        <div class="resbtns">
+          <button class="bigbtn" id="againBtn"><span class="ic" id="icAgain"></span><span data-t="again"></span></button>
+          <button class="ghost" id="shareBtn"><span class="ic" id="icShare"></span><span data-t="share"></span></button>
+          <button class="ghost" id="homeBtn"><span class="ic" id="icHome"></span><span data-t="home"></span></button>
+        </div>
       </div>
     </section>
 
+    <!-- STUDENT -->
+    <section class="screen" id="student">
+      <button class="back" id="studentBack"><span class="ic" id="icBack2"></span><span data-t="back"></span></button>
+      <div class="screen-h" data-t="studyMode"></div>
+      <div class="screen-sub" data-t="pickOrAdd"></div>
+
+      <div class="sectitle" data-t="chooseSubject"></div>
+      <div class="subjects" id="subjectGrid"></div>
+
+      <div class="sectitle" data-t="howMake"></div>
+      <div class="modecard" id="scanCard" style="--mc:#2bb39a">
+        <div class="mc-top"><div class="mc-tile" id="icScan"></div>
+          <div><div class="mc-name" data-t="scanBook"></div><div class="mc-desc" data-t="scanBookD"></div></div></div>
+      </div>
+      <div class="modecard" id="typeCard" style="--mc:#3f9fd4">
+        <div class="mc-top"><div class="mc-tile" id="icType"></div>
+          <div><div class="mc-name" data-t="typeTopic"></div><div class="mc-desc" data-t="typeTopicD"></div></div></div>
+      </div>
+      <input type="file" id="bookFile" accept="image/*" capture="environment" style="display:none">
+
+      <div class="sectitle" data-t="myDecks"></div>
+      <div id="deckList"></div>
+    </section>
+
+    <!-- AI GENERATING -->
+    <section class="screen" id="gen">
+      <div class="genwrap">
+        <svg class="genorbit" viewBox="0 0 100 100" id="genSun"></svg>
+        <div class="gentitle" id="genTitle"></div>
+        <div class="gensub" id="genSub"></div>
+      </div>
+    </section>
   </div>
 </div>
 
-<!-- Settings sheet -->
-<div class="sheet" id="settings">
-  <div class="ov" data-close></div>
-  <div class="panel">
-    <div class="grab"></div>
-    <div class="row">
-      <div><div class="t" data-t="language">زمان</div><div class="d">Kurdî · English</div></div>
-      <div class="seg" id="langSeg">
-        <button data-lang="ckb" class="on">کوردی</button>
-        <button data-lang="en">EN</button>
-      </div>
-    </div>
-    <div class="row">
-      <div><div class="t" data-t="sound">دەنگ</div><div class="d" data-t="soundDesc">دەنگی یاری</div></div>
-      <div class="toggle on" id="soundToggle"></div>
-    </div>
-    <div class="row">
-      <div><div class="t" data-t="install">دامەزراندن لەسەر مۆبایل</div>
-        <div class="d" data-t="installDesc">لە مێنیوی وێبگەڕ: Add to Home Screen</div></div>
-    </div>
-    <div class="row">
-      <div><div class="t" data-t="reset">سڕینەوەی ئامار</div></div>
-      <button class="ghost" id="resetBtn" style="width:auto;margin:0;padding:9px 16px;font-size:13px;" data-t="resetBtn">سڕینەوە</button>
-    </div>
-  </div>
-</div>
+<!-- TOPIC SHEET -->
+<div class="sheet" id="topicSheet"><div class="ov" data-close></div><div class="panel">
+  <div class="grab"></div><h3 data-t="typeTopic"></h3>
+  <div style="margin-bottom:6px;font-size:12px;color:var(--muted)" id="topicSubjLbl"></div>
+  <textarea id="topicInput" rows="3" data-tph="topicPH"
+    style="width:100%;background:var(--surface);border:1px solid var(--line2);border-radius:14px;padding:14px;color:var(--ink);font-family:inherit;font-size:15px;resize:none;"></textarea>
+  <div class="row" style="border:none;padding-top:16px;"><div class="t"><span class="ic" id="icHowMany"></span><span data-t="howManyQ"></span></div>
+    <div class="seg" id="qcountSeg"><button data-n="5" class="on">5</button><button data-n="10">10</button><button data-n="15">15</button></div></div>
+  <button class="bigbtn" id="genTopicBtn" style="margin-top:8px;"><span class="ic" id="icGenT"></span><span data-t="generate"></span></button>
+</div></div>
+
+<!-- API KEY SHEET -->
+<div class="sheet" id="keySheet"><div class="ov" data-close></div><div class="panel">
+  <div class="grab"></div><h3 data-t="needKey"></h3>
+  <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;" data-t="needKeyD"></p>
+  <input type="password" id="keyInput" placeholder="AIza…"
+    style="width:100%;background:var(--surface);border:1px solid var(--line2);border-radius:14px;padding:14px;color:var(--ink);font-family:var(--en);font-size:14px;letter-spacing:.5px;">
+  <button class="bigbtn" id="saveKeyBtn" style="margin-top:14px;"><span class="ic" id="icSaveKey"></span><span data-t="saveKey"></span></button>
+  <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="ghost" id="getKeyLink"
+    style="margin-top:10px;text-decoration:none;display:flex;"><span class="ic" id="icGetKey"></span><span data-t="getKey"></span></a>
+</div></div>
+
+<!-- SETTINGS -->
+<div class="sheet" id="settings"><div class="ov" data-close></div><div class="panel">
+  <div class="grab"></div><h3 data-t="settings"></h3>
+  <div class="row"><div><div class="t"><span class="ic" id="icLang"></span><span data-t="language"></span></div></div>
+    <div class="seg" id="langSeg"><button data-lang="ckb" class="on">کوردی</button><button data-lang="en">EN</button></div></div>
+  <div class="row"><div><div class="t"><span class="ic" id="icSound"></span><span data-t="sound"></span></div><div class="d" data-t="soundDesc"></div></div>
+    <div class="toggle on" id="soundToggle"></div></div>
+  <div class="row"><div style="flex:1"><div class="t"><span class="ic" id="icKeySet"></span><span data-t="apiKey"></span></div><div class="d" data-t="apiKeyD"></div>
+    <input type="password" id="keyInputSet" placeholder="AIza…" style="width:100%;margin-top:10px;background:var(--surface);border:1px solid var(--line2);border-radius:12px;padding:11px 13px;color:var(--ink);font-family:var(--en);font-size:13px;letter-spacing:.5px;"></div></div>
+  <div class="row"><div><div class="t"><span class="ic" id="icInstall"></span><span data-t="install"></span></div><div class="d" data-t="installDesc"></div></div></div>
+  <div class="row"><div><div class="t"><span class="ic" id="icReset"></span><span data-t="reset"></span></div></div>
+    <button class="ghost" id="resetBtn" style="flex:0 0 auto;padding:9px 16px;font-size:13px;" data-t="resetBtn"></button></div>
+</div></div>
+
+<!-- ACHIEVEMENTS -->
+<div class="sheet" id="achSheet"><div class="ov" data-close></div><div class="panel">
+  <div class="grab"></div><h3 data-t="badges"></h3><div class="achgrid" id="achGrid"></div>
+</div></div>
+
+<!-- LEADERBOARD -->
+<div class="sheet" id="lbSheet"><div class="ov" data-close></div><div class="panel">
+  <div class="grab"></div><h3 data-t="leaderboard"></h3><div id="lbList"></div>
+</div></div>
 
 <script>
 "use strict";
-/* ---------- safe storage (works when downloaded; falls back to memory in sandbox) ---------- */
+/* ========== storage (offline-safe) ========== */
 const mem={};
 const store={
   get(k){try{const v=localStorage.getItem(k);return v===null?(k in mem?mem[k]:null):v;}catch(e){return k in mem?mem[k]:null;}},
-  set(k,v){try{localStorage.setItem(k,v);}catch(e){}mem[k]=v;}
+  set(k,v){try{localStorage.setItem(k,v);}catch(e){}mem[k]=v;},
+  getJSON(k,d){const v=this.get(k);try{return v?JSON.parse(v):d;}catch(e){return d;}},
+  setJSON(k,o){this.set(k,JSON.stringify(o));}
 };
 
-/* ---------- Kurdish 21-ray sun emblem ---------- */
-function buildSun(svg){
-  const c=50, n=21; let rays="";
-  for(let i=0;i<n;i++){
-    const a=(i/n)*Math.PI*2 - Math.PI/2;
-    const x1=c+Math.cos(a)*30, y1=c+Math.sin(a)*30;
-    const x2=c+Math.cos(a)*47, y2=c+Math.sin(a)*47;
-    const wa=a+0.08, wb=a-0.08;
-    const bx=c+Math.cos(wb)*30, by=c+Math.sin(wb)*30;
-    const tx=c+Math.cos(wa)*30, ty=c+Math.sin(wa)*30;
-    rays+=`<path d="M${bx} ${by} L${x2} ${y2} L${tx} ${ty} Z" fill="#fae500"/>`;
-  }
-  svg.innerHTML=rays+`<circle cx="50" cy="50" r="26" fill="#fae500"/><circle cx="50" cy="50" r="20" fill="#e6b400"/>`;
-}
+/* ========== icon set (stroke, currentColor) ========== */
+const ICONS={
+  play:'<path class="fill" d="M7 4.5v15a1 1 0 0 0 1.5.87l12-7.5a1 1 0 0 0 0-1.74l-12-7.5A1 1 0 0 0 7 4.5z"/>',
+  heart:'<path class="fill" d="M12 21s-7.4-4.6-9.8-9.2C.6 8.3 2.4 4.3 6.2 4.3c2 0 3.4 1.2 4.1 2.3.7-1.1 2.1-2.3 4.1-2.3 3.8 0 5.6 4 4 7.5C19.4 16.4 12 21 12 21z"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/>',
+  bolt:'<path class="fill" d="M13.5 2 4 13.2c-.4.5-.1 1.3.6 1.3H10l-1.4 7.3c-.1.8.9 1.2 1.4.6L20 11.2c.4-.5.1-1.3-.6-1.3H14l1.3-7.3c.1-.8-.9-1.2-1.8-.6z"/>',
+  stairs:'<path d="M3 20h4v-4h4v-4h4v-4h6"/><path d="M3 20v-2"/>',
+  shield:'<path d="M12 3 5 6v5c0 4.2 3 7.4 7 8.6 4-1.2 7-4.4 7-8.6V6z"/><path d="m9 12 2 2 4-4"/>',
+  scissors:'<circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><path d="m8.2 8 11 11M8.2 16l11-11"/>',
+  skip:'<path class="fill" d="M5 5v14l9-7z"/><path d="M18 5v14"/>',
+  timeplus:'<circle cx="10" cy="13" r="7"/><path d="M10 9.5V13l2.2 1.4"/><path d="M18 4v6M15 7h6"/>',
+  trophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5.5a1.8 1.8 0 0 0 0 3.6H7M16 6h2.5a1.8 1.8 0 0 1 0 3.6H17M9.5 21h5M12 13v3"/>',
+  chart:'<path d="M4 20V11M9 20V5M14 20v-6M19 20v-9M3 20h18"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5 5l1.7 1.7M17.3 17.3 19 19M19 5l-1.7 1.7M6.7 17.3 5 19"/>',
+  share:'<circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="m8.3 13.3 7.4 4M15.7 6.7l-7.4 4"/>',
+  home:'<path d="M3 11 12 3l9 8"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/>',
+  refresh:'<path d="M20.5 12a8.5 8.5 0 1 1-2.6-6.1"/><path d="M20.5 3.5V9H15"/>',
+  check:'<path d="M5 12.5 10 17 19.5 6.5"/>',
+  x:'<path d="M6 6 18 18M18 6 6 18"/>',
+  lock:'<rect x="5" y="11" width="14" height="9.5" rx="2.2"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/>',
+  flame:'<path class="fill" d="M12 2.5c.6 3.2 3.8 4.4 3.8 8.2A3.8 3.8 0 0 1 12 14.5a2.5 2.5 0 0 1-2.5-2.6c0-1.4.8-2 .8-2s-2.3 1-2.3 4A4.7 4.7 0 0 0 12 21.5a5 5 0 0 0 5-5c0-5-5-8.2-5-14z"/>',
+  star:'<path class="fill" d="m12 2.5 2.8 5.9 6.4.9-4.6 4.5 1.1 6.4L12 17.6l-5.7 3 1.1-6.4L2.8 9.7l6.4-.9z"/>',
+  calendar:'<rect x="3.5" y="5" width="17" height="16" rx="2.4"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><path d="M7.5 14h2M11 14h2M14.5 14h2M7.5 17.5h2M11 17.5h2"/>',
+  arrowR:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  arrowL:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  chevR:'<path d="M9 5l7 7-7 7"/>',
+  book:'<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 1 6.5 18H19v3H6.5A1.5 1.5 0 0 1 5 19.5z"/>',
+  map:'<path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6 9 4z"/><path d="M9 4v14M15 6v14"/>',
+  landmark:'<path d="M3.5 21h17M4.5 21V10M9 21V10M15 21V10M19.5 21V10M4 10h16L12 3z"/>',
+  music:'<circle cx="6" cy="17.5" r="2.8"/><circle cx="17" cy="15.5" r="2.8"/><path d="M8.8 17.5V6l11-2v11.5"/>',
+  users:'<circle cx="9" cy="8" r="3.4"/><path d="M3 20c0-3.3 2.7-5.8 6-5.8s6 2.5 6 5.8"/><path d="M16.2 4.8a3.4 3.4 0 0 1 0 6.4M21 20c0-2.8-1.6-5-4-5.6"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.6 4.6 6.4 6.4M17.6 17.6l1.8 1.8M19.4 4.6l-1.8 1.8M6.4 17.6l-1.8 1.8"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3.5 12h17M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/>',
+  globeoff:'<circle cx="12" cy="12" r="9"/><path d="M3.5 12h17"/><path d="M4 5l16 14" stroke-width="2.2"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle class="fill" cx="12" cy="12" r="1.6"/>',
+  compass:'<circle cx="12" cy="12" r="9"/><path class="fill" d="M15.6 8.4 13.2 13 8.4 15.6 10.8 11z"/>',
+  medal:'<circle cx="12" cy="14.5" r="5"/><path d="m9 10.5-2-7.5h4M15 10.5l2-7.5h-4"/><path d="m12 12.5 1 2 2 .3-1.5 1.4.4 2-1.9-1-1.9 1 .4-2L9 14.8l2-.3z"/>',
+  gem:'<path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18M9 3 6 9l6 12M15 3l3 6-6 12"/>',
+  sprout:'<path d="M12 21v-7.5"/><path d="M12 13.5C12 9.5 8.5 7 4 7c0 4.5 3.5 6.8 8 6.5z"/><path d="M12 11.5c0-3 2.3-5.2 7-5.2 0 3.8-3 6-7 5.2z"/>',
+  cap:'<path d="M12 3.5 2.5 8 12 12.5 21.5 8z"/><path d="M6 10v4.5c0 1.6 2.7 3 6 3s6-1.4 6-3V10"/><path d="M21.5 8v5"/>',
+  award:'<circle cx="12" cy="9" r="5.2"/><path d="m8.5 13.2-1.8 7.3 5.3-3 5.3 3-1.8-7.3"/>',
+  zap:'<path class="fill" d="M13.5 2 4 13.2c-.4.5-.1 1.3.6 1.3H10l-1.4 7.3c-.1.8.9 1.2 1.4.6L20 11.2c.4-.5.1-1.3-.6-1.3H14l1.3-7.3c.1-.8-.9-1.2-1.8-.6z"/>',
+  crown:'<path d="M4 18h16M5 8l3.5 3L12 6l3.5 5L19 8l-1.2 8H6.2z"/>',
+  flag:'<path d="M5 21V4M5 4s2-1.2 4.5 0 5 1.2 9 0v9c-4 1.2-6.5 0-9-1.2S5 13 5 13"/>',
+  mosque:'<path d="M12 2c2.5 2.5 4 4 4 6.5H8C8 6 9.5 4.5 12 2z"/><path d="M5 21V11c0-1.4 1.2-2.5 2.5-2.5h9c1.3 0 2.5 1.1 2.5 2.5v10"/><path d="M3 21V13M21 21V13M3 21h18M9 21v-3a3 3 0 0 1 6 0v3"/>',
+  crescent:'<path d="M17 3a9 9 0 1 0 0 18 7 7 0 0 1 0-18z"/>',
+  camera:'<path d="M4 8a2 2 0 0 1 2-2h1.5l1.2-1.8a1 1 0 0 1 .8-.4h5a1 1 0 0 1 .8.4L17.5 6H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.5" r="3.4"/>',
+  sparkles:'<path class="fill" d="M12 2.5 13.6 8 19 9.6 13.6 11.2 12 16.6 10.4 11.2 5 9.6 10.4 8z"/><path class="fill" d="M18.5 14.5l.8 2.4 2.4.8-2.4.8-.8 2.4-.8-2.4-2.4-.8 2.4-.8z"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  library:'<path d="M4 4h4v16H4zM10 4h4v16h-4z"/><path d="m16 5 3.7.9 3.3 14.6-3.7-.9z" transform="translate(-2 0)"/>',
+  brain:'<path d="M9 4a2.5 2.5 0 0 0-2.5 2.5 2.5 2.5 0 0 0-1 4.8A2.5 2.5 0 0 0 7 16a2.5 2.5 0 0 0 4.5 1.5V5.5A2.5 2.5 0 0 0 9 4z"/><path d="M15 4a2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1 1 4.8A2.5 2.5 0 0 1 17 16a2.5 2.5 0 0 1-4.5 1.5V5.5"/>',
+  trash:'<path d="M4 7h16M9 7V4.5h6V7M6 7l1 13h10l1-13"/>',
+  key:'<circle cx="8" cy="9" r="4"/><path d="m11 11 8 8M16 16l2-2M18.5 18.5l1.5-1.5"/>',
+  upload:'<path d="M12 16V4M8 8l4-4 4 4"/><path d="M5 16v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3"/>',
+  edit:'<path d="M4 20h4L18 10l-4-4L4 16z"/><path d="m14 6 4 4"/>'
+};
+function icon(name){return `<svg class="ic" viewBox="0 0 24 24">${ICONS[name]||""}</svg>`;}
+function setIcon(id,name){const el=document.getElementById(id);if(el)el.innerHTML=icon(name);}
 
-/* ---------- i18n (UI) ---------- */
+/* sun emblem (21 rays) */
+function buildSun(svg){const c=50,n=21;let r="";
+  for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2-Math.PI/2;
+    const x2=c+Math.cos(a)*47,y2=c+Math.sin(a)*47,wa=a+.08,wb=a-.08;
+    const bx=c+Math.cos(wb)*30,by=c+Math.sin(wb)*30,tx=c+Math.cos(wa)*30,ty=c+Math.sin(wa)*30;
+    r+=`<path d="M${bx} ${by} L${x2} ${y2} L${tx} ${ty} Z" fill="#f5c518"/>`;}
+  svg.innerHTML=r+`<circle cx="50" cy="50" r="26" fill="#f5c518"/><circle cx="50" cy="50" r="20" fill="#e0a72e"/>`;}
+
+/* ========== i18n ========== */
 const STR={
-  ckb:{appName:"بزانە",tagline:"یاری زانیاری کوردی — فێربە و خۆشی پێ ببینە",
-    streak:"زنجیرەی ڕۆژانە",best:"باشترین خاڵ",played:"وەڵامی ڕاست",
-    quickplay:"یاری خێرا",daily:"یاری ڕۆژانە",new:"نوێ",done:"تەواوبوو",categories:"بەشەکان",
-    madeFor:"دروستکراوە بۆ کوردستان",next:"دواتر",points:"خاڵ",correct:"ڕاست",accuracy:"وردی",
-    bestCombo:"باشترین زنجیرە",again:"دووبارە یاری",share:"هاوبەشکردن",home:"سەرەتا",
+  ckb:{appName:"بزانە",tagline:"یاری زانیاریی کوردی — فێربە، تاقیبکەرەوە، خۆشی پێ ببینە",
+    streak:"زنجیرە",best:"باشترین",played:"ڕاست",badges:"نیشان",level:"ئاست",
+    play:"یاری بکە",daily:"یاری ڕۆژانە",dailyDesc:"هەر ڕۆژێک ٨ پرسیاری نوێ",new:"نوێ",done:"تەواو",
+    categories:"بەشەکان",madeFor:"بۆ کوردستان دروستکراوە",back:"گەڕانەوە",
+    chooseMode:"شێوازی یاری",chooseModeSub:"شێوازێک هەڵبژێرە و دەستپێبکە",leaderboard:"ڕیزبەندی",
+    next:"دواتر",toResult:"ئەنجام",quit:"کۆتایی",points:"خاڵ",correct:"ڕاست",accuracy:"وردی",bestCombo:"زنجیرە",
+    again:"دووبارە یاری",share:"هاوبەشکردن",home:"سەرەتا",settings:"ڕێکخستن",
     language:"زمان",sound:"دەنگ",soundDesc:"کاریگەری دەنگی",install:"دامەزراندن لەسەر مۆبایل",
-    installDesc:"لە مێنیوی وێبگەڕ: زیادکردن بۆ ڕووی مۆبایل",reset:"سڕینەوەی ئامار",resetBtn:"سڕینەوە",
-    didyou:"دەتزانی؟",timeUp:"کاتت تەواوبوو!",
-    rPerfect:"نایاب! پاڵەوان",rGreat:"زۆر باش!",rGood:"باش بوو!",rOk:"دیسان هەوڵبدە",
-    newBest:"باشترین خاڵی نوێ!",online:"سەرهێڵ",offline:"دەرهێڵ — هەمووی کاردەکات",
-    shareText:n=>`من ${n} خاڵم بەدەستهێنا لە یاری بزانە! 🌞 تۆش تاقیبکەرەوە:`},
-  en:{appName:"Bizane",tagline:"The Kurdish trivia game — learn and have fun",
-    streak:"Day streak",best:"Best score",played:"Correct",
-    quickplay:"Quick play",daily:"Daily challenge",new:"NEW",done:"DONE",categories:"Categories",
-    madeFor:"Made for Kurdistan",next:"Next",points:"points",correct:"Correct",accuracy:"Accuracy",
-    bestCombo:"Best combo",again:"Play again",share:"Share",home:"Home",
+    installDesc:"مێنیوی وێبگەڕ ← زیادکردن بۆ ڕووی سەرەکی",reset:"سڕینەوەی هەموو شت",resetBtn:"سڕینەوە",
+    didyou:"دەتزانی؟",online:"سەرهێڵ",offline:"دەرهێڵ",
+    fifty:"٥٠:٥٠",skip:"تێپەڕاندن",freeze:"کات",
+    rPerfect:"بێ کەموکوڕی!",rGreat:"نایاب!",rGood:"باش بوو!",rOk:"دیسان هەوڵبدە",
+    newBest:"باشترین خاڵ",levelUp:"ئاست بەرزبووەوە",newRank:"پلەی نوێ",achGot:"دەستکەوتی نوێ",
+    lbPlace:n=>`ڕیزی ${n}`,survived:n=>`${n} پرسیار`,blitzRes:n=>`${n} ڕاست لە ٦٠ چرکە`,
+    emptyLb:"هێشتا خاڵێک نییە — یاری بکە!",
+    shareText:n=>`من ${n} خاڵم لە یاری بزانە بەدەستهێنا! تۆش تاقیبکەرەوە`,
+    qword:"پرسیار",mastered:"شارەزا",result:"ئەنجام",nextW:"دەرئەنجام",
+    mQuick:"یاری خێرا",mQuickD:"١٠ پرسیار بە کاتەوە — دەستپێکی باش",
+    mSurv:"مانەوە",mSurvD:"بەردەوامبە تا دڵەکانت دەمێنن — کات کەمتر دەبێتەوە",
+    mBlitz:"تەقینەوە",mBlitzD:"زۆرترین وەڵامی ڕاست لە ٦٠ چرکەدا",
+    mLadder:"پلیکانە",mLadderD:"١٢ پلە، خاڵ بەرز دەبێتەوە، ٢ خاڵی پارێزراو",
+    cQ:n=>`${n} پرسیار`,cHearts:n=>`${n} دڵ`,cTime:n=>`${n} چرکە`,cEndless:"بێ کۆتایی",cSafe:"٢ پارێزراو",
+    student:"خوێندکار",studentDesc:"بابەتەکانت بخوێنە بە یاری",studyMode:"دۆخی خوێندن",
+    chooseSubject:"بابەت هەڵبژێرە",pickOrAdd:"بابەتێک هەڵبژێرە یان نوێ زیادبکە",addSubject:"بابەتی نوێ",
+    howMake:"چۆن پرسیار دروستبکەین؟",scanBook:"وێنەی کتێب بگرە",scanBookD:"وێنەی پەڕەی کتێبەکەت بگرە، AI پرسیاری لێ دروستدەکات",
+    typeTopic:"بابەتێک بنووسە",typeTopicD:"ناونیشانێک بنووسە و AI پرسیاری بۆ دروستدەکات",
+    myDecks:"دەستەکانم",noDecks:"هێشتا دەستەیەک نییە — یەکێک دروستبکە!",
+    generating:"دروستکردنی پرسیار…",readingBook:"خوێندنەوەی کتێب…",
+    topicPH:"نموونە: فۆتۆسینتەز، شەڕی جیهانیی دووەم…",howManyQ:"چەند پرسیار؟",
+    generate:"دروستبکە",cancel:"پاشگەزبوونەوە",playDeck:"یاری بکە",deleteDeck:"سڕینەوە",
+    needKey:"کلیلی Gemini API پێویستە",needKeyD:"بۆ بەکارهێنانی AI، کلیلێکی بەخۆڕایی لە Google AI Studio وەربگرە و لێرە دایبنێ.",
+    getKey:"وەرگرتنی کلیل",saveKey:"پاشەکەوتکردن",apiKey:"کلیلی Gemini API",apiKeyD:"بۆ دۆخی خوێندن — لە ئامێرەکەتدا پاشەکەوت دەبێت",
+    genErr:"هەڵە لە دروستکردندا — کلیلەکە یان پەیوەندییەکەت بپشکنە",
+    deckMade:n=>`${n} پرسیار دروستکرا!`,questions:"پرسیار",subjects:["بیرکاری","فیزیا","کیمیا","زیندەزانی","مێژوو","جوگرافیا","ئینگلیزی","ئاینی ئیسلامی","زمانی کوردی","گشتی"]},
+  en:{appName:"Bizane",tagline:"The Kurdish knowledge game — learn, test yourself, have fun",
+    streak:"Streak",best:"Best",played:"Correct",badges:"Badges",level:"Level",
+    play:"Play",daily:"Daily challenge",dailyDesc:"8 fresh questions every day",new:"NEW",done:"DONE",
+    categories:"Categories",madeFor:"Built for Kurdistan",back:"Back",
+    chooseMode:"Game modes",chooseModeSub:"Pick a mode to begin",leaderboard:"Leaderboard",
+    next:"Next",toResult:"Result",quit:"Quit",points:"points",correct:"Correct",accuracy:"Accuracy",bestCombo:"Best combo",
+    again:"Play again",share:"Share",home:"Home",settings:"Settings",
     language:"Language",sound:"Sound",soundDesc:"Sound effects",install:"Install on phone",
-    installDesc:"Browser menu → Add to Home Screen",reset:"Reset stats",resetBtn:"Reset",
-    didyou:"Did you know?",timeUp:"Time's up!",
-    rPerfect:"Flawless! Champion",rGreat:"Excellent!",rGood:"Well done!",rOk:"Try again",
-    newBest:"New best score!",online:"Online",offline:"Offline — fully working",
-    shareText:n=>`I scored ${n} points in Bizane! 🌞 Can you beat me?`}
+    installDesc:"Browser menu → Add to Home Screen",reset:"Reset everything",resetBtn:"Reset",
+    didyou:"Did you know?",online:"Online",offline:"Offline",
+    fifty:"50:50",skip:"Skip",freeze:"+Time",
+    rPerfect:"Flawless!",rGreat:"Excellent!",rGood:"Well done!",rOk:"Try again",
+    newBest:"New best",levelUp:"LEVEL UP",newRank:"New rank",achGot:"Unlocked",
+    lbPlace:n=>`Rank #${n}`,survived:n=>`${n} answered`,blitzRes:n=>`${n} correct in 60s`,
+    emptyLb:"No scores yet — go play!",
+    shareText:n=>`I scored ${n} in Bizane! Can you beat me?`,
+    qword:"questions",mastered:"Mastered",result:"Result",nextW:"Result",
+    mQuick:"Quick play",mQuickD:"10 timed questions — a great warm-up",
+    mSurv:"Survival",mSurvD:"Keep going until your hearts run out — the clock speeds up",
+    mBlitz:"Blitz",mBlitzD:"Most correct answers in 60 seconds",
+    mLadder:"Ladder",mLadderD:"12 rungs, rising stakes, 2 safe checkpoints",
+    cQ:n=>`${n} Q`,cHearts:n=>`${n} hearts`,cTime:n=>`${n}s`,cEndless:"Endless",cSafe:"2 safe",
+    student:"Student",studentDesc:"Turn your subjects into a game",studyMode:"Study mode",
+    chooseSubject:"Choose a subject",pickOrAdd:"Pick a subject or add your own",addSubject:"New subject",
+    howMake:"How should we make questions?",scanBook:"Scan your book",scanBookD:"Snap a photo of a page — AI turns it into quiz questions",
+    typeTopic:"Type a topic",typeTopicD:"Write a topic and AI builds a quiz for you",
+    myDecks:"My decks",noDecks:"No decks yet — create one!",
+    generating:"Generating questions…",readingBook:"Reading your book…",
+    topicPH:"e.g. Photosynthesis, World War II…",howManyQ:"How many questions?",
+    generate:"Generate",cancel:"Cancel",playDeck:"Play",deleteDeck:"Delete",
+    needKey:"Gemini API key required",needKeyD:"To use AI, get a free key from Google AI Studio and paste it here.",
+    getKey:"Get a key",saveKey:"Save",apiKey:"Gemini API key",apiKeyD:"For study mode — stored only on your device",
+    genErr:"Generation failed — check your key or connection",
+    deckMade:n=>`${n} questions ready!`,questions:"questions",subjects:["Math","Physics","Chemistry","Biology","History","Geography","English","Islamic Studies","Kurdish","General"]}
 };
-
-/* ---------- categories ---------- */
-const CATS=[
-  {id:"history",  emoji:"🏛️",accent:"#ee1c25",ckb:"مێژوو",en:"History"},
-  {id:"geo",      emoji:"🗺️",accent:"#2bb24c",ckb:"جوگرافیا",en:"Geography"},
-  {id:"culture",  emoji:"🎶",accent:"#fae500",ckb:"کەلتوور و خواردن",en:"Culture & Food"},
-  {id:"language", emoji:"📖",accent:"#e6b400",ckb:"زمان و ئەدەب",en:"Language & Literature"},
-  {id:"people",   emoji:"⭐",accent:"#ee1c25",ckb:"کەسایەتییە ناودارەکان",en:"Famous People"},
-  {id:"general",  emoji:"🌞",accent:"#2bb24c",ckb:"گشتی",en:"General"}
-];
-
-/* ---------- question bank (Sorani + English). c = index of correct option ---------- */
-const Q=[
-  {cat:"general",ckb:"ئاڵای کوردستان چەند ڕەنگی هەیە؟",en:"How many colours are on the Kurdish flag?",
-   o:[["٢","2"],["٣ (سوور، سپی، سەوز)","3 (red, white, green)"],["٤","4"],["٥","5"]],c:1,
-   fckb:"سوور، سپی و سەوز لەگەڵ خۆرێکی زێڕین لە ناوەڕاستدا.",fen:"Red, white and green with a golden sun in the centre."},
-  {cat:"general",ckb:"خۆری ناو ئاڵای کوردی چەند تیشکی هەیە؟",en:"How many rays does the sun on the Kurdish flag have?",
-   o:[["١٢","12"],["١٨","18"],["٢١","21"],["٢٤","24"]],c:2,
-   fckb:"٢١ تیشک — ژمارەیەکی پیرۆز لە کەلتووری کوردیدا.",fen:"21 rays — a sacred number in Kurdish tradition."},
-  {cat:"general",ckb:"کوردستان بەسەر چەند وڵاتدا دابەشبووە؟",en:"Across how many countries is Kurdistan spread?",
-   o:[["٢","2"],["٣","3"],["٤ (تورکیا، ئێران، عێراق، سووریا)","4 (Turkey, Iran, Iraq, Syria)"],["٥","5"]],c:2,
-   fckb:"کورد یەکێکە لە گەورەترین نەتەوەکانی بێ دەوڵەت لە جیهاندا.",fen:"Kurds are one of the largest stateless nations in the world."},
-  {cat:"general",ckb:"وشەی «نەورۆز» بە واتای چی دێت؟",en:"What does the word “Newroz” mean?",
-   o:[["ڕۆژی نوێ","New day"],["جەژنی پاییز","Autumn feast"],["مانگی نوێ","New moon"],["شەوی درێژ","Long night"]],c:0,
-   fckb:"«نەو» = نوێ، «ڕۆز» = ڕۆژ. دەستپێکی ساڵی نوێی کوردی.",fen:"“New” + “Roz” (day) — the start of the Kurdish new year."},
-
-  {cat:"history",ckb:"نەورۆز لە چ ڕۆژێکدا دەگیرێت؟",en:"On what day is Newroz celebrated?",
-   o:[["١ی نیسان","1 April"],["٢١ی ئازار","21 March"],["١٥ی شوبات","15 February"],["١ی کانوونی دووەم","1 January"]],c:1,
-   fckb:"٢١ی ئازار، هاتنی بەهار و سەرەتای ساڵی نوێ.",fen:"21 March, the arrival of spring and the new year."},
-  {cat:"history",ckb:"بەگوێرەی ئەفسانە، کێ زەحاکی زۆردار تێکشکاند و نەورۆزی هێنا؟",
-   en:"In legend, who defeated the tyrant Zahhak and brought Newroz?",
-   o:[["سەلاحەدین","Saladin"],["کاوەی ئاسنگەر","Kawa the Blacksmith"],["قازی محەمەد","Qazi Muhammad"],["ئەحمەدی خانی","Ehmedê Xanî"]],c:1,
-   fckb:"کاوەی ئاسنگەر ئاگری سەرکەوتنی هەڵکرد — لەبەر ئەوە ئاگر هێمای نەورۆزە.",fen:"Kawa lit the fire of victory — why fire symbolises Newroz."},
-  {cat:"history",ckb:"سوڵتان سەلاحەدینی ئەیووبی لە کام نەتەوەیە بوو؟",en:"The famous Sultan Saladin was of which origin?",
-   o:[["عەرەب","Arab"],["تورک","Turkish"],["کورد","Kurdish"],["فارس","Persian"]],c:2,
-   fckb:"سەلاحەدینی کورد لە ساڵی ١١٨٧ قودسی ئازادکرد.",fen:"The Kurdish Saladin recaptured Jerusalem in 1187."},
-  {cat:"history",ckb:"کۆماری مەهاباد لە ساڵی ١٩٤٦ لەلایەن کێوە سەرۆکایەتی دەکرا؟",
-   en:"Who led the Republic of Mahabad in 1946?",
-   o:[["مستەفا بارزانی","Mustafa Barzani"],["قازی محەمەد","Qazi Muhammad"],["شێخ مەحموود","Sheikh Mahmoud"],["ئەحمەدی خانی","Ehmedê Xanî"]],c:1,
-   fckb:"کۆمارێکی کوردی کورتەماوە بوو لە ڕۆژهەڵاتی کوردستان (ئێران).",fen:"A short-lived Kurdish republic in Eastern Kurdistan (Iran)."},
-  {cat:"history",ckb:"قەڵای هەولێر بە چی ناسراوە؟",en:"Erbil Citadel is known as what?",
-   o:[["نوێترین شار","The newest city"],["یەکێک لە کۆنترین شوێنە نیشتەجێبووەکان","One of the oldest inhabited places"],["کۆگایەکی نوێ","A modern mall"],["دەریاچە","A lake"]],c:1,
-   fckb:"لە لیستی میراتی جیهانیی یونیسکۆدایە.",fen:"It is on the UNESCO World Heritage list."},
-
-  {cat:"geo",ckb:"پایتەختی هەرێمی کوردستانی عێراق چییە؟",en:"What is the capital of the Kurdistan Region of Iraq?",
-   o:[["سلێمانی","Sulaymaniyah"],["دهۆک","Duhok"],["هەولێر","Erbil (Hewlêr)"],["کەرکووک","Kirkuk"]],c:2,
-   fckb:"هەولێر، کە بە کوردی پێی دەوترێت «هەولێر».",fen:"Erbil, called Hewlêr in Kurdish."},
-  {cat:"geo",ckb:"کام دوو ڕووبارە گەورەکە بەناو خاکی کوردستاندا دەڕۆن؟",en:"Which two great rivers flow through Kurdish lands?",
-   o:[["نیل و ئەمازۆن","Nile & Amazon"],["دیجلە و فورات","Tigris & Euphrates"],["دانووب و ڕاین","Danube & Rhine"],["ڤۆلگا و دۆن","Volga & Don"]],c:1,
-   fckb:"دیجلە (Tigris) و فورات (Euphrates) سەرچاوەکانیان لە کوردستانن.",fen:"The Tigris and Euphrates have their sources in Kurdistan."},
-  {cat:"geo",ckb:"کام شار بە «پایتەختی کەلتووری» کوردانی باکوور (تورکیا) دادەنرێت؟",
-   en:"Which city is seen as the cultural capital of Kurds in Turkey?",
-   o:[["ئەنقەرە","Ankara"],["ئامەد (دیاربەکر)","Amed (Diyarbakır)"],["ئیزمیر","İzmir"],["بورسا","Bursa"]],c:1,
-   fckb:"ئامەد ناوەندێکی گرنگی کەلتوور و زمانی کوردییە.",fen:"Amed is a major centre of Kurdish culture and language."},
-  {cat:"geo",ckb:"کام شار بە بەرهەمهێنانی پێڵاوی نەریتیی «کلاش» ناسراوە؟",
-   en:"Which area is famous for making the traditional “klash” shoes?",
-   o:[["هەڵەبجە و دەوروبەر","Halabja region"],["زاخۆ","Zakho"],["کۆیە","Koya"],["ڕانیە","Ranya"]],c:0,
-   fckb:"کلاش بە دەست دروستدەکرێت و هێمای پیشەسازی نەریتیی کوردییە.",fen:"Klash are handmade and a symbol of Kurdish craftsmanship."},
-  {cat:"geo",ckb:"کام چیایە هێمایەکی گەورەیە بۆ کوردان لە باکوور؟",en:"Which mountain is a great symbol for northern Kurds?",
-   o:[["چیای ئاگری (ئارارات)","Mount Ararat (Agirî)"],["ئەڤەرێست","Everest"],["فووجی","Fuji"],["کلیمەنجارۆ","Kilimanjaro"]],c:0,
-   fckb:"بە کوردی «چیای ئاگری» ناودەبردرێت.",fen:"Called Çiyayê Agirî in Kurdish."},
-
-  {cat:"culture",ckb:"«دۆڵمە» چ جۆرە خواردنێکە؟",en:"What kind of dish is “dolma”?",
-   o:[["شیرینی","A dessert"],["سەوزە و گەڵای پڕکراو بە برنج","Vegetables/leaves stuffed with rice"],["شۆربا","A soup"],["نان","A bread"]],c:1,
-   fckb:"یەکێک لە خۆشترین خواردنە نەریتییەکانی سفرەی کوردییە.",fen:"One of the most beloved dishes on the Kurdish table."},
-  {cat:"culture",ckb:"«گۆڤەند / هەڵپەڕکێ» چییە؟",en:"What is “govend / helperkê”?",
-   o:[["جۆرە ئامێرێکی مۆسیقا","A musical instrument"],["سەماێکی نەریتیی بە دەستگرتن","A traditional group dance holding hands"],["جۆرە چایەک","A type of tea"],["جلوبەرگ","A costume"]],c:1,
-   fckb:"خەڵک ڕیز دەبن و دەست بە دەست سەما دەکەن، بەتایبەت لە نەورۆزدا.",fen:"People line up hand-in-hand and dance, especially at Newroz."},
-  {cat:"culture",ckb:"«دەف» چییە؟",en:"What is the “def” (daf)?",
-   o:[["ئامێرێکی مۆسیقای لێدراو (تەپڵ)","A frame drum"],["جۆرە خواردنێک","A food"],["جل","Clothing"],["یاری","A game"]],c:0,
-   fckb:"دەف لە مۆسیقای کوردیدا زۆر بەکاردێت، بەتایبەت لە مۆسیقای ئاینیدا.",fen:"The daf is widely used in Kurdish music, including spiritual music."},
-  {cat:"culture",ckb:"لە نەورۆزدا خەڵک چ کارێکی نەریتی دەکەن؟",en:"What do people traditionally do at Newroz?",
-   o:[["دادگیرسانی ئاگر و سەما","Light fires and dance"],["خەوتن","Sleep all day"],["خواردنی نەخواردن","Fasting only"],["هیچ","Nothing"]],c:0,
-   fckb:"ئاگر دادەگیرسێنن، جلی ڕەنگاوڕەنگ دەپۆشن و سەما دەکەن.",fen:"They light fires, wear colourful clothes and dance."},
-
-  {cat:"language",ckb:"زمانی کوردی سەر بە کام لقی زمانەکانە؟",en:"Kurdish belongs to which language family branch?",
-   o:[["زمانە سامییەکان","Semitic"],["زمانە ئێرانییەکان (هیندو-ئەورووپی)","Iranian (Indo-European)"],["زمانە تورکییەکان","Turkic"],["زمانە سینی","Sino-Tibetan"]],c:1,
-   fckb:"کوردی زمانێکی ئێرانییە، خزمی فارسی و بەلووچی.",fen:"Kurdish is an Iranian language, related to Persian and Balochi."},
-  {cat:"language",ckb:"دوو زاراوە سەرەکییەکەی زمانی کوردی کامانەن؟",en:"What are the two main dialects of Kurdish?",
-   o:[["کرمانجی و سۆرانی","Kurmanji & Sorani"],["عەرەبی و فارسی","Arabic & Persian"],["زازا و عەرەبی","Zaza & Arabic"],["تورکی و سۆرانی","Turkish & Sorani"]],c:0,
-   fckb:"کرمانجی (باکوور) و سۆرانی (ناوەند) باوترین زاراوەن.",fen:"Kurmanji (north) and Sorani (centre) are the most spoken."},
-  {cat:"language",ckb:"«مەم و زین» نووسراوی کام شاعیرە؟",en:"Who wrote the classic epic “Mem û Zîn”?",
-   o:[["ئەحمەدی خانی","Ehmedê Xanî"],["نالی","Nalî"],["گۆران","Goran"],["هەژار","Hejar"]],c:0,
-   fckb:"ساڵی ١٦٩٢ نووسراوە و بە ئەپۆسی نەتەوەیی کوردی دادەنرێت.",fen:"Written in 1692, it is seen as the Kurdish national epic."},
-  {cat:"language",ckb:"بە کوردی «سوپاس» واتای چییە؟",en:"What does the Kurdish word “Spas / Sipas” mean?",
-   o:[["سڵاو","Hello"],["سوپاس / دەستخۆش","Thank you"],["بەخێربێیت","Welcome"],["خوات لەگەڵ","Goodbye"]],c:1,
-   fckb:"«سوپاس» وشەیەکی هاوبەشە لەنێوان زاراوەکانی کوردیدا.",fen:"“Spas” is shared across Kurdish dialects."},
-  {cat:"language",ckb:"ئەلفوبێی لاتینیی کوردی (هاوار) لەلایەن کێوە دانرا؟",
-   en:"Who created the Latin (Hawar) Kurdish alphabet?",
-   o:[["جەلادەت بەدرخان","Celadet Bedirxan"],["ئەحمەدی خانی","Ehmedê Xanî"],["پیرەمێرد","Pîremêrd"],["نالی","Nalî"]],c:0,
-   fckb:"لە ساڵانی ١٩٣٠ـەوە بۆ نووسینی کرمانجی بەکاردێت.",fen:"Used since the 1930s, mainly for writing Kurmanji."},
-
-  {cat:"people",ckb:"کام دەرهێنەری کورد خەڵاتی «پاڵمی زێڕینی»ی کان بەدەستهێنا؟",
-   en:"Which Kurdish director won the Palme d'Or at Cannes?",
-   o:[["یلماز گونەی","Yılmaz Güney"],["بەهمەن قوبادی","Bahman Ghobadi"],["شوکر خانی","—"],["هیچکام","None"]],c:0,
-   fckb:"بۆ فیلمی «ڕێگا (Yol)» لە ساڵی ١٩٨٢.",fen:"For the film “Yol” in 1982."},
-  {cat:"people",ckb:"شیوان پەروەر بە چی ناسراوە؟",en:"What is Şivan Perwer famous for?",
-   o:[["گۆرانیبێژێکی ئەفسانەیی کورد","A legendary Kurdish singer"],["یاریزانی تۆپی پێ","A footballer"],["وەرزش","An athlete"],["وێنەکێش","A painter"]],c:0,
-   fckb:"دەنگی شیوان بووە هێمای بەرخۆدان و کەلتووری کوردی.",fen:"His voice became a symbol of Kurdish culture and resilience."},
-  {cat:"people",ckb:"مەستوورەی ئەردەڵان بە چی ناسراوە؟",en:"Mastura Ardalan is known as what?",
-   o:[["شاعیر و مێژوونووسێکی ژنی کورد","A Kurdish woman poet and historian"],["شاژن","A queen"],["گۆرانیبێژ","A singer"],["وەرزشوان","An athlete"]],c:0,
-   fckb:"یەکێک لە دیارترین شاعیرە ژنەکانی مێژووی کوردی.",fen:"One of the most prominent women poets in Kurdish history."},
-  {cat:"people",ckb:"ئەحمەدی خانی پێش هەموو شت بە چی دەناسرێت؟",en:"Ehmedê Xanî is best remembered as a…",
-   o:[["شاعیر و فەیلەسوف","Poet and thinker"],["پاشا","A king"],["گۆرانیبێژ","A singer"],["بازرگان","A merchant"]],c:0,
-   fckb:"نووسەری «مەم و زین» و یەکێک لە دایکبابانی ئەدەبی کوردی.",fen:"Author of “Mem û Zîn” and a father of Kurdish literature."}
-];
-
-/* ---------- state ---------- */
-let lang = store.get("lang") || "ckb";
-let soundOn = store.get("sound") !== "0";
-let state=null;
-const $=id=>document.getElementById(id);
 const T=()=>STR[lang];
+const QT=o=>lang==="ckb"?o[0]:o[1];
 
-/* ---------- audio ---------- */
+/* ========== categories ========== */
+const CATS=[
+  {id:"history", icon:"landmark",accent:"#e23b34",ckb:"مێژوو",en:"History"},
+  {id:"geo",     icon:"map",     accent:"#27a35a",ckb:"جوگرافیا",en:"Geography"},
+  {id:"culture", icon:"music",   accent:"#f5c518",ckb:"کەلتوور و خواردن",en:"Culture & Food"},
+  {id:"language",icon:"book",    accent:"#3f9fd4",ckb:"زمان و ئەدەب",en:"Language & Lit."},
+  {id:"people",  icon:"users",   accent:"#a07bd8",ckb:"کەسایەتییەکان",en:"Famous People"},
+  {id:"islam",   icon:"mosque",  accent:"#2bb39a",ckb:"ئیسلام",en:"Islam"},
+  {id:"general", icon:"sun",     accent:"#e0a72e",ckb:"گشتی",en:"General"}
+];
+const catOf=id=>CATS.find(c=>c.id===id)||{id,icon:"book",accent:"#f5c518",ckb:id,en:id};
+
+/* ========== ranks ========== */
+const RANKS=[
+  {min:0,    ckb:"فێرخواز", en:"Learner",  icon:"sprout"},
+  {min:350,  ckb:"گەڕۆک",  en:"Explorer", icon:"compass"},
+  {min:900,  ckb:"زانا",   en:"Scholar",  icon:"book"},
+  {min:1900, ckb:"پسپۆڕ",  en:"Expert",   icon:"target"},
+  {min:3500, ckb:"مامۆستا",en:"Master",   icon:"medal"},
+  {min:6000, ckb:"زانیار", en:"Sage",     icon:"gem"},
+  {min:9500, ckb:"پاڵەوان",en:"Champion", icon:"crown"}
+];
+function rankIndex(xp){let i=0;for(let k=0;k<RANKS.length;k++)if(xp>=RANKS[k].min)i=k;return i;}
+
+/* ========== achievements ========== */
+const ACHS=[
+  {id:"first",  icon:"play",  ckb:["یەکەم هەنگاو","یەکەم یارییەکەت"],en:["First step","Play your first game"],cond:()=>true},
+  {id:"perfect",icon:"target",ckb:["بێ کەموکوڕی","ڕاوێژێک بە ١٠٠٪"],en:["Flawless","Finish a round at 100%"],cond:c=>c.acc===100&&c.answered>=5},
+  {id:"combo10",icon:"flame", ckb:["ئاگرین","زنجیرەی ١٠ ڕاست"],en:["On fire","Reach a 10 combo"],cond:c=>c.bestCombo>=10},
+  {id:"streak7",icon:"calendar",ckb:["حەوت ڕۆژ","٧ ڕۆژ بەردەوامی ڕۆژانە"],en:["Week warrior","7-day daily streak"],cond:()=>(+store.get("streak")||0)>=7},
+  {id:"big",    icon:"gem",   ckb:["خاوەن خاڵ","٢٠٠٠ خاڵ لە یەک یاری"],en:["High roller","2000+ in one round"],cond:c=>c.score>=2000},
+  {id:"surv",   icon:"shield",ckb:["ڕزگارکراو","١٥ پرسیار لە مانەوە"],en:["Survivor","15+ in Survival"],cond:c=>c.mode==="survival"&&c.answered>=15},
+  {id:"blitz",  icon:"bolt",  ckb:["خێراکان","١٢ ڕاست لە تەقینەوە"],en:["Speed demon","12+ correct in Blitz"],cond:c=>c.mode==="blitz"&&c.correct>=12},
+  {id:"top",    icon:"stairs",ckb:["لووتکە","تەواوکردنی پلیکانە"],en:["To the top","Finish the Ladder"],cond:c=>c.mode==="ladder"&&c.ladderDone},
+  {id:"scholar",icon:"cap",   ckb:["زانا","١٠٠ وەڵامی ڕاست"],en:["Scholar","100 correct total"],cond:()=>(+store.get("played")||0)>=100},
+  {id:"champ",  icon:"crown", ckb:["پاڵەوان","گەیشتن بە بەرزترین پلە"],en:["Champion","Reach the top rank"],cond:()=>rankIndex(+store.get("xp")||0)>=RANKS.length-1}
+];
+
+/* ========== question bank (deep) ==========
+   d: 1 easy · 2 medium · 3 hard/deep */
+const Q=[
+ /* ---- GENERAL ---- */
+ {cat:"general",d:1,ckb:"خۆری ناو ئاڵای کوردی چەند تیشکی هەیە؟",en:"How many rays does the sun on the Kurdish flag have?",o:[["١٨","18"],["٢١","21"],["٢٤","24"],["٣٢","32"]],c:1,fckb:"٢١ تیشک — لە کلتووری کوردیدا ژمارەیەکی پیرۆزە.",fen:"21 rays — a sacred number in Kurdish tradition."},
+ {cat:"general",d:1,ckb:"کوردستان بەسەر چەند وڵاتدا دابەشبووە؟",en:"Across how many states is Kurdistan spread?",o:[["٢","2"],["٣","3"],["٤","4"],["٥","5"]],c:2,fckb:"تورکیا، ئێران، عێراق و سووریا.",fen:"Turkey, Iran, Iraq and Syria."},
+ {cat:"general",d:2,ckb:"کورد بە گەورەترین چ نەتەوەیەک دادەنرێن؟",en:"The Kurds are often described as the world's largest…",o:[["نەتەوەی بێ دەوڵەت","Stateless nation"],["نەتەوەی کۆچبەر","Migrant nation"],["نەتەوەی دوورگەیی","Island nation"],["هیچکام","None"]],c:0,fckb:"نزیکەی ٤٠ ملیۆن کەس بەبێ دەوڵەتی سەربەخۆ.",fen:"Around 40 million people without an independent state."},
+ {cat:"general",d:2,ckb:"دراوی بەکارهاتوو لە هەرێمی کوردستانی عێراق چییە؟",en:"What currency is used in the Kurdistan Region of Iraq?",o:[["لیرەی تورکی","Turkish lira"],["دیناری عێراقی","Iraqi dinar"],["دۆلار","US dollar"],["تمەن","Toman"]],c:1,fckb:"دیناری عێراقی، هەرچەندە دۆلاریش زۆر بەکاردێت.",fen:"The Iraqi dinar, though the dollar is widely used too."},
+ {cat:"general",d:3,ckb:"کام شوێنەواری کۆن لە نزیک ڕۆژاوای کوردستان (ئورفا) کۆنترین پەرستگای جیهانە؟",en:"Which ancient site near Urfa is the world's oldest known temple?",o:[["گۆبەکلی تەپە","Göbekli Tepe"],["بابل","Babylon"],["نەینەوا","Nineveh"],["ئوور","Ur"]],c:0,fckb:"نزیکەی ١١,٦٠٠ ساڵ تەمەنی هەیە — لە ئەهرامەکان کۆنترە.",fen:"About 11,600 years old — older than the pyramids."},
+ {cat:"general",d:3,ckb:"ئەشکەوتی شانیدەر، کە جەستەی نیئاندرتاڵی تێدا دۆزرایەوە، لە کام پارێزگایە؟",en:"Shanidar Cave, where Neanderthal remains were found, is in which governorate?",o:[["هەولێر","Erbil"],["دهۆک","Duhok"],["سلێمانی","Sulaymaniyah"],["کەرکووک","Kirkuk"]],c:0,fckb:"لە چیای برادۆست — بە «گۆڕی گوڵەکان» ناسراوە.",fen:"In the Bradost mountains — famed for its 'flower burial'."},
+
+ /* ---- HISTORY ---- */
+ {cat:"history",d:1,ckb:"نەورۆز لە چ ڕۆژێکدا دەگیرێت؟",en:"On what date is Newroz celebrated?",o:[["١ نیسان","1 April"],["٢١ ئازار","21 March"],["١٥ شوبات","15 Feb"],["١ ئاب","1 Aug"]],c:1,fckb:"هاتنی بەهار و سەرەتای ساڵی نوێ.",fen:"The arrival of spring and the new year."},
+ {cat:"history",d:1,ckb:"بەگوێرەی ئەفسانە، کاوەی ئاسنگەر کام زۆردارەی تێکشکاند؟",en:"In legend, the blacksmith Kawa overthrew which tyrant?",o:[["زەحاک","Zahhak"],["دارا","Darius"],["نیمرود","Nimrod"],["فیرعەون","Pharaoh"]],c:0,fckb:"ئاگری سەرکەوتنی هەڵکرد — ڕیشەی نەورۆز.",fen:"He lit the fire of victory — the root of Newroz."},
+ {cat:"history",d:1,ckb:"سوڵتان سەلاحەدینی ئەیووبی لە چ نەتەوەیەک بوو؟",en:"Sultan Saladin was of which origin?",o:[["عەرەب","Arab"],["تورک","Turkish"],["کورد","Kurdish"],["فارس","Persian"]],c:2,fckb:"لە ١١٨٧ لە شەڕی حەتین قودسی ئازادکرد.",fen:"In 1187 he retook Jerusalem after the Battle of Hattin."},
+ {cat:"history",d:2,ckb:"سەلاحەدین کام دەوڵەتی دامەزراند؟",en:"Saladin founded which dynasty?",o:[["عوسمانی","Ottoman"],["ئەیووبی","Ayyubid"],["سەفەوی","Safavid"],["عەباسی","Abbasid"]],c:1,fckb:"دەوڵەتی ئەیووبی لە سەدەی ١٢دا.",fen:"The Ayyubid dynasty, in the 12th century."},
+ {cat:"history",d:2,ckb:"کۆماری مەهاباد (١٩٤٦) سەرۆکایەتییەکەی کێ بوو؟",en:"Who led the Republic of Mahabad (1946)?",o:[["مستەفا بارزانی","Mustafa Barzani"],["قازی محەمەد","Qazi Muhammad"],["شێخ مەحموود","Sheikh Mahmud"],["سمکۆ","Simko"]],c:1,fckb:"کۆمارێکی کوردیی کورتەماوە لە ڕۆژهەڵاتی کوردستان.",fen:"A short-lived Kurdish republic in eastern Kurdistan."},
+ {cat:"history",d:2,ckb:"شاری سلێمانی لە ١٧٨٤ لەلایەن کام میرنشینەوە دامەزرا؟",en:"The city of Sulaymaniyah was founded in 1784 by which principality?",o:[["بابان","Baban"],["سۆران","Soran"],["بۆتان","Botan"],["ئەردەڵان","Ardalan"]],c:0,fckb:"بە دەستی ئیبراهیم پاشای بابان.",fen:"By Ibrahim Pasha of the Baban dynasty."},
+ {cat:"history",d:2,ckb:"بۆمبارانی کیمیاوی هەڵەبجە لە چ ساڵێکدا ڕوویدا؟",en:"In what year did the chemical attack on Halabja occur?",o:[["١٩٨٦","1986"],["١٩٨٨","1988"],["١٩٩١","1991"],["١٩٧٥","1975"]],c:1,fckb:"١٦ی ئازاری ١٩٨٨ — یەکێک لە دڵتەزێنترین ڕووداوەکان.",fen:"16 March 1988 — one of the gravest tragedies in Kurdish history."},
+ {cat:"history",d:3,ckb:"کام ڕێکەوتنی ١٩٢٠ بۆ ماوەیەکی کورت بەڵێنی دەوڵەتی کوردی دا؟",en:"Which 1920 treaty briefly promised a Kurdish state?",o:[["لۆزان","Lausanne"],["سێڤر","Sèvres"],["ڤێرسای","Versailles"],["سایکس-پیکۆ","Sykes-Picot"]],c:1,fckb:"بەڵام ڕێکەوتنی لۆزان (١٩٢٣) جێگەی گرتەوە و بەڵێنەکەی هەڵوەشاندەوە.",fen:"But the 1923 Treaty of Lausanne replaced it and dropped the promise."},
+ {cat:"history",d:3,ckb:"کۆنترین مێژووی گشتگیری کورد، «شەرەفنامە»، لەلایەن کێوە نووسرا؟",en:"The 'Sharafnama', the first comprehensive Kurdish history, was written by?",o:[["شەرەف خانی بدلیسی","Sharaf Khan Bidlisi"],["ئەحمەدی خانی","Ehmedê Xanî"],["ئدریسی بدلیسی","Idris Bidlisi"],["نالی","Nalî"]],c:0,fckb:"لە ١٥٩٧، بە زمانی فارسی نووسرا.",fen:"Written in 1597, in the Persian language."},
+ {cat:"history",d:3,ckb:"میدەکان (کە زۆرجار بە باپیرانی کورد دادەنرێن) پایتەختیان لە کوێ بوو؟",en:"The Medes, often seen as Kurdish ancestors, had their capital at?",o:[["ئەکباتانا (هەمەدان)","Ecbatana (Hamadan)"],["بابل","Babylon"],["نەینەوا","Nineveh"],["شووش","Susa"]],c:0,fckb:"لە ٦١٢ پ.ز لەگەڵ بابلییەکان ئاشوورییان ڕووخاند.",fen:"In 612 BCE, with the Babylonians, they toppled Assyria."},
+ {cat:"history",d:3,ckb:"کۆمەڵی «کاردووخی» کە زینۆفۆن لە «ئاناباسیس»دا باسیان دەکات، بە باپیرانی کێ دادەنرێن؟",en:"The 'Carduchi' Xenophon described in the Anabasis are seen as ancestors of the…",o:[["کورد","Kurds"],["ئەرمەن","Armenians"],["یۆنانی","Greeks"],["فارس","Persians"]],c:0,fckb:"لە ٤٠١ پ.ز لە چیاکاندا بەرگرییان دەکرد.",fen:"In 401 BCE they resisted invaders in the mountains."},
+
+ /* ---- GEOGRAPHY ---- */
+ {cat:"geo",d:1,ckb:"پایتەختی هەرێمی کوردستانی عێراق چییە؟",en:"What is the capital of the Kurdistan Region of Iraq?",o:[["سلێمانی","Sulaymaniyah"],["دهۆک","Duhok"],["هەولێر","Erbil"],["کەرکووک","Kirkuk"]],c:2,fckb:"بە کوردی «هەولێر».",fen:"Hewlêr in Kurdish."},
+ {cat:"geo",d:1,ckb:"کام دوو ڕووبارە مەزنە سەرچاوەیان لە کوردستانە؟",en:"Which two great rivers have their sources in Kurdistan?",o:[["نیل و کۆنگۆ","Nile & Congo"],["دیجلە و فورات","Tigris & Euphrates"],["دانووب و ڕاین","Danube & Rhine"],["ئەمازۆن و پارانا","Amazon & Paraná"]],c:1,fckb:"هەردووکیان لە چیاکانی کوردستانەوە سەرچاوە دەگرن.",fen:"Both rise in the mountains of Kurdistan."},
+ {cat:"geo",d:2,ckb:"زنجیرە چیای سەرەکیی کوردستان چ ناوێکی هەیە؟",en:"What is the main mountain range of Kurdistan?",o:[["ئاڵپ","Alps"],["زاگرۆس","Zagros"],["هیمالایا","Himalayas"],["قەفقاز","Caucasus"]],c:1,fckb:"زاگرۆس بەناو ئێران و عێراقدا درێژبووەتەوە.",fen:"The Zagros stretches across Iran and Iraq."},
+ {cat:"geo",d:2,ckb:"هەرێمی کوردستانی عێراق چەند پارێزگای هەیە؟",en:"How many governorates does the Kurdistan Region have?",o:[["٢","2"],["٣","3"],["٤","4"],["٦","6"]],c:2,fckb:"هەولێر، سلێمانی، دهۆک و هەڵەبجە.",fen:"Erbil, Sulaymaniyah, Duhok and Halabja."},
+ {cat:"geo",d:2,ckb:"چیای ئاگری (ئارارات)، بەرزترین لووتکەی تورکیا، نزیکەی چەند مەترە؟",en:"Mount Ararat (Agirî), Turkey's highest peak, is roughly how tall?",o:[["٣٠٠٠ م","3,000 m"],["٤٠٠٠ م","4,000 m"],["٥١٠٠ م","5,100 m"],["٧٠٠٠ م","7,000 m"]],c:2,fckb:"نزیکەی ٥,١٣٧ مەتر — هێمایەکی کوردانی باکوور.",fen:"About 5,137 m — a great symbol for northern Kurds."},
+ {cat:"geo",d:3,ckb:"گەورەترین دەریاچەی تورکیا، لە ناوچەیەکی کوردنشین، کامەیە؟",en:"Turkey's largest lake, located in a Kurdish region, is?",o:[["وان","Van"],["ورمێ","Urmia"],["سەوان","Sevan"],["تووز","Tuz"]],c:0,fckb:"دەریاچەی وان (Wan).",fen:"Lake Van (Wan)."},
+ {cat:"geo",d:3,ckb:"بەرزترین لووتکەی عێراق، چیخا دار، لەسەر سنووری کام دوو وڵاتە؟",en:"Iraq's highest peak, Cheekha Dar, sits on the border of which two countries?",o:[["عێراق و ئێران","Iraq & Iran"],["عێراق و تورکیا","Iraq & Turkey"],["عێراق و سووریا","Iraq & Syria"],["ئێران و تورکیا","Iran & Turkey"]],c:0,fckb:"نزیکەی ٣,٦١١ مەتر بەرزە.",fen:"It rises to about 3,611 metres."},
+ {cat:"geo",d:3,ckb:"دیمەنی کشتوکاڵی هەورامان لە ٢٠٢١ کرایە چی؟",en:"In 2021 the Hawraman cultural landscape was inscribed as a…",o:[["میراتی جیهانیی یونیسکۆ","UNESCO World Heritage Site"],["پارکی نیشتمانی","National park"],["پارێزگای نوێ","New province"],["کۆگای گەورە","Mega-mall"]],c:0,fckb:"بەهۆی ژیانی نەریتیی هەورامییەکانەوە.",fen:"For the traditional way of life of the Hawrami people."},
+ {cat:"geo",d:3,ckb:"کانیاوی گەلی عەلی بەگ لە کام ناوچەدایە؟",en:"The Gali Ali Beg waterfall is located in which area?",o:[["ڕەواندز","Rawanduz"],["زاخۆ","Zakho"],["هەڵەبجە","Halabja"],["کۆیە","Koya"]],c:0,fckb:"یەکێک لە جوانترین کانیاوەکانی کوردستان.",fen:"One of the most beautiful waterfalls in Kurdistan."},
+
+ /* ---- CULTURE & FOOD ---- */
+ {cat:"culture",d:1,ckb:"«دۆڵمە / یاپراخ» چ جۆرە خواردنێکە؟",en:"What kind of dish is 'dolma / yaprax'?",o:[["شیرینی","A dessert"],["سەوزە و گەڵای پڕکراو","Stuffed vegetables and leaves"],["شۆربا","A soup"],["نان","A bread"]],c:1,fckb:"بەرنج و گۆشت لەناو گەڵای مێو و سەوزەدا.",fen:"Rice and meat wrapped in vine leaves and vegetables."},
+ {cat:"culture",d:1,ckb:"«گۆڤەند / هەڵپەڕکێ» چییە؟",en:"What is 'govend / helperkê'?",o:[["ئامێری مۆسیقا","An instrument"],["سەمای کۆمەڵایەتیی بە دەستگرتن","A traditional group dance"],["خواردن","A food"],["جلوبەرگ","A costume"]],c:1,fckb:"بەتایبەتی لە نەورۆز و شادییەکاندا.",fen:"Especially at Newroz and weddings."},
+ {cat:"culture",d:2,ckb:"کام دوو ئامێر پێکەوە لە ئاهەنگەکاندا لێدەدرێن؟",en:"Which pair of instruments is played together at celebrations?",o:[["زوڕنا و دەهۆڵ","Zurna & dahol"],["پیانۆ و کیتار","Piano & guitar"],["کەمانچە و فلوت","Violin & flute"],["عوود و قانوون","Oud & qanun"]],c:0,fckb:"دەنگی زوڕنا و دەهۆڵ هاوەڵی هەموو شادییەکە.",fen:"The zurna and dahol are the heartbeat of every celebration."},
+ {cat:"culture",d:2,ckb:"«کلاش» چییە؟",en:"What is 'klash'?",o:[["پێڵاوی دەستکردی نەریتی","Handmade traditional shoes"],["جۆرە نان","A type of bread"],["سەما","A dance"],["ئامێری مۆسیقا","An instrument"]],c:0,fckb:"بەتایبەتی لە ناوچەی هەورامان دروستدەکرێن.",fen:"Especially made in the Hawraman region."},
+ {cat:"culture",d:2,ckb:"جلوبەرگی نەریتیی پیاوانی کورد بە چی ناسراوە؟",en:"Kurdish men's traditional outfit is known as?",o:[["ڕانک و چۆخە","Rank û choxa"],["کیراس و فستان","Kiras û fistan"],["عەبا","Abaya"],["شاڵ و قەباغ","Shawl & cloak"]],c:0,fckb:"پانتۆڵی فراوان لەگەڵ پشتێنێکی درێژ.",fen:"Baggy trousers with a long waist-sash (pishtwên)."},
+ {cat:"culture",d:3,ckb:"«تەمبوور» لە کام ئاینی ڕۆحیدا ئامێرێکی پیرۆزە؟",en:"In which spiritual tradition is the 'tanbur' a sacred instrument?",o:[["یارسان (ئەهلی حەق)","Yarsan (Ahl-e Haqq)"],["زەردەشتی","Zoroastrian"],["سۆفی","Sufi"],["مەسیحی","Christian"]],c:0,fckb:"لە مۆسیقای ئاینیی یارساندا.",fen:"In Yarsan religious music."},
+ {cat:"islam",d:1,ckb:"ئیسلام چەند ستوونی سەرەکیی هەیە؟",en:"How many pillars does Islam have?",o:[["٣","3"],["٥","5"],["٧","7"],["١٠","10"]],c:1,fckb:"شایەتی، نوێژ، زەکات، ڕۆژوو و حەج.",fen:"Shahada, prayer, zakat, fasting and Hajj."},
+ {cat:"islam",d:1,ckb:"موسوڵمانان لە کام مانگدا ڕۆژوو دەگرن؟",en:"In which month do Muslims fast?",o:[["ڕەمەزان","Ramadan"],["شەعبان","Sha'ban"],["موحەڕەم","Muharram"],["شەووال","Shawwal"]],c:0,fckb:"مانگی نۆیەمی ساڵی کۆچی.",fen:"The ninth month of the Islamic calendar."},
+ {cat:"islam",d:1,ckb:"موسوڵمانان ڕۆژانە چەند جار نوێژ دەکەن؟",en:"How many times a day do Muslims pray?",o:[["٣","3"],["٥","5"],["٧","7"],["٢","2"]],c:1,fckb:"بەیانی، نیوەڕۆ، عەسر، مەغریب و عیشا.",fen:"Fajr, Dhuhr, Asr, Maghrib and Isha."},
+ {cat:"islam",d:2,ckb:"قورئان چەند سووڕەتی تێدایە؟",en:"How many surahs are in the Qur'an?",o:[["٩٩","99"],["١٠٠","100"],["١١٤","114"],["١٢٠","120"]],c:2,fckb:"١١٤ سووڕەت، لە فاتیحەوە تا ناس.",fen:"114 chapters, from Al-Fatiha to An-Nas."},
+ {cat:"islam",d:2,ckb:"موسوڵمانان لە کاتی نوێژدا ڕووەو کوێ دەوەستن؟",en:"Which direction do Muslims face in prayer?",o:[["کەعبە لە مەککە","The Kaaba in Mecca"],["قودس","Jerusalem"],["مەدینە","Medina"],["ڕۆژهەڵات","The east"]],c:0,fckb:"ئاراستەی قیبلە بەرەو کەعبەیە.",fen:"The qibla points toward the Kaaba."},
+ {cat:"islam",d:2,ckb:"یەکەم وشەی کە بۆ پێغەمبەر محەمەد (د.خ) نازڵبوو چی بوو؟",en:"What was the first word revealed to Prophet Muhammad?",o:[["«بخوێنە» (ئیقرە)","'Read' (Iqra)"],["«بنووسە»","'Write'"],["«نوێژ بکە»","'Pray'"],["«بڕۆ»","'Go'"]],c:0,fckb:"سەرەتای سووڕەتی عەلەق.",fen:"The opening of Surah Al-'Alaq."},
+ {cat:"islam",d:3,ckb:"زۆربەی کوردانی سوننە شوێنکەوتەی کام مەزهەبن؟",en:"Most Sunni Kurds follow which school of jurisprudence (madhhab)?",o:[["شافیعی","Shafi'i"],["حەنەفی","Hanafi"],["مالیکی","Maliki"],["حەنبەلی","Hanbali"]],c:0,fckb:"مەزهەبی شافیعی لەناو کوردا باوترینە.",fen:"The Shafi'i madhhab is the most common among Kurds."},
+ {cat:"islam",d:3,ckb:"ساڵنامەی کۆچیی ئیسلامی بە کام ڕووداو دەستپێدەکات؟",en:"The Islamic (Hijri) calendar begins with which event?",o:[["کۆچی پێغەمبەر بۆ مەدینە","The Prophet's migration to Medina"],["لەدایکبوونی پێغەمبەر","The Prophet's birth"],["فەتحی مەککە","The conquest of Mecca"],["یەکەم نوێژ","The first prayer"]],c:0,fckb:"کۆچ (هیجرە) لە ٦٢٢ی زایینی ڕوویدا.",fen:"The Hijra took place in 622 CE."},
+ {cat:"islam",d:3,ckb:"سەعید نورسی، بیرمەند و زاناکەی ئیسلامی، خەڵکی کام نەتەوە بوو؟",en:"Said Nursi, the Islamic scholar and thinker, was of which origin?",o:[["کورد","Kurdish"],["تورک","Turkish"],["عەرەب","Arab"],["فارس","Persian"]],c:0,fckb:"بە «بەدیعوزەمان» ناسراوە و نووسەری «ڕەسائیلی نوور»ە.",fen:"Known as 'Bediüzzaman', author of the Risale-i Nur."},
+ {cat:"culture",d:3,ckb:"«دەنگبێژ» کێیە لە کلتووری کوردیدا؟",en:"Who is a 'dengbêj' in Kurdish culture?",o:[["گێڕەرەوەی ئەفسانە بە گۆرانی","An oral storyteller-singer"],["نەخشەکێش","A mapmaker"],["جوتیار","A farmer"],["وەرزشوان","An athlete"]],c:0,fckb:"بەبێ ئامێر چیرۆک و مێژوو دەگێڕنەوە.",fen:"They recite epics and history, often without instruments."},
+
+ /* ---- LANGUAGE & LITERATURE ---- */
+ {cat:"language",d:1,ckb:"دوو زاراوە سەرەکییەکەی کوردی کامانەن؟",en:"What are the two main dialects of Kurdish?",o:[["کرمانجی و سۆرانی","Kurmanji & Sorani"],["عەرەبی و فارسی","Arabic & Persian"],["زازا و تورکی","Zaza & Turkish"],["لاتین و عەرەبی","Latin & Arabic"]],c:0,fckb:"کرمانجی (باکوور) و سۆرانی (ناوەند).",fen:"Kurmanji (north) and Sorani (central)."},
+ {cat:"language",d:1,ckb:"«مەم و زین» نووسراوی کام شاعیرە؟",en:"Who wrote the epic 'Mem û Zîn'?",o:[["ئەحمەدی خانی","Ehmedê Xanî"],["نالی","Nalî"],["گۆران","Goran"],["جگەرخوین","Cigerxwîn"]],c:0,fckb:"ساڵی ١٦٩٢ — ئەپۆسی نەتەوەییی کورد.",fen:"In 1692 — the national epic of the Kurds."},
+ {cat:"language",d:1,ckb:"بە کوردی «ڕۆژ» واتای چییە؟",en:"In Kurdish, what does 'roj' mean?",o:[["ئاو","Water"],["خۆر / ڕۆژ","Sun / day"],["چیا","Mountain"],["ئاگر","Fire"]],c:1,fckb:"هەردوو واتای خۆر و ڕۆژی دەدات.",fen:"It means both 'sun' and 'day'."},
+ {cat:"language",d:2,ckb:"زمانی کوردی سەر بە کام لقی زمانەکانە؟",en:"Kurdish belongs to which language family branch?",o:[["سامی","Semitic"],["ئێرانی (هیندو-ئەورووپی)","Iranian (Indo-European)"],["تورکی","Turkic"],["قەفقازی","Caucasian"]],c:1,fckb:"خزمی نزیکی فارسی و بەلووچییە.",fen:"Closely related to Persian and Balochi."},
+ {cat:"language",d:2,ckb:"ئەلفوبێی لاتینیی کوردی (هاوار) لەلایەن کێوە دانرا؟",en:"Who created the Kurdish Latin (Hawar) alphabet?",o:[["جەلادەت بەدرخان","Celadet Bedirxan"],["ئەحمەدی خانی","Ehmedê Xanî"],["نالی","Nalî"],["گۆران","Goran"]],c:0,fckb:"لە ١٩٣٢ لەگەڵ گۆڤاری «هاوار».",fen:"In 1932, alongside the journal 'Hawar'."},
+ {cat:"language",d:3,ckb:"کام شاعیر بە دامەزرێنەری ئەدەبی کلاسیکی سۆرانی دادەنرێت؟",en:"Who is regarded as the founder of classical Sorani literature?",o:[["نالی","Nalî"],["گۆران","Goran"],["پیرەمێرد","Pîremêrd"],["شێرکۆ بێکەس","Sherko Bekas"]],c:0,fckb:"لە سەدەی ١٩، لەگەڵ سالم و کوردی.",fen:"In the 19th century, alongside Salim and Kurdî."},
+ {cat:"language",d:3,ckb:"کام شاعیر بە «باوکی شیعری نوێی کوردی» ناسراوە؟",en:"Which poet is known as the father of modern Kurdish poetry?",o:[["عەبدوڵڵا گۆران","Abdulla Goran"],["نالی","Nalî"],["هەژار","Hejar"],["مەلای جزیری","Melayê Cizîrî"]],c:0,fckb:"شێوازی نوێی هێنایە ناو شیعری سۆرانییەوە.",fen:"He brought modern forms into Sorani verse."},
+ {cat:"language",d:3,ckb:"مەلای جزیری کام شاعیری گەورەی کلاسیکی کرمانجییە؟",en:"Melayê Cizîrî was a great classical poet of which dialect?",o:[["کرمانجی","Kurmanji"],["سۆرانی","Sorani"],["هەورامی","Hawrami"],["زازاکی","Zazaki"]],c:0,fckb:"دیوانەکەی لە گەورەترین بەرهەمەکانی ئەدەبی کرمانجییە.",fen:"His Diwan is a cornerstone of Kurmanji literature."},
+ {cat:"language",d:3,ckb:"بەختیار عەلی بە چی ناسراوە؟",en:"Bachtyar Ali is best known as a…",o:[["ڕۆماننووسی هاوچەرخ","A contemporary novelist"],["گۆرانیبێژ","A singer"],["وەرزشوان","An athlete"],["وێنەکێش","A painter"]],c:0,fckb:"یەکێک لە دیارترین ڕۆماننووسانی کورد.",fen:"One of the most prominent Kurdish novelists."},
+
+ /* ---- FAMOUS PEOPLE ---- */
+ {cat:"people",d:1,ckb:"شیوان پەروەر بە چی ناسراوە؟",en:"What is Şivan Perwer famous for?",o:[["گۆرانیبێژی ئەفسانەیی","A legendary singer"],["یاریزانی تۆپ","A footballer"],["سەرۆک","A president"],["وێنەکێش","A painter"]],c:0,fckb:"دەنگێکی هێمایی بۆ کلتووری کوردی.",fen:"An iconic voice of Kurdish culture."},
+ {cat:"people",d:1,ckb:"ئەحمەدی خانی پێش هەموو شت بە چی دەناسرێت؟",en:"Ehmedê Xanî is best remembered as a…",o:[["شاعیر و بیرمەند","Poet and thinker"],["پاشا","A king"],["گۆرانیبێژ","A singer"],["بازرگان","A merchant"]],c:0,fckb:"نووسەری «مەم و زین».",fen:"Author of 'Mem û Zîn'."},
+ {cat:"people",d:2,ckb:"کام دەرهێنەری کورد خەڵاتی «پاڵمی زێڕین»ی کانی بەدەستهێنا؟",en:"Which Kurdish director won the Palme d'Or at Cannes?",o:[["یلماز گونەی","Yılmaz Güney"],["بەهمەن قوبادی","Bahman Ghobadi"],["هاینێر سالیم","Hiner Saleem"],["هیچکام","None"]],c:0,fckb:"بۆ فیلمی «ڕێگا (Yol)» لە ١٩٨٢.",fen:"For the film 'Yol' in 1982."},
+ {cat:"people",d:2,ckb:"دەرهێنەری فیلمی «کاتی ئەسپە سەرخۆشەکان» کێیە؟",en:"Who directed 'A Time for Drunken Horses'?",o:[["بەهمەن قوبادی","Bahman Ghobadi"],["یلماز گونەی","Yılmaz Güney"],["عەباس کیارۆستەمی","Kiarostami"],["هاینێر سالیم","Hiner Saleem"]],c:0,fckb:"خەڵاتی «کامێرای زێڕین»ی کانی بەدەستهێنا (٢٠٠٠).",fen:"It won the Caméra d'Or at Cannes (2000)."},
+ {cat:"people",d:2,ckb:"کێ دامەزرێنەری پارتی دیموکراتی کوردستانە (پدک)؟",en:"Who founded the Kurdistan Democratic Party (KDP)?",o:[["مستەفا بارزانی","Mustafa Barzani"],["قازی محەمەد","Qazi Muhammad"],["جەلال تاڵەبانی","Jalal Talabani"],["شێخ مەحموود","Sheikh Mahmud"]],c:0,fckb:"ناسراو بە «کاک مستەفا».",fen:"Known as 'Kak Mistefa'."},
+ {cat:"people",d:3,ckb:"یەکەم سەرۆک کۆماری کورد بۆ عێراق کێ بوو؟",en:"Who became the first Kurdish President of Iraq?",o:[["جەلال تاڵەبانی","Jalal Talabani"],["مەسعود بارزانی","Masoud Barzani"],["مستەفا بارزانی","Mustafa Barzani"],["فوئاد مەعسووم","Fuad Masum"]],c:0,fckb:"لە ٢٠٠٥ بووە سەرۆک کۆماری عێراق.",fen:"He became President of Iraq in 2005."},
+ {cat:"people",d:3,ckb:"مەستوورەی ئەردەڵان بە چی ناسراوە؟",en:"Mastura Ardalan is remembered as a…",o:[["شاعیر و مێژوونووسی ژن","Woman poet & historian"],["شاژن","A queen"],["گۆرانیبێژ","A singer"],["پزیشک","A physician"]],c:0,fckb:"دیارترین ئافرەتی ئەدیب و مێژوونووس لە مێژووی کوردیدا.",fen:"A leading woman poet and historian in Kurdish history."},
+ {cat:"people",d:3,ckb:"یاشار کەمال، نووسەری «مەمەدی باریک»، خەڵکی کام نەتەوە بوو؟",en:"Yaşar Kemal, author of 'Memed, My Hawk', was of which origin?",o:[["کورد","Kurdish"],["تورک","Turkish"],["عەرەب","Arab"],["ئەرمەن","Armenian"]],c:0,fckb:"نووسەرێکی گەورەی بەناوبانگی کورد بوو کە بە تورکی دەینووسی.",fen:"A celebrated novelist of Kurdish origin who wrote in Turkish."},
+ {cat:"people",d:3,ckb:"عەدیلە خانم، «شاژنی ئازایان»، سەرۆکی کام عەشیرەت بوو لە هەڵەبجە؟",en:"Adila Khanum, the 'Princess of the Brave', led which tribe near Halabja?",o:[["جاف","Jaff"],["بارزان","Barzan"],["هەرکی","Herki"],["زێباری","Zebari"]],c:0,fckb:"ئافرەتێکی بەهێزی سیاسی لە سەرەتای سەدەی ٢٠.",fen:"A powerful political woman leader in the early 20th century."}
+];
+
+/* ========== state ========== */
+let lang=store.get("lang")||"ckb";
+let soundOn=store.get("sound")!=="0";
+let state=null, toastQueue=[], toastBusy=false;
+const $=id=>document.getElementById(id);
+
+/* ========== audio ========== */
 let actx=null;
-function beep(freq,dur=.09,type="sine",vol=.18){
-  if(!soundOn) return;
-  try{
-    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
-    const o=actx.createOscillator(),g=actx.createGain();
-    o.type=type;o.frequency.value=freq;o.connect(g);g.connect(actx.destination);
-    g.gain.setValueAtTime(vol,actx.currentTime);
-    g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+dur);
-    o.start();o.stop(actx.currentTime+dur);
-  }catch(e){}
-}
-const sClick=()=>beep(520,.05,"triangle",.12);
-const sRight=()=>{beep(660,.08);setTimeout(()=>beep(880,.1),80);};
-const sWrong=()=>beep(160,.18,"sawtooth",.16);
-const sWin=()=>{[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.14),i*110));};
+function beep(f,dur=.09,type="sine",vol=.16){if(!soundOn)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();
+  const o=actx.createOscillator(),g=actx.createGain();o.type=type;o.frequency.value=f;o.connect(g);g.connect(actx.destination);
+  g.gain.setValueAtTime(vol,actx.currentTime);g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+dur);
+  o.start();o.stop(actx.currentTime+dur);}catch(e){}}
+const sClick=()=>beep(520,.05,"triangle",.1);
+const sRight=()=>{beep(660,.08);setTimeout(()=>beep(990,.1),75);};
+const sWrong=()=>beep(150,.2,"sawtooth",.14);
+const sWin=()=>[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.14),i*110));
+const sUp=()=>[392,523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.16),i*85));
+const vibe=ms=>{if(navigator.vibrate)try{navigator.vibrate(ms);}catch(e){}};
 
-/* ---------- i18n render ---------- */
+/* ========== static icons ========== */
+function paintStaticIcons(){
+  setIcon("openSettings","gear");
+  setIcon("icStreak","flame");setIcon("icBest","trophy");setIcon("icPlayed","check");setIcon("icAch","medal");
+  setIcon("icPlayBtn","play");setIcon("icDaily","calendar");setIcon("icAchBtn","medal");setIcon("icLbBtn","chart");
+  setIcon("icBack1","arrowR");setIcon("icNext","arrowL");setIcon("icQuit","x");
+  setIcon("icXp","star");setIcon("icAgain","refresh");setIcon("icShare","share");setIcon("icHome","home");
+  setIcon("icLang","globe");setIcon("icSound","music");setIcon("icInstall","home");setIcon("icReset","x");
+  setIcon("icStudentHome","brain");setIcon("icBack2",lang==="ckb"?"arrowR":"arrowL");
+  setIcon("icScan","camera");setIcon("icType","edit");setIcon("icHowMany","book");
+  setIcon("icGenT","sparkles");setIcon("icSaveKey","check");setIcon("icGetKey","key");setIcon("icKeySet","key");
+  buildSun($("logoSun"));buildSun($("heroSun"));buildSun($("luIcon"));buildSun($("genSun"));
+}
+
+/* ========== i18n render ========== */
 function applyLang(){
-  document.documentElement.lang = lang==="ckb"?"ckb":"en";
-  document.documentElement.dir = lang==="ckb"?"rtl":"ltr";
-  document.querySelectorAll("[data-t]").forEach(el=>{
-    const k=el.getAttribute("data-t"); if(T()[k]!==undefined) el.textContent=T()[k];
-  });
-  $("dailyTag").textContent = isDailyDone()? T().done : T().new;
-  $("dailyBtn").classList.toggle("done", isDailyDone());
+  document.documentElement.lang=lang==="ckb"?"ckb":"en";
+  document.documentElement.dir=lang==="ckb"?"rtl":"ltr";
+  document.querySelectorAll("[data-t]").forEach(el=>{const k=el.getAttribute("data-t");if(T()[k]!==undefined)el.textContent=T()[k];});
+  setIcon("icBack1",lang==="ckb"?"arrowR":"arrowL");
+  setIcon("icNext",lang==="ckb"?"arrowL":"arrowR");
+  $("dailyTag").textContent=isDailyDone()?T().done:T().new;
+  $("dailyBtn").classList.toggle("done",isDailyDone());
   document.querySelectorAll("#langSeg button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
-  renderCats();
-  updateHomeStats();
-  updateNet();
+  document.querySelectorAll("[data-tph]").forEach(el=>{const k=el.getAttribute("data-tph");if(T()[k])el.placeholder=T()[k];});
+  setIcon("icBack2",lang==="ckb"?"arrowR":"arrowL");
+  renderHome();updateNet();renderModeList();renderSubjects();renderDecks();
 }
 
-/* ---------- home ---------- */
-function renderCats(){
-  $("catGrid").innerHTML = CATS.map(c=>{
-    const count=Q.filter(q=>q.cat===c.id).length;
+/* ========== home ========== */
+function renderHome(){
+  const xp=+store.get("xp")||0,ri=rankIndex(xp),r=RANKS[ri];
+  $("rankIco").innerHTML=icon(r.icon);$("rankName").textContent=r[lang];
+  $("rankLvl").textContent=ri+1;$("rankXp").textContent=xp;
+  const nxt=RANKS[ri+1];
+  $("rankNext").textContent=nxt?`· ${nxt.min-xp} → ${nxt[lang]}`:"";
+  const cur=r.min,top=nxt?nxt.min:cur+1;
+  $("xpFill").style.width=(nxt?Math.min(100,(xp-cur)/(top-cur)*100):100)+"%";
+  $("stStreak").textContent=store.get("streak")||0;
+  $("stBest").textContent=store.get("best")||0;
+  $("stPlayed").textContent=store.get("played")||0;
+  $("stAch").textContent=getUnlocked().length;
+  const mast=store.getJSON("mastery",{});
+  $("catGrid").innerHTML=CATS.map(c=>{
+    const cnt=Q.filter(q=>q.cat===c.id).length;
+    const m=mast[c.id]||0,pct=Math.min(100,Math.round(m/Math.max(cnt,1)*100));
     return `<div class="cat" data-cat="${c.id}" style="--accent:${c.accent}">
-      <div class="emoji">${c.emoji}</div>
+      <div class="citile">${icon(c.icon)}</div>
       <div class="t">${c[lang]}</div>
-      <div class="c">${count} ${lang==="ckb"?"پرسیار":"questions"}</div></div>`;
+      <div class="c">${pct>=100?icon("trophy")+T().mastered:T().cQ(cnt)}</div>
+      <div class="mini"><i style="width:${pct}%"></i></div></div>`;
   }).join("");
-  $("catGrid").querySelectorAll(".cat").forEach(el=>{
-    el.onclick=()=>{sClick();startRound(el.dataset.cat);};
-  });
-}
-function updateHomeStats(){
-  $("stStreak").textContent = store.get("streak")||0;
-  $("stBest").textContent   = store.get("best")||0;
-  $("stPlayed").textContent = store.get("played")||0;
+  $("catGrid").querySelectorAll(".cat").forEach(el=>el.onclick=()=>{sClick();startRound("category",el.dataset.cat);});
 }
 function todayKey(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
 function isDailyDone(){return store.get("dailyDone")===todayKey();}
 
-/* ---------- screens ---------- */
-function show(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  $(id).classList.add("active");
-  $("home").parentElement.scrollTop=0;
+/* ========== nav ========== */
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active");$("scrollArea").scrollTop=0;}
+
+/* ========== modes ========== */
+const MODES={
+  quick:   {icon:"play",  mc:"#f5c518",k:"mQuick", count:10,hearts:3,time:20,ll:{fifty:1,skip:1,freeze:1}},
+  survival:{icon:"shield",mc:"#27a35a",k:"mSurv",  endless:true,hearts:3,time:18,ll:{fifty:1,skip:1,freeze:1},ramp:true},
+  blitz:   {icon:"bolt",  mc:"#3f9fd4",k:"mBlitz", blitz:60,hearts:0,time:0,ll:{skip:2}},
+  ladder:  {icon:"stairs",mc:"#e23b34",k:"mLadder",ladder:true,count:12,hearts:1,time:25,ll:{fifty:1,skip:1,freeze:1},checkpoints:[3,7]}
+};
+const LADDER_PRIZES=[100,200,350,550,800,1100,1500,2000,2800,3800,5200,7000];
+function modeChips(id){const m=MODES[id];const cs=[];
+  if(m.endless)cs.push([T().cEndless,"refresh"]);else if(m.blitz)cs.push([T().cTime(60),"clock"]);else cs.push([T().cQ(m.count),"book"]);
+  if(m.hearts)cs.push([T().cHearts(m.hearts),"heart"]);
+  if(m.time&&!m.blitz)cs.push([T().cTime(m.time),"clock"]);
+  if(m.ladder)cs.push([T().cSafe,"lock"]);
+  return cs.map(([t,ic])=>`<span class="chip">${icon(ic)}${t}</span>`).join("");
+}
+function renderModeList(){
+  $("modeList").innerHTML=Object.keys(MODES).map(id=>{const m=MODES[id];
+    return `<div class="modecard" data-m="${id}" style="--mc:${m.mc}">
+      <div class="mc-top">
+        <div class="mc-tile">${icon(m.icon)}</div>
+        <div><div class="mc-name">${T()[m.k]}</div><div class="mc-desc">${T()[m.k+"D"]}</div></div>
+        <div class="mc-go">${icon(lang==="ckb"?"chevR":"chevR")}</div>
+      </div>
+      <div class="chips">${modeChips(id)}</div>
+    </div>`;}).join("");
+  $("modeList").querySelectorAll(".modecard").forEach(el=>el.onclick=()=>{sClick();startRound(el.dataset.m);});
+  // flip chevron for rtl
+  $("modeList").querySelectorAll(".mc-go svg").forEach(s=>{if(lang==="ckb")s.style.transform="scaleX(-1)";});
 }
 
-/* ---------- round logic ---------- */
-function pick(arr,n){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a.slice(0,n);}
-function seededShuffle(arr,seed){const a=[...arr];let s=seed;const rnd=()=>{s=(s*9301+49297)%233280;return s/233280;};
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+/* ========== selection ========== */
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function seeded(a,seed){a=[...a];let s=seed||1;const r=()=>{s=(s*9301+49297)%233280;return s/233280;};
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function prep(q){const order=shuffle([0,1,2,3]);return{...q,order,newC:order.indexOf(q.c)};}
 
-function startRound(catId){
-  let qs;
-  if(catId==="daily"){
-    const seed=todayKey().split("-").reduce((a,b)=>a+ +b,0);
-    qs=seededShuffle(Q,seed).slice(0,8);
-    state={mode:"daily"};
-  }else if(catId==="all"){
-    qs=pick(Q,10); state={mode:"all"};
-  }else{
-    const pool=Q.filter(q=>q.cat===catId);
-    qs=pick(pool,Math.min(pool.length,8)); state={mode:catId};
-  }
-  state.qs=qs.map(q=>{
-    const order=pick([0,1,2,3],4);
-    return {...q, order, newC:order.indexOf(q.c)};
-  });
-  Object.assign(state,{i:0,score:0,hearts:3,combo:0,bestCombo:0,correct:0,answered:false});
+/* ========== round engine ========== */
+let timer=null,blitzTimer=null;
+function startRound(mode,cat,deck){
+  clearInterval(timer);clearInterval(blitzTimer);
+  const isDeck=mode==="deck";
+  const cfg=isDeck?{count:Math.min(deck.length,20),hearts:3,time:25,ll:{fifty:1,skip:1,freeze:1}}
+           :mode==="category"?{count:8,hearts:3,time:20,ll:{fifty:1,skip:1,freeze:1}}
+           :mode==="daily"?{count:8,hearts:3,time:20,ll:{fifty:1,skip:1,freeze:1}}
+           :MODES[mode];
+  let pool;
+  if(isDeck)pool=shuffle(deck);
+  else if(mode==="daily")pool=seeded(Q,todayKey().split("-").reduce((a,b)=>a+ +b,0));
+  else if(mode==="category")pool=shuffle(Q.filter(q=>q.cat===cat));
+  else if(mode==="ladder"){
+    const e=shuffle(Q.filter(q=>q.d===1)),m=shuffle(Q.filter(q=>q.d===2)),h=shuffle(Q.filter(q=>q.d===3));
+    pool=[...e.slice(0,4),...m.slice(0,4),...h.slice(0,4)];
+  } else pool=shuffle(Q);
+
+  state={mode,cat,cfg,deck,hearts:cfg.hearts||0,score:0,combo:0,bestCombo:0,correct:0,answered:0,
+    ll:Object.assign({},cfg.ll),curTime:cfg.time,timeLeft:cfg.time,timeMax:cfg.time,
+    ladderRung:-1,ladderSafe:0,blitzLeft:cfg.blitz||0,ended:false,answered_q:false};
+
+  if(cfg.endless||cfg.blitz){state.queue=pool;state.qpos=0;state.reserve=[];}
+  else{state.set=pool.slice(0,cfg.count);state.reserve=pool.slice(cfg.count);state.idx=0;}
+
   show("quiz");
-  renderQ();
+  if(cfg.blitz)startBlitzClock();
+  nextQuestion();
 }
-function startDaily(){ if(isDailyDone()){/*allow replay*/} startRound("daily"); }
-
-function renderHearts(){
-  $("hearts").innerHTML = [0,1,2].map(i=>`<span class="heart${i>=state.hearts?' lost':''}">❤</span>`).join("");
+function getRaw(){const c=state.cfg;
+  if(c.endless||c.blitz){if(state.qpos>=state.queue.length){state.queue=shuffle(state.queue);state.qpos=0;}return state.queue[state.qpos++];}
+  if(state.idx>=state.set.length)return null;return state.set[state.idx];}
+function nextQuestion(){const c=state.cfg;
+  if(c.hearts&&state.hearts<=0)return endRound();
+  if(c.blitz&&state.blitzLeft<=0)return endRound();
+  const raw=getRaw();if(!raw)return endRound();
+  state.cur=prep(raw);state.answered_q=false;
+  if(c.ramp)state.curTime=Math.max(7,c.time-Math.floor(state.answered/3));
+  else if(!c.blitz)state.curTime=c.time;
+  renderQuestion();
 }
-function renderQ(){
-  state.answered=false;
-  $("nextBtn").style.display="none";
-  $("factSlot").innerHTML="";
-  const q=state.qs[state.i];
-  const cat=CATS.find(c=>c.id===q.cat);
-  $("qCat").textContent = (cat?cat[lang]:"") ;
-  $("qText").textContent = lang==="ckb"?q.ckb:q.en;
-  $("qScore").textContent = state.score;
-  $("progFill").style.width = (state.i/state.qs.length*100)+"%";
-  $("comboTxt").textContent = state.combo>=2 ? (lang==="ckb"?`🔥 زنجیرەی ${state.combo}!`:`🔥 ${state.combo} combo!`) : "";
-  renderHearts();
-  $("opts").innerHTML = q.order.map((origIdx,pos)=>{
-    const opt=q.o[origIdx];
-    const key=["A","B","C","D"][pos];
-    return `<button class="opt" data-pos="${pos}"><span class="k">${key}</span><span>${lang==="ckb"?opt[0]:opt[1]}</span></button>`;
-  }).join("");
-  $("opts").querySelectorAll(".opt").forEach(b=>b.onclick=()=>answer(+b.dataset.pos,b));
-  startTimer();
+function heartsHTML(){const c=state.cfg;return `<div class="hearts">${[...Array(c.hearts)].map((_,i)=>`<span class="heart${i>=state.hearts?' lost':''}">${icon("heart")}</span>`).join("")}</div>`;}
+function scoreHTML(){const c=state.cfg;
+  if(c.blitz)return `<div class="qscore">${icon("check")}${state.correct}</div>`;
+  const v=c.ladder?(state.ladderRung>=0?LADDER_PRIZES[state.ladderRung]:0):state.score;
+  return `<div class="qscore">${icon("star")}${v}</div>`;}
+function renderQuestion(){
+  const q=state.cur,c=state.cfg;
+  $("nextBtn").style.display="none";$("factSlot").innerHTML="";
+  $("qLeft").innerHTML=c.blitz?`<div class="blitzclock${state.blitzLeft<=10?' low':''}" id="blitzClock">${icon("clock")}${Math.ceil(state.blitzLeft)}s</div>`:(c.hearts?heartsHTML():"");
+  $("qRight").innerHTML=scoreHTML();
+  $("comboTxt").innerHTML=state.combo>=2?`${icon("flame")}<span>${lang==="ckb"?`زنجیرەی ${state.combo}`:`${state.combo} combo`}</span>`:"";
+  if(c.ladder){
+    const rows=LADDER_PRIZES.map((p,i)=>{const safe=c.checkpoints.includes(i);
+      const cls=i===state.idx?"cur":(i<state.idx?"passed":(safe?"safe":""));
+      return `<div class="rung ${cls}"><span class="lr">${safe?icon("lock"):""}${i+1}</span><span>${p}</span></div>`;}).join("");
+    $("railSlot").innerHTML=`<div class="rail">${rows}</div>`;$("progWrap").style.display="none";
+  }else{$("railSlot").innerHTML="";$("progWrap").style.display=c.blitz?"none":"block";
+    if(!c.blitz&&!c.endless)$("progFill").style.width=(state.idx/state.set.length*100)+"%";
+    else if(c.endless)$("progFill").style.width=Math.min(100,state.answered*4)+"%";}
+  if(c.blitz)$("timeWrap").style.display="none";else{$("timeWrap").style.display="block";startTimer();}
+  const cat=catOf(q.cat);
+  $("qCat").innerHTML=cat?icon(cat.icon)+cat[lang]:"";
+  $("qDiff").innerHTML=[1,2,3].map(n=>`<i class="${n<=q.d?'on':''}"></i>`).join("");
+  $("qText").textContent=lang==="ckb"?q.ckb:q.en;
+  $("opts").innerHTML=q.order.map((orig,pos)=>{const key=["A","B","C","D"][pos];
+    return `<button class="opt" data-pos="${pos}"><span class="k">${key}</span><span class="ot">${QT(q.o[orig])}</span><span class="kx"></span></button>`;}).join("");
+  $("opts").querySelectorAll(".opt").forEach(b=>b.onclick=()=>answer(+b.dataset.pos));
+  renderLifelines();
 }
-
-let timer=null,timeLeft=0;
+function renderLifelines(){
+  const defs=[["fifty","scissors"],["skip","skip"],["freeze","timeplus"]];
+  $("lifeBar").innerHTML=defs.filter(([k])=>state.cfg.ll[k]!==undefined).map(([k,ic])=>
+    `<button class="life" data-ll="${k}" ${state.ll[k]<=0?'disabled':''}>${icon(ic)}<span>${T()[k]}</span><span class="lc">×${state.ll[k]}</span></button>`).join("");
+  $("lifeBar").querySelectorAll(".life").forEach(b=>b.onclick=()=>useLifeline(b.dataset.ll));
+}
+function useLifeline(k){
+  if(state.answered_q||state.ll[k]<=0)return;sClick();state.ll[k]--;
+  if(k==="fifty"){const q=state.cur,wrong=q.order.map((o,p)=>p).filter(p=>p!==q.newC);
+    shuffle(wrong).slice(0,2).forEach(p=>$("opts").children[p].classList.add("gone"));}
+  else if(k==="skip"){if(state.reserve.length)state.cur=prep(state.reserve.shift());
+    else if(state.cfg.endless||state.cfg.blitz)state.cur=prep(getRaw());renderQuestion();return;}
+  else if(k==="freeze"){if(!state.cfg.blitz){state.timeLeft+=8;state.timeMax=Math.max(state.timeMax,state.timeLeft);}else state.blitzLeft+=8;}
+  renderLifelines();
+}
 function startTimer(){
-  clearInterval(timer);
-  timeLeft=20; const fill=$("timeFill");
-  fill.style.transition="none";fill.style.width="100%";fill.style.background="var(--green)";
-  void fill.offsetWidth;
-  fill.style.transition="width .25s linear, background .3s";
-  timer=setInterval(()=>{
-    timeLeft-=.25;
-    const pct=Math.max(0,timeLeft/20*100);
-    fill.style.width=pct+"%";
-    if(pct<35) fill.style.background="var(--red)";
-    else if(pct<60) fill.style.background="var(--gold)";
-    if(timeLeft<=0){clearInterval(timer);answer(-1,null);}
-  },250);
+  clearInterval(timer);const fill=$("timeFill");state.timeMax=state.curTime;state.timeLeft=state.curTime;
+  fill.style.transition="none";fill.style.width="100%";fill.style.background="var(--green)";void fill.offsetWidth;
+  timer=setInterval(()=>{state.timeLeft-=.1;
+    const pct=Math.max(0,Math.min(100,state.timeLeft/state.timeMax*100));
+    fill.style.transition="width .1s linear";fill.style.width=pct+"%";
+    fill.style.background=pct<35?"var(--red)":pct<60?"var(--gold)":"var(--green)";
+    if(state.timeLeft<=0){clearInterval(timer);answer(-1);}},100);
 }
+function startBlitzClock(){clearInterval(blitzTimer);
+  blitzTimer=setInterval(()=>{state.blitzLeft-=.1;const el=$("blitzClock");
+    if(el)el.innerHTML=icon("clock")+Math.ceil(state.blitzLeft)+"s",el.classList.toggle("low",state.blitzLeft<=10);
+    if(state.blitzLeft<=0){clearInterval(blitzTimer);endRound();}},100);}
 
-function answer(pos,btn){
-  if(state.answered) return;
-  state.answered=true; clearInterval(timer);
-  const q=state.qs[state.i];
-  const opts=$("opts").querySelectorAll(".opt");
-  const right = pos===q.newC;
-  opts.forEach((b,i)=>{
-    if(i===q.newC) b.classList.add("correct");
-    else if(i===pos) b.classList.add("wrong");
-    else b.classList.add("dim");
-    b.onclick=null;
-  });
-  if(right){
-    state.correct++; state.combo++; state.bestCombo=Math.max(state.bestCombo,state.combo);
-    const timeBonus=Math.round(timeLeft*4);
-    const comboBonus=(state.combo-1)*20;
-    const gained=100+timeBonus+comboBonus;
-    state.score+=gained;
-    sRight();
-    $("qScore").textContent=state.score;
-  }else{
-    state.combo=0; state.hearts--; sWrong(); renderHearts();
-    if(navigator.vibrate) try{navigator.vibrate(40);}catch(e){}
-  }
-  // fact
-  const fact = lang==="ckb"?q.fckb:q.fen;
-  $("factSlot").innerHTML=`<div class="factcard"><div class="lab">💡 ${T().didyou}</div>${fact}</div>`;
-  // next or end
-  if(state.hearts<=0){
-    setTimeout(endRound,1100);
-  }else if(state.i>=state.qs.length-1){
-    $("nextBtn").querySelector("span").textContent = lang==="ckb"?"بینینی ئەنجام":"See result";
-    $("nextBtn").style.display="flex";
-  }else{
-    $("nextBtn").querySelector("span").textContent=T().next;
-    $("nextBtn").style.display="flex";
-  }
+function answer(pos){
+  if(state.answered_q)return;state.answered_q=true;clearInterval(timer);
+  const q=state.cur,c=state.cfg,opts=$("opts").querySelectorAll(".opt");
+  const right=pos===q.newC;
+  opts.forEach((b,i)=>{const kx=b.querySelector(".kx");
+    if(i===q.newC){b.classList.add("correct");kx.innerHTML=icon("check");}
+    else if(i===pos){b.classList.add("wrong");kx.innerHTML=icon("x");}
+    else b.classList.add("dim");b.onclick=null;});
+  if(right){state.correct++;state.combo++;state.bestCombo=Math.max(state.bestCombo,state.combo);sRight();vibe(20);
+    if(c.blitz){state.score+=60*q.d+(state.combo-1)*10;state.blitzLeft+=2;}
+    else if(c.ladder){state.ladderRung=state.idx;state.score=LADDER_PRIZES[state.idx];
+      if(c.checkpoints.includes(state.idx))state.ladderSafe=LADDER_PRIZES[state.idx];}
+    else{const tb=Math.round(Math.max(0,state.timeLeft)*3),cb=(state.combo-1)*25;state.score+=100*q.d+tb+cb;}
+    if(c.hearts&&!c.ladder){const m=store.getJSON("mastery",{});m[q.cat]=(m[q.cat]||0)+1;store.setJSON("mastery",m);}
+  }else{state.combo=0;sWrong();vibe(60);if(c.hearts)state.hearts--;if(c.blitz)state.blitzLeft=Math.max(0,state.blitzLeft-2);}
+  state.answered++;
+  $("qRight").innerHTML=scoreHTML();
+  if(c.hearts)$("qLeft").innerHTML=heartsHTML();
+  if(c.ladder&&!right){showFact(q);setTimeout(endRound,1200);return;}
+  showFact(q);
+  if(c.hearts&&state.hearts<=0){setTimeout(endRound,1200);return;}
+  if(c.blitz){setTimeout(()=>{state.answered_q=false;nextQuestion();},620);return;}
+  const last=(!c.endless&&state.idx>=state.set.length-1);
+  $("nextLabel").textContent=last?T().toResult:T().next;
+  $("nextBtn").style.display="flex";
 }
-$("nextBtn").onclick=()=>{
-  sClick();
-  if(state.i>=state.qs.length-1){endRound();return;}
-  state.i++; $("progFill").style.width=(state.i/state.qs.length*100)+"%"; renderQ();
-};
+function showFact(q){if(state.cfg.blitz)return;
+  $("factSlot").innerHTML=`<div class="factcard"><div class="lab">${icon("star")}${T().didyou}</div>${lang==="ckb"?q.fckb:q.fen}</div>`;}
+$("nextBtn").onclick=()=>{sClick();state.answered_q=false;if(!state.cfg.endless&&!state.cfg.blitz)state.idx++;nextQuestion();};
+$("quitBtn").onclick=()=>{sClick();clearInterval(timer);clearInterval(blitzTimer);show("home");renderHome();};
 
-/* ---------- result ---------- */
+/* ========== result ========== */
 function endRound(){
-  clearInterval(timer);
-  const total=state.qs.length;
-  const acc=Math.round(state.correct/total*100);
-  // persist
-  const played=(+ (store.get("played")||0))+state.correct;
-  store.set("played",played);
-  let best=+(store.get("best")||0);
-  let isBest=false;
-  if(state.score>best){best=state.score;store.set("best",best);isBest=true;}
-  // streak (daily only or any play counts toward daily streak if daily mode)
-  if(state.mode==="daily"){
-    handleStreak();
-    store.set("dailyDone",todayKey());
-  }
-  // ring + texts
-  const ring=$("resultRing");
-  const r=52,circ=2*Math.PI*r,off=circ*(1-acc/100);
-  ring.innerHTML=`<circle cx="60" cy="60" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
-    <circle cx="60" cy="60" r="${r}" fill="none" stroke="#fae500" stroke-width="10" stroke-linecap="round"
-    stroke-dasharray="${circ}" stroke-dashoffset="${circ}" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1s ease;">
-    </circle><text x="60" y="68" text-anchor="middle" font-size="26" font-weight="800" fill="#f5efe0">${acc}%</text>`;
-  setTimeout(()=>{ring.querySelectorAll("circle")[1].setAttribute("stroke-dashoffset",off);},80);
-  let title = acc===100?T().rPerfect : acc>=70?T().rGreat : acc>=40?T().rGood : T().rOk;
-  $("rTitle").textContent=title;
-  $("rScore").textContent=state.score;
-  $("rCorrect").textContent=`${state.correct}/${total}`;
-  $("rAcc").textContent=acc+"%";
-  $("rStreak").textContent=state.bestCombo;
-  $("rBest").innerHTML = isBest?`<div class="newbest">🏆 ${T().newBest}</div>`:"";
-  show("result");
-  updateHomeStats(); applyLang();
-  if(acc>=70||isBest){sWin();confetti();}
-}
-function handleStreak(){
-  const last=store.get("lastDaily");
-  const t=new Date(); const y=new Date(t); y.setDate(t.getDate()-1);
-  const ts=todayKey();
-  const ystr=y.getFullYear()+"-"+(y.getMonth()+1)+"-"+y.getDate();
-  let s=+(store.get("streak")||0);
-  if(last===ts){/* already counted today */}
-  else if(last===ystr){s+=1;}
-  else{s=1;}
-  store.set("streak",s); store.set("lastDaily",ts);
-}
+  if(state.ended)return;state.ended=true;clearInterval(timer);clearInterval(blitzTimer);
+  const c=state.cfg;
+  let finalScore=state.score;
+  if(c.ladder){finalScore=state.ladderRung>=0?LADDER_PRIZES[state.ladderRung]:0;if(state.hearts<=0)finalScore=state.ladderSafe;}
+  const acc=state.answered?Math.round(state.correct/state.answered*100):0;
+  const ladderDone=c.ladder&&state.ladderRung===LADDER_PRIZES.length-1;
+  store.set("played",(+(store.get("played")||0))+state.correct);
+  let best=+(store.get("best")||0),isBest=false;
+  if(finalScore>best){store.set("best",finalScore);isBest=true;}
+  if(state.mode==="daily"){handleStreak();store.set("dailyDone",todayKey());}
+  const xpBefore=+store.get("xp")||0,riBefore=rankIndex(xpBefore);
+  const xpGain=Math.round(finalScore/8)+state.correct*5;
+  const xpAfter=xpBefore+xpGain;store.set("xp",xpAfter);const riAfter=rankIndex(xpAfter);
+  let placed=0;const lb=store.getJSON("lb",[]);
+  if(finalScore>0){lb.push({s:finalScore,m:state.mode,d:todayKey()});lb.sort((a,b)=>b.s-a.s);
+    const top=lb.slice(0,8);store.setJSON("lb",top);placed=top.findIndex(x=>x.s===finalScore&&x.d===todayKey())+1;if(placed>3)placed=0;}
+  checkAchievements({mode:state.mode,acc,bestCombo:state.bestCombo,score:finalScore,correct:state.correct,answered:state.answered,ladderDone});
 
-/* ---------- confetti ---------- */
-function confetti(){
-  const cv=$("confetti");cv.style.display="block";
-  const ctx=cv.getContext("2d");
-  cv.width=innerWidth;cv.height=innerHeight;
-  const cols=["#fae500","#ee1c25","#2bb24c","#fff","#e6b400"];
-  const P=Array.from({length:140},()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height,
-    s:5+Math.random()*7,c:cols[Math.floor(Math.random()*cols.length)],
-    vy:2+Math.random()*4,vx:-2+Math.random()*4,rot:Math.random()*6,vr:-.2+Math.random()*.4}));
-  let frames=0;
-  (function loop(){
-    frames++;ctx.clearRect(0,0,cv.width,cv.height);
-    P.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.vr;
-      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.c;
-      ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*1.6);ctx.restore();});
-    if(frames<160)requestAnimationFrame(loop);else cv.style.display="none";
-  })();
+  const ring=$("resultRing"),rad=52,circ=2*Math.PI*rad;
+  ring.innerHTML=`<circle cx="60" cy="60" r="${rad}" fill="none" stroke="rgba(244,236,218,.08)" stroke-width="10"/>
+    <circle cx="60" cy="60" r="${rad}" fill="none" stroke="#f5c518" stroke-width="10" stroke-linecap="round"
+      stroke-dasharray="${circ}" stroke-dashoffset="${circ}" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1s var(--ease);"/>
+    <text x="60" y="68" text-anchor="middle" font-size="26" font-weight="800" fill="#f4ecda" font-family="Avenir Next,sans-serif">${acc}%</text>`;
+  setTimeout(()=>ring.querySelectorAll("circle")[1].setAttribute("stroke-dashoffset",circ*(1-acc/100)),80);
+  $("rTitle").textContent=acc===100?T().rPerfect:acc>=70?T().rGreat:acc>=40?T().rGood:T().rOk;
+  $("rScore").textContent=finalScore;
+  $("rScoreSub").textContent=state.mode==="survival"?T().survived(state.answered):state.mode==="blitz"?T().blitzRes(state.correct):T().points;
+  let pills="";
+  if(isBest)pills+=`<span class="pill best">${icon("trophy")}${T().newBest}</span>`;
+  if(placed)pills+=`<span class="pill lb">${icon("chart")}${T().lbPlace(placed)}</span>`;
+  if(riAfter>riBefore)pills+=`<span class="pill rank">${icon("crown")}${RANKS[riAfter][lang]}</span>`;
+  $("rPills").innerHTML=pills;
+  $("rXp").textContent="+"+xpGain+" XP";
+  $("rCorrect").textContent=`${state.correct}/${state.answered}`;
+  $("rAcc").textContent=acc+"%";$("rCombo").textContent=state.bestCombo;
+  show("result");renderHome();
+  if(acc>=70||isBest||ladderDone){sWin();confetti();}
+  if(riAfter>riBefore)setTimeout(()=>levelUp(RANKS[riAfter]),700);
 }
+function handleStreak(){const last=store.get("lastDaily"),ts=todayKey();
+  const y=new Date();y.setDate(y.getDate()-1);const ystr=y.getFullYear()+"-"+(y.getMonth()+1)+"-"+y.getDate();
+  let s=+(store.get("streak")||0);if(last===ts){}else if(last===ystr)s+=1;else s=1;
+  store.set("streak",s);store.set("lastDaily",ts);}
 
-/* ---------- share ---------- */
-$("shareBtn").onclick=async()=>{
-  sClick();
-  const txt=T().shareText(state?state.score:0);
-  try{
-    if(navigator.share){await navigator.share({title:"Bizane · بزانە",text:txt});}
-    else if(navigator.clipboard){await navigator.clipboard.writeText(txt);flash(lang==="ckb"?"کۆپی کرا ✓":"Copied ✓");}
-    else flash(txt);
-  }catch(e){}
-};
-function flash(msg){
-  const d=document.createElement("div");
-  d.textContent=msg;
-  d.style.cssText="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#fae500;color:#1a1205;font-weight:800;padding:12px 22px;border-radius:999px;z-index:50;font-family:inherit;box-shadow:0 10px 30px rgba(0,0,0,.4);";
-  document.body.appendChild(d);setTimeout(()=>d.remove(),1600);
-}
+/* ========== achievements ========== */
+function getUnlocked(){return store.getJSON("ach",[]);}
+function checkAchievements(ctx){const got=getUnlocked();
+  ACHS.forEach(a=>{if(!got.includes(a.id)){try{if(a.cond(ctx)){got.push(a.id);store.setJSON("ach",got);toastQueue.push(a);}}catch(e){}}});
+  runToasts();}
+function runToasts(){if(toastBusy||!toastQueue.length)return;toastBusy=true;const a=toastQueue.shift();
+  $("toastIcon").innerHTML=icon(a.icon);$("toastTop").textContent=T().achGot;$("toastName").textContent=a[lang][0];
+  const t=$("toast");t.classList.add("show");sUp();
+  setTimeout(()=>{t.classList.remove("show");setTimeout(()=>{toastBusy=false;runToasts();},450);},2400);}
+function renderAch(){const got=getUnlocked();
+  $("achGrid").innerHTML=ACHS.map(a=>{const has=got.includes(a.id);
+    return `<div class="ach ${has?'got':''}"><div class="aico">${has?icon(a.icon):icon("lock")}</div>
+      <div class="at">${a[lang][0]}</div><div class="ad">${a[lang][1]}</div></div>`;}).join("");}
 
-/* ---------- buttons ---------- */
-$("playBtn").onclick=()=>{sClick();startRound("all");};
-$("dailyBtn").onclick=()=>{sClick();startDaily();};
-$("againBtn").onclick=()=>{sClick();startRound(state?state.mode:"all");};
-$("homeBtn").onclick=()=>{sClick();show("home");updateHomeStats();applyLang();};
+/* ========== leaderboard ========== */
+function renderLb(){const lb=store.getJSON("lb",[]);
+  if(!lb.length){$("lbList").innerHTML=`<div class="empty">${icon("chart")}<span>${T().emptyLb}</span></div>`;return;}
+  const mn={quick:T().mQuick,survival:T().mSurv,blitz:T().mBlitz,ladder:T().mLadder,daily:T().daily,category:T().categories,deck:T().studyMode};
+  $("lbList").innerHTML=lb.map((x,i)=>`<div class="lbrow ${i<3?'top'+(i+1):''}">
+    <div class="rk">${i===0?icon("crown"):i+1}</div><div class="ls">${x.s}</div>
+    <div class="lm">${mn[x.m]||x.m}<br>${x.d}</div></div>`).join("");}
 
-/* ---------- settings ---------- */
+/* ========== level up ========== */
+function levelUp(rank){$("luText").textContent=T().levelUp;$("luName").textContent=rank[lang];
+  $("levelup").classList.add("show");sUp();confetti();setTimeout(()=>$("levelup").classList.remove("show"),2200);}
+$("levelup").onclick=()=>$("levelup").classList.remove("show");
+
+/* ========== confetti ========== */
+function confetti(){const cv=$("confetti");cv.style.display="block";const ctx=cv.getContext("2d");
+  cv.width=innerWidth;cv.height=innerHeight;const cols=["#f5c518","#e23b34","#27a35a","#fff","#e0a72e"];
+  const P=Array.from({length:140},()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height,s:5+Math.random()*7,
+    c:cols[Math.floor(Math.random()*cols.length)],vy:2+Math.random()*4,vx:-2+Math.random()*4,rot:Math.random()*6,vr:-.2+Math.random()*.4}));
+  let f=0;(function loop(){f++;ctx.clearRect(0,0,cv.width,cv.height);
+    P.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      ctx.fillStyle=p.c;ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*1.6);ctx.restore();});
+    if(f<170)requestAnimationFrame(loop);else cv.style.display="none";})();}
+
+/* ========== share / flash ========== */
+$("shareBtn").onclick=async()=>{sClick();const txt=T().shareText($("rScore").textContent);
+  try{if(navigator.share)await navigator.share({title:"Bizane · بزانە",text:txt});
+    else if(navigator.clipboard){await navigator.clipboard.writeText(txt);flash(lang==="ckb"?"کۆپی کرا":"Copied");}
+    else flash(txt);}catch(e){}};
+function flash(m){const d=document.createElement("div");d.className="flashmsg";d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),1600);}
+
+/* ========== buttons ========== */
+$("playBtn").onclick=()=>{sClick();show("modes");renderModeList();};
+$("modeBack").onclick=()=>{sClick();show("home");};
+$("dailyBtn").onclick=()=>{sClick();startRound("daily");};
+$("againBtn").onclick=()=>{sClick();state.mode==="category"?startRound("category",state.cat):state.mode==="deck"?startRound("deck",null,state.deck):startRound(state.mode);};
+$("homeBtn").onclick=()=>{sClick();show("home");renderHome();};
+$("achBtn").onclick=()=>{sClick();renderAch();$("achSheet").classList.add("open");};
+$("lbBtn").onclick=()=>{sClick();renderLb();$("lbSheet").classList.add("open");};
 $("openSettings").onclick=()=>{sClick();$("settings").classList.add("open");};
-$("settings").querySelector("[data-close]").onclick=()=>$("settings").classList.remove("open");
-document.querySelectorAll("#langSeg button").forEach(b=>{
-  b.onclick=()=>{sClick();lang=b.dataset.lang;store.set("lang",lang);applyLang();};
-});
-$("soundToggle").onclick=function(){
-  soundOn=!soundOn;store.set("sound",soundOn?"1":"0");this.classList.toggle("on",soundOn);
-  if(soundOn)sClick();
-};
-$("resetBtn").onclick=()=>{
-  ["streak","best","played","dailyDone","lastDaily"].forEach(k=>store.set(k,"0"));
-  store.set("dailyDone","");store.set("lastDaily","");
-  updateHomeStats();applyLang();flash(lang==="ckb"?"سڕایەوە ✓":"Reset ✓");
-};
+document.querySelectorAll("[data-close]").forEach(el=>el.onclick=()=>el.closest(".sheet").classList.remove("open"));
+document.querySelectorAll("#langSeg button").forEach(b=>b.onclick=()=>{sClick();lang=b.dataset.lang;store.set("lang",lang);applyLang();});
+$("soundToggle").onclick=function(){soundOn=!soundOn;store.set("sound",soundOn?"1":"0");this.classList.toggle("on",soundOn);if(soundOn)sClick();};
+$("resetBtn").onclick=()=>{["streak","best","played","dailyDone","lastDaily","xp","ach","lb","mastery"].forEach(k=>store.set(k,""));
+  renderHome();applyLang();flash(lang==="ckb"?"سڕایەوە":"Reset");};
 
-/* ---------- network status ---------- */
-function updateNet(){
-  const on=navigator.onLine;
-  const b=$("netBadge");b.classList.toggle("off",!on);
-  $("netText").textContent = on?T().online:T().offline;
+/* ========== student mode (AI) ========== */
+const GEMINI_MODEL="gemini-2.5-flash";
+const getKey=()=>store.get("gkey")||"";
+const presetSubjects=()=>T().subjects;
+const customSubjects=()=>store.getJSON("subjects",[]);
+let curSubject=null;
+function allSubjects(){return [...presetSubjects(),...customSubjects()];}
+function renderSubjects(){
+  const grid=$("subjectGrid");if(!grid)return;
+  const subs=allSubjects();
+  if(curSubject===null||!subs.includes(curSubject))curSubject=subs[0];
+  grid.innerHTML=subs.map(s=>`<button class="subj ${s===curSubject?'on':''}" data-s="${s.replace(/"/g,'&quot;')}">${icon("book")}${s}</button>`).join("")
+    +`<button class="subj add" id="addSubjBtn">${icon("plus")}<span data-t="addSubject">${T().addSubject}</span></button>`;
+  grid.querySelectorAll(".subj[data-s]").forEach(b=>b.onclick=()=>{sClick();curSubject=b.dataset.s;renderSubjects();});
+  $("addSubjBtn").onclick=()=>{sClick();const name=prompt(T().addSubject);
+    if(name&&name.trim()){const cs=customSubjects();cs.push(name.trim());store.setJSON("subjects",cs);curSubject=name.trim();renderSubjects();}};
 }
-window.addEventListener("online",updateNet);
-window.addEventListener("offline",updateNet);
+function getDecks(){return store.getJSON("decks",[]);}
+function renderDecks(){
+  const list=$("deckList");if(!list)return;const decks=getDecks();
+  if(!decks.length){list.innerHTML=`<div class="empty">${icon("library")}<span>${T().noDecks}</span></div>`;return;}
+  list.innerHTML=decks.map(d=>`<div class="deck" data-id="${d.id}">
+      <div class="dico">${icon("brain")}</div>
+      <div class="dmid"><div class="dn">${d.name}</div><div class="dc">${d.subject} · ${d.q.length} ${T().questions}</div></div>
+      <button class="dplay" data-play="${d.id}">${icon("play")}</button>
+      <button class="ddel" data-del="${d.id}">${icon("trash")}</button></div>`).join("");
+  list.querySelectorAll("[data-play]").forEach(b=>b.onclick=()=>{sClick();const d=getDecks().find(x=>x.id===b.dataset.play);if(d)startRound("deck",null,d.q);});
+  list.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{sClick();store.setJSON("decks",getDecks().filter(x=>x.id!==b.dataset.del));renderDecks();});
+}
+function saveDeck(name,subject,q){const decks=getDecks();
+  decks.unshift({id:"d"+Date.now(),name:name.slice(0,60),subject,q,date:todayKey()});
+  store.setJSON("decks",decks.slice(0,40));}
 
-/* ---------- init ---------- */
-buildSun($("logoSun"));buildSun($("heroSun"));
+/* Gemini REST call */
+async function callGemini(parts){
+  const key=getKey();if(!key)throw new Error("nokey");
+  const url=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(key)}`;
+  const res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({contents:[{parts}],generationConfig:{temperature:.8,responseMimeType:"application/json"}})});
+  if(!res.ok)throw new Error("http "+res.status);
+  const data=await res.json();
+  const txt=(data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts||[])
+    .map(p=>p.text||"").join("");
+  if(!txt)throw new Error("empty");
+  return txt;
+}
+function parseDeck(txt){
+  let clean=txt.trim().replace(/^```(json)?/i,"").replace(/```$/,"").trim();
+  const s=clean.indexOf("["),e=clean.lastIndexOf("]");if(s>=0&&e>=0)clean=clean.slice(s,e+1);
+  const arr=JSON.parse(clean);
+  return arr.map(it=>{
+    const opts=(it.options||it.o||[]).slice(0,4).map(o=>typeof o==="string"?[o,o]:[o.ckb||o.en||"",o.en||o.ckb||""]);
+    while(opts.length<4)opts.push(["—","—"]);
+    const ckb=it.ckb||it.q_ckb||it.question||it.en||"",en=it.en||it.q_en||it.question||it.ckb||"";
+    let c=+(it.correct!=null?it.correct:it.c);if(isNaN(c)||c<0||c>3)c=0;
+    return {cat:"student",d:Math.min(3,Math.max(1,+it.d||+it.difficulty||1)),
+      ckb,en,o:opts,c,fckb:it.fact_ckb||it.fckb||it.fact||"",fen:it.fact_en||it.fen||it.fact||""};
+  }).filter(q=>q.ckb&&q.o.length===4);
+}
+function showGen(reading){show("gen");
+  $("genTitle").textContent=reading?T().readingBook:T().generating;
+  $("genSub").textContent=curSubject||"";}
+
+async function generate(parts,deckName,reading){
+  if(!getKey()){$("keySheet").classList.add("open");return;}
+  showGen(reading);
+  try{
+    const txt=await callGemini(parts);
+    const deck=parseDeck(txt);
+    if(!deck.length)throw new Error("noq");
+    saveDeck(deckName,curSubject,deck);
+    flash(T().deckMade(deck.length));
+    renderDecks();
+    startRound("deck",null,deck);
+  }catch(err){
+    show("student");
+    flash(T().genErr);
+  }
+}
+function topicPrompt(subject,topic,n){
+  return `You are a quiz generator for a Kurdish educational game. Create exactly ${n} multiple-choice questions.
+Subject: ${subject}. Topic/notes: ${topic}.
+Return ONLY a JSON array. Each item must have:
+"ckb" (question in Sorani Kurdish, Arabic script),
+"en" (question in English),
+"options" (array of exactly 4 objects, each {"ckb":"...","en":"..."}),
+"correct" (integer 0-3, index of the right option),
+"fact_ckb" and "fact_en" (a one-sentence explanation in each language),
+"d" (difficulty 1=easy,2=medium,3=hard).
+Make the options plausible and only one correct. Vary difficulty. No markdown, JSON only.`;
+}
+function imagePrompt(subject,n){
+  return `This is a photo of a textbook/notebook page. Read its content and create exactly ${n} multiple-choice questions that test understanding of what is on the page.
+Subject context: ${subject}.
+Return ONLY a JSON array. Each item: "ckb" (Sorani Kurdish question, Arabic script), "en" (English question), "options" (4 objects {"ckb","en"}), "correct" (0-3), "fact_ckb", "fact_en", "d" (1-3). JSON only, no markdown.`;
+}
+
+/* student buttons */
+let pendingQCount=5;
+$("studentBtn").onclick=()=>{sClick();show("student");renderSubjects();renderDecks();};
+$("studentBack").onclick=()=>{sClick();show("home");};
+$("typeCard").onclick=()=>{sClick();if(!getKey()){$("keySheet").classList.add("open");return;}
+  $("topicSubjLbl").textContent=curSubject||"";$("topicInput").value="";$("topicSheet").classList.add("open");};
+$("scanCard").onclick=()=>{sClick();if(!getKey()){$("keySheet").classList.add("open");return;}$("bookFile").click();};
+$("bookFile").onchange=function(){const f=this.files&&this.files[0];if(!f)return;
+  const r=new FileReader();r.onload=()=>{const dataUrl=r.result,b64=dataUrl.split(",")[1],mime=f.type||"image/jpeg";
+    const name=(curSubject||"Scan")+" · "+todayKey();
+    generate([{text:imagePrompt(curSubject,8)},{inline_data:{mime_type:mime,data:b64}}],name,true);};
+  r.readAsDataURL(f);this.value="";};
+document.querySelectorAll("#qcountSeg button").forEach(b=>b.onclick=function(){sClick();
+  document.querySelectorAll("#qcountSeg button").forEach(x=>x.classList.remove("on"));this.classList.add("on");pendingQCount=+this.dataset.n;});
+$("genTopicBtn").onclick=()=>{const topic=$("topicInput").value.trim();if(!topic){flash(T().typeTopic);return;}
+  sClick();$("topicSheet").classList.remove("open");
+  generate([{text:topicPrompt(curSubject,topic,pendingQCount)}],topic,false);};
+function saveKeyFrom(inp){const v=($(inp).value||"").trim();if(v){store.set("gkey",v);$("keySheet").classList.remove("open");flash("✓");}}
+$("saveKeyBtn").onclick=()=>{sClick();$("keyInput")&&saveKeyFrom("keyInput");$("keyInputSet").value=getKey();};
+$("keyInputSet").addEventListener("change",function(){const v=this.value.trim();if(v)store.set("gkey",v);});
+$("keyInputSet").addEventListener("focus",function(){this.value=getKey();});
+
+/* ========== network ========== */
+function updateNet(){const on=navigator.onLine;$("netBadge").classList.toggle("off",!on);
+  setIcon("netIcon",on?"globe":"globeoff");$("netText").textContent=on?T().online:T().offline;}
+window.addEventListener("online",updateNet);window.addEventListener("offline",updateNet);
+
+/* ========== init ========== */
+paintStaticIcons();
 $("soundToggle").classList.toggle("on",soundOn);
-applyLang();
-updateHomeStats();
+applyLang();renderHome();
 </script>
 </body>
 </html>
