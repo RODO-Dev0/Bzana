@@ -603,6 +603,11 @@
   @keyframes scanline{0%,100%{top:6px}50%{top:222px}}
   .scanhint{position:absolute;top:50%;left:0;right:0;transform:translateY(140px);z-index:3;text-align:center;
     color:#fff;font-weight:700;font-size:14px;padding:0 30px;text-shadow:0 1px 6px rgba(0,0,0,.7);}
+  .lbrow.mq{align-items:center;}
+  .lbrow .lmq{flex:1;min-width:0;}
+  .lbrow .lmqn{font-weight:800;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .lbrow .lmqw{font-size:11px;color:var(--muted);margin-top:2px;}
+  .lbrow.mq.top1{background:linear-gradient(90deg,rgba(245,197,24,.12),transparent);border-radius:12px;}
   /* watermark */
   .madeby{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;padding:12px;
     text-decoration:none;color:var(--muted);font-size:13px;font-family:var(--en);transition:color .2s;}
@@ -971,7 +976,12 @@
 
 <!-- LEADERBOARD -->
 <div class="sheet" id="lbSheet"><div class="ov" data-close></div><div class="panel">
-  <div class="grab"></div><h3 data-t="leaderboard"></h3><div id="lbList"></div>
+  <div class="grab"></div><h3 data-t="leaderboard"></h3>
+  <div class="seg" id="lbTabs" style="margin:0 auto 16px;width:fit-content;">
+    <button class="on" data-tab="local" data-t="lbLocal"></button>
+    <button data-tab="online" data-t="lbOnline"></button>
+  </div>
+  <div id="lbList"></div>
 </div></div>
 
 <script>
@@ -988,7 +998,8 @@
 const CONFIG={
   EMBEDDED_KEY:"AQ.Ab8RN6JjZhcUaIZZY0_v_yGkAryfv5qA_S_Ud7STxMu9yYOSgw",   // your Gemini key
   PROXY_URL:"",      // optional: server endpoint instead of a key
-  MODEL:"gemini-2.5-flash"  // smart + fast. Use "gemini-2.5-pro" for max smarts
+  MODEL:"gemini-2.5-flash",  // smart + fast. Use "gemini-2.5-pro" for max smarts
+  FIREBASE_URL:"https://bzana-1fade-default-rtdb.firebaseio.com"  // online leaderboard (Realtime DB)
 };
 
 /* ========== storage (offline-safe) ========== */
@@ -1085,7 +1096,7 @@ const STR={
     play:"یاری بکە",daily:"یاری ڕۆژانە",dailyDesc:"هەر ڕۆژێک ٨ پرسیاری نوێ",new:"نوێ",done:"تەواو",
     categories:"بەشەکان",madeFor:"بۆ کوردستان دروستکراوە",back:"گەڕانەوە",
     chooseMode:"شێوازی یاری",chooseModeSub:"شێوازێک هەڵبژێرە و دەستپێبکە",leaderboard:"ڕیزبەندی",
-    next:"دواتر",toResult:"ئەنجام",quit:"کۆتایی",points:"خاڵ",correct:"ڕاست",accuracy:"وردی",bestCombo:"زنجیرە",
+    next:"دواتر",nextRound:"خشتی دواتر",toResult:"ئەنجام",quit:"کۆتایی",points:"خاڵ",correct:"ڕاست",accuracy:"وردی",bestCombo:"زنجیرە",
     again:"دووبارە یاری",share:"هاوبەشکردن",home:"سەرەتا",settings:"ڕێکخستن",
     language:"زمان",sound:"دەنگ",soundDesc:"کاریگەری دەنگی",install:"دامەزراندن لەسەر مۆبایل",
     installDesc:"مێنیوی وێبگەڕ ← زیادکردن بۆ ڕووی سەرەکی",reset:"سڕینەوەی هەموو شت",resetBtn:"سڕینەوە",
@@ -1134,13 +1145,14 @@ const STR={
     pickMosque:"مزگەوتەکەت هەڵبژێرە",yourName:"ناوەکەت بۆ ئەم یارییە",
     scanQR:"سکانی کۆدی QR",scanHintTxt:"کامێرا بەرەو کۆدی QR ی پێشبڕکێ بگرە",
     cantScan:"ناتوانم سکان بکەم",qrWrong:"کۆدەکە دروست نییە — کۆدی پێشبڕکێ بەکاربهێنە",qrOk:"پەسەندکرا!",
-    winner:"براوە",sent:"ئەنجامەکەت نێردرا!",sendFail:"نەتوانرا بنێردرێت — بەڵام لە ئامێرەکەت پاشەکەوتکرا"},
+    winner:"براوە",sent:"ئەنجامەکەت نێردرا!",sendFail:"نەتوانرا بنێردرێت — بەڵام لە ئامێرەکەت پاشەکەوتکرا",
+    lbLocal:"ئەم ئامێرە",lbOnline:"سەرهێڵ (مزگەوتەکان)",loadingLb:"بارکردن…"},
   en:{appName:"Bizane",tagline:"The Kurdish knowledge game — learn, test yourself, have fun",
     streak:"Streak",best:"Best",played:"Correct",badges:"Badges",level:"Level",
     play:"Play",daily:"Daily challenge",dailyDesc:"8 fresh questions every day",new:"NEW",done:"DONE",
     categories:"Categories",madeFor:"Built for Kurdistan",back:"Back",
     chooseMode:"Game modes",chooseModeSub:"Pick a mode to begin",leaderboard:"Leaderboard",
-    next:"Next",toResult:"Result",quit:"Quit",points:"points",correct:"Correct",accuracy:"Accuracy",bestCombo:"Best combo",
+    next:"Next",nextRound:"Next round",toResult:"Result",quit:"Quit",points:"points",correct:"Correct",accuracy:"Accuracy",bestCombo:"Best combo",
     again:"Play again",share:"Share",home:"Home",settings:"Settings",
     language:"Language",sound:"Sound",soundDesc:"Sound effects",install:"Install on phone",
     installDesc:"Browser menu → Add to Home Screen",reset:"Reset everything",resetBtn:"Reset",
@@ -1189,7 +1201,8 @@ const STR={
     pickMosque:"Choose your mosque",yourName:"Your name for this game",
     scanQR:"Scan QR code",scanHintTxt:"Point the camera at the competition QR code",
     cantScan:"Can't scan",qrWrong:"Wrong code — use the competition QR",qrOk:"Verified!",
-    winner:"Winner",sent:"Your result was sent!",sendFail:"Couldn't send — saved on your device"}
+    winner:"Winner",sent:"Your result was sent!",sendFail:"Couldn't reach the online board — saved on your device",
+    lbLocal:"This device",lbOnline:"Online (mosques)",loadingLb:"Loading…"}
 };
 const T=()=>STR[lang];
 const QT=o=>lang==="ckb"?o[0]:o[1];
@@ -1421,6 +1434,7 @@ let soundOn=store.get("sound")!=="0";
 let state=null, toastQueue=[], toastBusy=false;
 let liveStream=null,liveFacing="environment",recog=null,liveMuted=store.get("liveMuted")==="1",liveBusy=false,voicesReady=false;
 let scanStream=null,scanRAF=null,scanDet=null;
+let autoNext=null;
 const $=id=>document.getElementById(id);
 
 /* ========== audio ========== */
@@ -1553,7 +1567,7 @@ function prep(q){const order=shuffle([0,1,2,3]);return{...q,order,newC:order.ind
 /* ========== round engine ========== */
 let timer=null,blitzTimer=null;
 function startRound(mode,cat,deck){
-  clearInterval(timer);clearInterval(blitzTimer);
+  clearInterval(timer);clearInterval(blitzTimer);clearTimeout(autoNext);
   showLoader();
   setTimeout(()=>{
   const isDeck=mode==="deck";
@@ -1678,13 +1692,18 @@ function answer(pos){
   if(c.hearts&&state.hearts<=0){setTimeout(endRound,1200);return;}
   if(c.blitz){setTimeout(()=>{state.answered_q=false;nextQuestion();},620);return;}
   const last=(!c.endless&&state.idx>=state.set.length-1);
-  $("nextLabel").textContent=last?T().toResult:T().next;
+  $("nextLabel").textContent=last?T().toResult:(state.mode==="join"||state.mode==="ladder"||c.endless?T().nextRound:T().next);
   $("nextBtn").style.display="flex";
+  // auto-advance after a short beat (manual tap still works and cancels the timer)
+  clearTimeout(autoNext);autoNext=setTimeout(()=>{advanceQuestion();},1900);
 }
+function advanceQuestion(){clearTimeout(autoNext);
+  if(state.ended||state.answered_q===false)return;
+  state.answered_q=false;if(!state.cfg.endless&&!state.cfg.blitz)state.idx++;nextQuestion();}
 function showFact(q){if(state.cfg.blitz)return;
   $("factSlot").innerHTML=`<div class="factcard"><div class="lab">${icon("star")}${T().didyou}</div>${lang==="ckb"?q.fckb:q.fen}</div>`;}
-$("nextBtn").onclick=()=>{sClick();state.answered_q=false;if(!state.cfg.endless&&!state.cfg.blitz)state.idx++;nextQuestion();};
-$("quitBtn").onclick=()=>{sClick();clearInterval(timer);clearInterval(blitzTimer);show("home");renderHome();};
+$("nextBtn").onclick=()=>{sClick();advanceQuestion();};
+$("quitBtn").onclick=()=>{sClick();clearTimeout(autoNext);clearInterval(timer);clearInterval(blitzTimer);show("home");renderHome();};
 
 /* ========== result ========== */
 function endRound(){
@@ -1750,12 +1769,32 @@ function renderAch(){const got=getUnlocked();
       <div class="at">${a[lang][0]}</div><div class="ad">${a[lang][1]}</div></div>`;}).join("");}
 
 /* ========== leaderboard ========== */
-function renderLb(){const lb=store.getJSON("lb",[]);
+let lbTab="local";
+function renderLb(){
+  if(lbTab==="online")return renderLbOnline();
+  const lb=store.getJSON("lb",[]);
   if(!lb.length){$("lbList").innerHTML=`<div class="empty">${icon("chart")}<span>${T().emptyLb}</span></div>`;return;}
   const mn={quick:T().mQuick,survival:T().mSurv,blitz:T().mBlitz,ladder:T().mLadder,daily:T().daily,category:T().categories,deck:T().studyMode,join:T().joinMode};
   $("lbList").innerHTML=lb.map((x,i)=>`<div class="lbrow ${i<3?'top'+(i+1):''}">
     <div class="rk">${i===0?icon("crown"):i+1}</div><div class="ls">${x.s}</div>
     <div class="lm">${x.n?escapeHTML(x.n)+" · ":""}${x.mq?escapeHTML(x.mq)+" · ":""}${mn[x.m]||x.m}<br>${x.d}</div></div>`).join("");}
+async function renderLbOnline(){
+  $("lbList").innerHTML=`<div class="empty">${icon("globe")}<span>${T().loadingLb}</span></div>`;
+  try{
+    const results=await fetchOnlineResults();
+    if(!results.length){$("lbList").innerHTML=`<div class="empty">${icon("globe")}<span>${T().emptyLb}</span></div>`;return;}
+    const mos=aggregateByMosque(results);
+    $("lbList").innerHTML=mos.map((m,i)=>{
+      const name=lang==="ckb"?(m.mosque_ckb||m.mosque):(m.mosque||m.mosque_ckb);
+      return `<div class="lbrow mq ${i<3?'top'+(i+1):''}">
+        <div class="rk">${i===0?icon("crown"):i+1}</div>
+        <div class="lmq"><div class="lmqn">${escapeHTML(name||"-")}</div>
+          <div class="lmqw">${T().winner}: ${escapeHTML(m.bestPlayer||"-")} · ${m.best} · ${m.count}×</div></div></div>`;}).join("");
+  }catch(e){$("lbList").innerHTML=`<div class="empty">${icon("globeoff")}<span>${T().sendFail}</span></div>`;}
+}
+document.querySelectorAll("#lbTabs button").forEach(b=>b.onclick=function(){sClick();
+  document.querySelectorAll("#lbTabs button").forEach(x=>x.classList.remove("on"));this.classList.add("on");
+  lbTab=this.dataset.tab;renderLb();});
 
 /* ========== level up ========== */
 function levelUp(rank){$("luText").textContent=T().levelUp;$("luName").textContent=rank[lang];
@@ -1943,14 +1982,36 @@ function startJoinRound(){
   startRound("join",null,pool);
 }
 function submitJoinResult(score,correct,answered){
-  const payload={mosque:(joinMosque?(joinMosque.en):"-"),mosque_ckb:(joinMosque?joinMosque.ckb:"-"),
+  const payload={mosque:(joinMosque?(joinMosque.en):"-"),mosque_ckb:(joinMosque?joinMosque.ckb:"-"),mosque_id:(joinMosque?joinMosque.id:"-"),
     player:joinPlayer||profileName()||"-",score,correct,total:answered,
-    mode:"Islamic competition",date:new Date().toISOString()};
+    mode:"Islamic competition",ts:Date.now(),date:new Date().toISOString()};
   // local record always
   const recs=store.getJSON("joinResults",[]);recs.unshift(payload);store.setJSON("joinResults",recs.slice(0,200));
-  // try to send to Formspree
+  // online leaderboard (Firebase Realtime DB)
+  if(CONFIG.FIREBASE_URL){
+    fetch(CONFIG.FIREBASE_URL+"/results.json",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
+      .then(r=>{flash(r.ok?T().sent:T().sendFail);}).catch(()=>flash(T().sendFail));
+  }
+  // also notify organiser by email via Formspree
   fetch(FORMSPREE,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
-    body:JSON.stringify(payload)}).then(r=>{flash(r.ok?T().sent:T().sendFail);}).catch(()=>flash(T().sendFail));
+    body:JSON.stringify(payload)}).catch(()=>{});
+}
+/* ===== online leaderboard (Firebase) ===== */
+async function fetchOnlineResults(){
+  if(!CONFIG.FIREBASE_URL)return[];
+  const r=await fetch(CONFIG.FIREBASE_URL+"/results.json");
+  if(!r.ok)throw new Error("http "+r.status);
+  const data=await r.json();if(!data)return[];
+  return Object.values(data);
+}
+function aggregateByMosque(results){
+  const map={};
+  results.forEach(x=>{const k=x.mosque_id||x.mosque||"-";
+    if(!map[k])map[k]={mosque:x.mosque,mosque_ckb:x.mosque_ckb,best:0,bestPlayer:"",total:0,count:0,players:{}};
+    const m=map[k];m.count++;m.total+=(+x.score||0);
+    m.players[x.player]=Math.max(m.players[x.player]||0,+x.score||0);
+    if((+x.score||0)>m.best){m.best=+x.score||0;m.bestPlayer=x.player;}});
+  return Object.values(map).sort((a,b)=>b.best-a.best||b.total-a.total);
 }
 
 /* loader + animated launch */
@@ -2003,8 +2064,14 @@ async function callGemini(parts,opts){
       body:JSON.stringify(Object.assign({model:CONFIG.MODEL},body))});
   }else{
     const key=getKey();if(!key)throw new Error("nokey");
-    const url=`https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL}:generateContent?key=${encodeURIComponent(key)}`;
-    res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    const base=`https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL}:generateContent`;
+    const payload=JSON.stringify(body);
+    res=await fetch(base+`?key=${encodeURIComponent(key)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:payload});
+    if(!res.ok&&(res.status===400||res.status===401||res.status===403)){
+      // some newer keys authenticate via header instead of query param
+      try{const r2=await fetch(base,{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:payload});
+        if(r2.ok||r2.status!==res.status)res=r2;}catch(_){}
+    }
   }
   if(!res.ok){let detail="";try{const j=await res.json();detail=(j.error&&j.error.message)||"";}catch(_){}
     throw new Error("http "+res.status+(detail?": "+detail.slice(0,120):""));}
