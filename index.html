@@ -383,6 +383,48 @@
   .genorbit{width:120px;height:120px;animation:spin 3s linear infinite;filter:drop-shadow(0 0 26px rgba(245,197,24,.5));}
   .gentitle{font-size:20px;font-weight:800;animation:pulse 1.6s infinite;}
   .gensub{font-size:13px;color:var(--muted);max-width:260px;line-height:1.5;}
+  /* snap buttons */
+  .snapbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;
+    font-weight:800;font-size:13px;border:none;border-radius:13px;padding:12px;cursor:pointer;
+    background:#2bb39a;color:#04211c;transition:transform .14s var(--ease);}
+  .snapbtn.alt{background:rgba(43,179,154,.16);color:#2bb39a;border:1px solid rgba(43,179,154,.4);}
+  .snapbtn .ic{font-size:16px;}
+  .snapbtn:active{transform:scale(.94);}
+  /* live tutor */
+  .livewrap{position:relative;border-radius:var(--r-lg);overflow:hidden;background:#000;
+    height:74vh;margin-top:8px;border:1px solid var(--line2);}
+  #liveVideo{width:100%;height:100%;object-fit:cover;background:#000;}
+  .livetop{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;
+    gap:10px;padding:14px;background:linear-gradient(180deg,rgba(0,0,0,.6),transparent);z-index:3;}
+  .livesubj{color:#fff;font-weight:800;font-size:14px;text-shadow:0 1px 4px rgba(0,0,0,.6);
+    background:rgba(0,0,0,.35);padding:7px 14px;border-radius:999px;backdrop-filter:blur(6px);}
+  .livecap{position:absolute;left:0;right:0;bottom:96px;padding:0 16px;z-index:3;display:flex;flex-direction:column;gap:8px;}
+  .capuser,.capai{padding:11px 15px;border-radius:16px;font-size:14px;line-height:1.5;max-width:90%;
+    backdrop-filter:blur(10px);animation:rise .35s var(--ease) both;box-shadow:0 8px 24px rgba(0,0,0,.4);}
+  .capuser{align-self:flex-end;background:rgba(245,197,24,.92);color:#1a1304;font-weight:700;display:none;}
+  .capai{align-self:flex-start;background:rgba(15,28,24,.82);color:var(--ink);border:1px solid rgba(255,255,255,.12);display:none;}
+  .capuser.show,.capai.show{display:block;}
+  .capai.speaking{border-color:rgba(245,197,24,.5);box-shadow:0 0 0 1px rgba(245,197,24,.3),0 8px 24px rgba(0,0,0,.4);}
+  .livestatus{position:absolute;top:60px;left:50%;transform:translateX(-50%);z-index:3;color:#fff;font-size:12px;
+    font-weight:700;background:rgba(0,0,0,.45);padding:6px 13px;border-radius:999px;backdrop-filter:blur(6px);
+    display:none;align-items:center;gap:7px;}
+  .livestatus.show{display:flex;}
+  .livestatus .dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse .8s infinite;}
+  .livedock{position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:14px;
+    padding:18px;z-index:3;background:linear-gradient(0deg,rgba(0,0,0,.65),transparent);}
+  .livebtn{border:none;border-radius:16px;background:rgba(255,255,255,.14);color:#fff;font-family:inherit;
+    font-weight:800;font-size:13px;padding:13px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;
+    backdrop-filter:blur(8px);transition:transform .14s var(--ease),background .2s;}
+  .livebtn .ic{font-size:18px;}
+  .livebtn:active{transform:scale(.92);}
+  .livebtn.small{padding:11px;border-radius:13px;}
+  .livebtn.mic{width:68px;height:68px;border-radius:50%;justify-content:center;background:var(--gold);color:#1a1304;
+    box-shadow:0 10px 30px rgba(245,197,24,.5);}
+  .livebtn.mic .ic{font-size:26px;}
+  .livebtn.mic.listening{background:var(--red);color:#fff;box-shadow:0 0 0 0 rgba(226,59,52,.6);animation:miclive 1.2s infinite;}
+  @keyframes miclive{0%{box-shadow:0 0 0 0 rgba(226,59,52,.5);}70%{box-shadow:0 0 0 22px rgba(226,59,52,0);}100%{box-shadow:0 0 0 0 rgba(226,59,52,0);}}
+  .livebtn.muted{opacity:.5;}
+  .livecard-off{opacity:.5;}
 
     font-weight:800;padding:12px 22px;border-radius:999px;z-index:50;font-family:inherit;
     box-shadow:0 12px 30px rgba(0,0,0,.45);animation:pop .4s var(--ease);}
@@ -522,13 +564,23 @@
       <div class="sectitle" data-t="howMake"></div>
       <div class="modecard" id="scanCard" style="--mc:#2bb39a">
         <div class="mc-top"><div class="mc-tile" id="icScan"></div>
-          <div><div class="mc-name" data-t="scanBook"></div><div class="mc-desc" data-t="scanBookD"></div></div></div>
+          <div style="flex:1"><div class="mc-name" data-t="scanBook"></div><div class="mc-desc" data-t="scanBookD"></div></div></div>
+        <div class="chips" style="margin-top:14px;">
+          <button class="snapbtn" id="takePhotoBtn">${''}<span class="ic" id="icTake"></span><span data-t="takePhoto"></span></button>
+          <button class="snapbtn alt" id="pickPhotoBtn"><span class="ic" id="icPick"></span><span data-t="pickPhoto"></span></button>
+        </div>
+      </div>
+      <div class="modecard" id="liveCard" style="--mc:#e23b34">
+        <div class="mc-top"><div class="mc-tile" id="icLive"></div>
+          <div><div class="mc-name" data-t="liveTutor"></div><div class="mc-desc" data-t="liveTutorD"></div></div>
+          <div class="mc-go" id="liveBadge"></div></div>
       </div>
       <div class="modecard" id="typeCard" style="--mc:#3f9fd4">
         <div class="mc-top"><div class="mc-tile" id="icType"></div>
           <div><div class="mc-name" data-t="typeTopic"></div><div class="mc-desc" data-t="typeTopicD"></div></div></div>
       </div>
-      <input type="file" id="bookFile" accept="image/*" capture="environment" style="display:none">
+      <input type="file" id="bookFileCam" accept="image/*" capture="environment" style="display:none">
+      <input type="file" id="bookFilePick" accept="image/*" style="display:none">
 
       <div class="sectitle" data-t="myDecks"></div>
       <div id="deckList"></div>
@@ -540,6 +592,28 @@
         <svg class="genorbit" viewBox="0 0 100 100" id="genSun"></svg>
         <div class="gentitle" id="genTitle"></div>
         <div class="gensub" id="genSub"></div>
+      </div>
+    </section>
+
+    <!-- LIVE TUTOR -->
+    <section class="screen" id="live">
+      <div class="livewrap">
+        <video id="liveVideo" playsinline autoplay muted></video>
+        <div class="livetop">
+          <button class="livebtn small" id="liveBack"><span class="ic" id="icLiveBack"></span></button>
+          <div class="livesubj" id="liveSubj"></div>
+          <button class="livebtn small" id="liveFlip"><span class="ic" id="icFlip"></span></button>
+        </div>
+        <div class="livecap" id="liveCap">
+          <div class="capuser" id="capUser"></div>
+          <div class="capai" id="capAi"></div>
+        </div>
+        <div class="livestatus" id="liveStatus"></div>
+        <div class="livedock">
+          <button class="livebtn" id="liveExplain"><span class="ic" id="icExplain2"></span><span data-t="explainThis"></span></button>
+          <button class="livebtn mic" id="liveMic"><span class="ic" id="icMic"></span></button>
+          <button class="livebtn" id="liveMute"><span class="ic" id="icMute"></span></button>
+        </div>
       </div>
     </section>
   </div>
@@ -656,7 +730,11 @@ const ICONS={
   trash:'<path d="M4 7h16M9 7V4.5h6V7M6 7l1 13h10l1-13"/>',
   key:'<circle cx="8" cy="9" r="4"/><path d="m11 11 8 8M16 16l2-2M18.5 18.5l1.5-1.5"/>',
   upload:'<path d="M12 16V4M8 8l4-4 4 4"/><path d="M5 16v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3"/>',
-  edit:'<path d="M4 20h4L18 10l-4-4L4 16z"/><path d="m14 6 4 4"/>'
+  edit:'<path d="M4 20h4L18 10l-4-4L4 16z"/><path d="m14 6 4 4"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8.5 21h7"/>',
+  micoff:'<path d="M9 9v2a3 3 0 0 0 4.5 2.6M15 11V6a3 3 0 0 0-5.8-1"/><path d="M5 11a7 7 0 0 0 10.5 6M12 18v3M8.5 21h7M4 4l16 16" stroke-width="2.2"/>',
+  speaker:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a4 4 0 0 1 0 7M18.5 6a7 7 0 0 1 0 12"/>',
+  speakeroff:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="m16 9 5 6M21 9l-5 6"/>'
 };
 function icon(name){return `<svg class="ic" viewBox="0 0 24 24">${ICONS[name]||""}</svg>`;}
 function setIcon(id,name){const el=document.getElementById(id);if(el)el.innerHTML=icon(name);}
@@ -704,7 +782,12 @@ const STR={
     needKey:"کلیلی Gemini API پێویستە",needKeyD:"بۆ بەکارهێنانی AI، کلیلێکی بەخۆڕایی لە Google AI Studio وەربگرە و لێرە دایبنێ.",
     getKey:"وەرگرتنی کلیل",saveKey:"پاشەکەوتکردن",apiKey:"کلیلی Gemini API",apiKeyD:"بۆ دۆخی خوێندن — لە ئامێرەکەتدا پاشەکەوت دەبێت",
     genErr:"هەڵە لە دروستکردندا — کلیلەکە یان پەیوەندییەکەت بپشکنە",
-    deckMade:n=>`${n} پرسیار دروستکرا!`,questions:"پرسیار",subjects:["بیرکاری","فیزیا","کیمیا","زیندەزانی","مێژوو","جوگرافیا","ئینگلیزی","ئاینی ئیسلامی","زمانی کوردی","گشتی"]},
+    deckMade:n=>`${n} پرسیار دروستکرا!`,questions:"پرسیار",
+    takePhoto:"وێنە بگرە",pickPhoto:"لە گەلەری",
+    liveTutor:"مامۆستای زیندوو",liveTutorD:"کامێرا بکەرەوە و قسە لەگەڵ AI بکە — بە دەنگ وەڵامت دەداتەوە",
+    explainThis:"ئەمە ڕوونبکەرەوە",listening:"گوێ دەگرم…",thinking:"بیردەکەمەوە…",speaking:"قسە دەکات…",
+    camErr:"ناتوانم کامێرا بکەمەوە — ڕێگەپێدان بپشکنە",micErr:"دەنگ ناگیرێت لەسەر ئەم وێبگەڕە",askSomething:"پرسیارێک بکە یان «ئەمە ڕوونبکەرەوە» دابگرە",
+    subjects:["بیرکاری","فیزیا","کیمیا","زیندەزانی","مێژوو","جوگرافیا","ئینگلیزی","ئاینی ئیسلامی","زمانی کوردی","گشتی"]},
   en:{appName:"Bizane",tagline:"The Kurdish knowledge game — learn, test yourself, have fun",
     streak:"Streak",best:"Best",played:"Correct",badges:"Badges",level:"Level",
     play:"Play",daily:"Daily challenge",dailyDesc:"8 fresh questions every day",new:"NEW",done:"DONE",
@@ -738,7 +821,12 @@ const STR={
     needKey:"Gemini API key required",needKeyD:"To use AI, get a free key from Google AI Studio and paste it here.",
     getKey:"Get a key",saveKey:"Save",apiKey:"Gemini API key",apiKeyD:"For study mode — stored only on your device",
     genErr:"Generation failed — check your key or connection",
-    deckMade:n=>`${n} questions ready!`,questions:"questions",subjects:["Math","Physics","Chemistry","Biology","History","Geography","English","Islamic Studies","Kurdish","General"]}
+    deckMade:n=>`${n} questions ready!`,questions:"questions",
+    takePhoto:"Take photo",pickPhoto:"Gallery",
+    liveTutor:"Live tutor",liveTutorD:"Open the camera and talk to the AI — it answers out loud",
+    explainThis:"Explain this",listening:"Listening…",thinking:"Thinking…",speaking:"Speaking…",
+    camErr:"Can't open the camera — check permissions",micErr:"Voice input isn't supported on this browser",askSomething:"Ask a question, or hold 'Explain this'",
+    subjects:["Math","Physics","Chemistry","Biology","History","Geography","English","Islamic Studies","Kurdish","General"]}
 };
 const T=()=>STR[lang];
 const QT=o=>lang==="ckb"?o[0]:o[1];
@@ -861,6 +949,7 @@ const Q=[
 let lang=store.get("lang")||"ckb";
 let soundOn=store.get("sound")!=="0";
 let state=null, toastQueue=[], toastBusy=false;
+let liveStream=null,liveFacing="environment",recog=null,liveMuted=store.get("liveMuted")==="1",liveBusy=false,voicesReady=false;
 const $=id=>document.getElementById(id);
 
 /* ========== audio ========== */
@@ -887,6 +976,9 @@ function paintStaticIcons(){
   setIcon("icStudentHome","brain");setIcon("icBack2",lang==="ckb"?"arrowR":"arrowL");
   setIcon("icScan","camera");setIcon("icType","edit");setIcon("icHowMany","book");
   setIcon("icGenT","sparkles");setIcon("icSaveKey","check");setIcon("icGetKey","key");setIcon("icKeySet","key");
+  setIcon("icTake","camera");setIcon("icPick","upload");setIcon("icLive","compass");setIcon("liveBadge","sparkles");
+  setIcon("icLiveBack",lang==="ckb"?"arrowR":"arrowL");setIcon("icFlip","refresh");
+  setIcon("icExplain2","sparkles");setIcon("icMic","mic");setIcon("icMute","speaker");
   buildSun($("logoSun"));buildSun($("heroSun"));buildSun($("luIcon"));buildSun($("genSun"));
 }
 
@@ -934,7 +1026,8 @@ function todayKey(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+
 function isDailyDone(){return store.get("dailyDone")===todayKey();}
 
 /* ========== nav ========== */
-function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active");$("scrollArea").scrollTop=0;}
+function show(id){if(id!=="live"&&liveStream)stopLive();
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active");$("scrollArea").scrollTop=0;}
 
 /* ========== modes ========== */
 const MODES={
@@ -1241,11 +1334,15 @@ function saveDeck(name,subject,q){const decks=getDecks();
   store.setJSON("decks",decks.slice(0,40));}
 
 /* Gemini REST call */
-async function callGemini(parts){
+async function callGemini(parts,opts){
+  opts=opts||{};
   const key=getKey();if(!key)throw new Error("nokey");
   const url=`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(key)}`;
+  const gc={temperature:opts.temp!=null?opts.temp:.8};
+  if(!opts.text)gc.responseMimeType="application/json";
+  if(opts.maxTokens)gc.maxOutputTokens=opts.maxTokens;
   const res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({contents:[{parts}],generationConfig:{temperature:.8,responseMimeType:"application/json"}})});
+    body:JSON.stringify({contents:[{parts}],generationConfig:gc})});
   if(!res.ok)throw new Error("http "+res.status);
   const data=await res.json();
   const txt=(data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts||[])
@@ -1310,12 +1407,16 @@ $("studentBtn").onclick=()=>{sClick();show("student");renderSubjects();renderDec
 $("studentBack").onclick=()=>{sClick();show("home");};
 $("typeCard").onclick=()=>{sClick();if(!getKey()){$("keySheet").classList.add("open");return;}
   $("topicSubjLbl").textContent=curSubject||"";$("topicInput").value="";$("topicSheet").classList.add("open");};
-$("scanCard").onclick=()=>{sClick();if(!getKey()){$("keySheet").classList.add("open");return;}$("bookFile").click();};
-$("bookFile").onchange=function(){const f=this.files&&this.files[0];if(!f)return;
-  const r=new FileReader();r.onload=()=>{const dataUrl=r.result,b64=dataUrl.split(",")[1],mime=f.type||"image/jpeg";
+function needKeyThen(fn){if(!getKey()){$("keySheet").classList.add("open");return;}fn();}
+$("takePhotoBtn").onclick=e=>{e.stopPropagation();sClick();needKeyThen(()=>$("bookFileCam").click());};
+$("pickPhotoBtn").onclick=e=>{e.stopPropagation();sClick();needKeyThen(()=>$("bookFilePick").click());};
+function handlePhoto(f){if(!f)return;
+  const r=new FileReader();r.onload=()=>{const b64=r.result.split(",")[1],mime=f.type||"image/jpeg";
     const name=(curSubject||"Scan")+" · "+todayKey();
     generate([{text:imagePrompt(curSubject,8)},{inline_data:{mime_type:mime,data:b64}}],name,true);};
-  r.readAsDataURL(f);this.value="";};
+  r.readAsDataURL(f);}
+$("bookFileCam").onchange=function(){handlePhoto(this.files&&this.files[0]);this.value="";};
+$("bookFilePick").onchange=function(){handlePhoto(this.files&&this.files[0]);this.value="";};
 document.querySelectorAll("#qcountSeg button").forEach(b=>b.onclick=function(){sClick();
   document.querySelectorAll("#qcountSeg button").forEach(x=>x.classList.remove("on"));this.classList.add("on");pendingQCount=+this.dataset.n;});
 $("genTopicBtn").onclick=()=>{const topic=$("topicInput").value.trim();if(!topic){flash(T().typeTopic);return;}
@@ -1326,6 +1427,83 @@ $("saveKeyBtn").onclick=()=>{sClick();$("keyInput")&&saveKeyFrom("keyInput");$("
 $("keyInputSet").addEventListener("change",function(){const v=this.value.trim();if(v)store.set("gkey",v);});
 $("keyInputSet").addEventListener("focus",function(){this.value=getKey();});
 
+/* ========== LIVE TUTOR (camera + voice) ========== */
+const synth=window.speechSynthesis;
+if(synth){try{synth.onvoiceschanged=()=>{voicesReady=true;};}catch(e){}}
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function speechLang(){return lang==="ckb"?"ar-IQ":"en-US";}
+function pickVoice(){if(!synth)return null;const vs=synth.getVoices()||[];const want=lang==="ckb"?["ckb","ku","ar"]:["en"];
+  for(const p of want){const v=vs.find(x=>(x.lang||"").toLowerCase().startsWith(p));if(v)return v;}return vs[0]||null;}
+function speak(text){if(!synth||liveMuted||!text)return;try{synth.cancel();
+  const u=new SpeechSynthesisUtterance(text);const v=pickVoice();if(v){u.voice=v;u.lang=v.lang;}else u.lang=speechLang();
+  u.rate=.98;u.pitch=1;
+  const bubble=$("capAi");u.onstart=()=>bubble&&bubble.classList.add("speaking");
+  u.onend=()=>bubble&&bubble.classList.remove("speaking");
+  synth.speak(u);}catch(e){}}
+function liveStatus(txt,show){const el=$("liveStatus");if(!el)return;el.innerHTML=show?`<span class="dot"></span>${txt}`:"";el.classList.toggle("show",!!show);}
+function showCap(who,txt){const el=$(who==="user"?"capUser":"capAi");if(!el)return;el.textContent=txt;el.classList.add("show");}
+function logSession(q,a){const log=store.getJSON("tutorlog",[]);log.unshift({s:curSubject,q,a,d:Date.now()});store.setJSON("tutorlog",log.slice(0,200));}
+
+async function openLive(){
+  show("live");$("liveSubj").textContent=curSubject||T().student;
+  $("capUser").classList.remove("show");$("capAi").classList.remove("show");
+  showCap("ai",T().askSomething);$("capAi").classList.add("show");
+  try{
+    liveStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:liveFacing},audio:false});
+    $("liveVideo").srcObject=liveStream;
+  }catch(e){flash(T().camErr);}
+}
+function stopLive(){if(liveStream){liveStream.getTracks().forEach(t=>t.stop());liveStream=null;}
+  if(recog){try{recog.abort();}catch(e){}recog=null;}
+  if(synth)try{synth.cancel();}catch(e){}
+  $("liveMic").classList.remove("listening");liveStatus("",false);}
+function grabFrame(){const v=$("liveVideo");if(!v||!v.videoWidth)return null;
+  const cv=document.createElement("canvas");const w=Math.min(1024,v.videoWidth);cv.width=w;cv.height=w*v.videoHeight/v.videoWidth;
+  cv.getContext("2d").drawImage(v,0,0,cv.width,cv.height);
+  return cv.toDataURL("image/jpeg",.8).split(",")[1];}
+function tutorPrompt(question){
+  const L=lang==="ckb"?"Sorani Kurdish (Arabic script)":"English";
+  return `You are a friendly, patient tutor helping a student. The image is what the student's camera sees (their book, notebook, or a real object).
+Subject focus: ${curSubject}. The student asks: "${question||'Explain what you see and help me understand it.'}"
+Answer in ${L}, in 2-4 short spoken sentences, warm and clear, as if talking out loud. No markdown, no lists, just the spoken answer.`;
+}
+async function askTutor(question){
+  if(liveBusy)return;if(!getKey()){$("keySheet").classList.add("open");return;}
+  liveBusy=true;
+  if(question){showCap("user",question);}
+  showCap("ai","…");liveStatus(T().thinking,true);
+  const b64=grabFrame();
+  try{
+    const parts=[{text:tutorPrompt(question)}];
+    if(b64)parts.push({inline_data:{mime_type:"image/jpeg",data:b64}});
+    const ans=await callGemini(parts,{text:true,temp:.7,maxTokens:300});
+    showCap("ai",ans);liveStatus("",false);logSession(question||"(explain)",ans);
+    liveStatus(T().speaking,true);speak(ans);
+    setTimeout(()=>liveStatus("",false),1400);
+  }catch(e){showCap("ai",T().genErr);liveStatus("",false);}
+  liveBusy=false;
+}
+function startListening(){
+  if(!SR){flash(T().micErr);askTutor("");return;}
+  if(synth)try{synth.cancel();}catch(e){}
+  try{recog=new SR();}catch(e){flash(T().micErr);return;}
+  recog.lang=speechLang();recog.interimResults=false;recog.maxAlternatives=1;
+  const mic=$("liveMic");mic.classList.add("listening");liveStatus(T().listening,true);
+  recog.onresult=ev=>{const t=ev.results[0][0].transcript;mic.classList.remove("listening");liveStatus("",false);askTutor(t);};
+  recog.onerror=()=>{mic.classList.remove("listening");liveStatus("",false);};
+  recog.onend=()=>{mic.classList.remove("listening");};
+  try{recog.start();}catch(e){mic.classList.remove("listening");liveStatus("",false);}
+}
+$("liveCard").onclick=()=>{sClick();needKeyThen(openLive);};
+$("liveBack").onclick=()=>{sClick();stopLive();show("student");};
+$("liveExplain").onclick=()=>{sClick();askTutor("");};
+$("liveMic").onclick=()=>{sClick();startListening();};
+$("liveFlip").onclick=async()=>{sClick();liveFacing=liveFacing==="environment"?"user":"environment";
+  if(liveStream)liveStream.getTracks().forEach(t=>t.stop());
+  try{liveStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:liveFacing},audio:false});$("liveVideo").srcObject=liveStream;}catch(e){flash(T().camErr);}};
+function updateMuteIcon(){setIcon("icMute",liveMuted?"speakeroff":"speaker");$("liveMute").classList.toggle("muted",liveMuted);}
+$("liveMute").onclick=()=>{sClick();liveMuted=!liveMuted;store.set("liveMuted",liveMuted?"1":"0");if(liveMuted&&synth)synth.cancel();updateMuteIcon();};
+
 /* ========== network ========== */
 function updateNet(){const on=navigator.onLine;$("netBadge").classList.toggle("off",!on);
   setIcon("netIcon",on?"globe":"globeoff");$("netText").textContent=on?T().online:T().offline;}
@@ -1334,7 +1512,8 @@ window.addEventListener("online",updateNet);window.addEventListener("offline",up
 /* ========== init ========== */
 paintStaticIcons();
 $("soundToggle").classList.toggle("on",soundOn);
-applyLang();renderHome();
+applyLang();renderHome();updateMuteIcon();
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&liveStream)stopLive();});
 </script>
 </body>
 </html>
