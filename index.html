@@ -996,9 +996,9 @@
    and set PROXY_URL to a server endpoint to keep the key hidden.)
    ============================================================ */
 const CONFIG={
-  EMBEDDED_KEY:"AQ.Ab8RN6JjZhcUaIZZY0_v_yGkAryfv5qA_S_Ud7STxMu9yYOSgw",   // your Gemini key
+  EMBEDDED_KEY:"AQ.Ab8RN6JrGoegmS1lkocPCsw5f2Hn3A2eF8s26c0zhTcuwuXvCA",   // your Gemini key
   PROXY_URL:"",      // optional: server endpoint instead of a key
-  MODEL:"gemini-2.5-flash",  // smart + fast. Use "gemini-2.5-pro" for max smarts
+  MODEL:"gemini-flash-latest",  // matches your key; use gemini-2.5-flash if you have an AIza key
   FIREBASE_URL:"https://bzana-1fade-default-rtdb.firebaseio.com"  // online leaderboard (Realtime DB)
 };
 
@@ -2066,10 +2066,10 @@ async function callGemini(parts,opts){
     const key=getKey();if(!key)throw new Error("nokey");
     const base=`https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL}:generateContent`;
     const payload=JSON.stringify(body);
-    res=await fetch(base+`?key=${encodeURIComponent(key)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:payload});
+    // header auth first (works for AQ.* keys), query-param as fallback (works for AIza* keys)
+    res=await fetch(base,{method:"POST",headers:{"Content-Type":"application/json","X-goog-api-key":key},body:payload});
     if(!res.ok&&(res.status===400||res.status===401||res.status===403)){
-      // some newer keys authenticate via header instead of query param
-      try{const r2=await fetch(base,{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:payload});
+      try{const r2=await fetch(base+`?key=${encodeURIComponent(key)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:payload});
         if(r2.ok||r2.status!==res.status)res=r2;}catch(_){}
     }
   }
