@@ -217,6 +217,38 @@
   .diff i{width:7px;height:7px;border-radius:50%;background:rgba(244,236,218,.16);}
   .diff i.on{background:var(--gold);box-shadow:0 0 6px rgba(245,197,24,.6);}
   .qtext{font-size:20px;font-weight:800;line-height:1.55;}
+  /* verse panel (used in poetry mode) */
+  .verse{position:relative;margin:-4px -4px 14px;padding:18px 18px 14px;border-radius:16px;
+    background:linear-gradient(160deg,rgba(217,140,192,.12),rgba(245,197,24,.05));
+    border:1px solid rgba(217,140,192,.3);overflow:hidden;}
+  .verse .vquote{position:absolute;top:8px;inset-inline-end:10px;font-size:26px;color:rgba(217,140,192,.35);}
+  .verse .vckb{font-size:18px;line-height:2;font-weight:700;color:#f6e7f2;white-space:pre-line;
+    text-align:center;font-family:var(--ar);}
+  .verse .ven{font-size:13.5px;line-height:1.7;color:var(--muted);margin-top:10px;font-style:italic;
+    white-space:pre-line;text-align:center;border-top:1px solid rgba(255,255,255,.08);padding-top:10px;}
+  .verse .vby{font-size:12px;color:#d98cc0;font-weight:800;margin-top:10px;text-align:center;}
+  .qtext .qmain{display:block;font-size:18px;}
+  /* ===== POETRY MODE SKIN (this mode only) ===== */
+  body.poetic .lattice{opacity:.09;filter:hue-rotate(40deg);}
+  body.poetic .bgwrap::before{background:
+    radial-gradient(1100px 720px at 50% -12%,rgba(217,140,192,.16),transparent 56%),
+    radial-gradient(800px 600px at 85% 110%,rgba(160,123,216,.12),transparent 60%),
+    linear-gradient(180deg,#140d16,#0c0810 74%);}
+  body.poetic .qcard{background:
+    radial-gradient(130% 130% at 0% 0%,rgba(217,140,192,.10),transparent 55%),
+    linear-gradient(160deg,#1c1320,#140d18);
+    border-color:rgba(217,140,192,.28);
+    box-shadow:0 22px 60px -24px rgba(0,0,0,.85),inset 0 0 0 1px rgba(217,140,192,.06);}
+  body.poetic .qcat{color:#d98cc0;}
+  body.poetic .progfill,body.poetic .xpfill{background:linear-gradient(90deg,#d98cc0,#a07bd8);}
+  body.poetic .timefill{background:#d98cc0;}
+  body.poetic .opt.correct{background:rgba(217,140,192,.16);border-color:#d98cc0;}
+  body.poetic .opt.correct .k{background:#d98cc0;color:#1a1304;}
+  body.poetic .opt.correct .kx{color:#d98cc0;}
+  body.poetic .qscore{color:#d98cc0;}
+  body.poetic .factcard{border-inline-start-color:#d98cc0;}
+  body.poetic .factcard .lab{color:#d98cc0;}
+  body.poetic .diff i.on{background:#d98cc0;box-shadow:0 0 6px rgba(217,140,192,.6);}
 
   .opts{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
   .opt{background:var(--surface);border:1.5px solid var(--line);border-radius:15px;padding:15px 15px;
@@ -1075,6 +1107,7 @@ const ICONS={
   paperclip:'<path d="M20 11.5 12 19.5a5 5 0 0 1-7-7l8-8a3.3 3.3 0 0 1 4.7 4.7l-8 8a1.6 1.6 0 0 1-2.3-2.3l7.3-7.3"/>',
   arrowup:'<path d="M12 19V5M6 11l6-6 6 6"/>',
   person:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>',
+  quote:'<path class="fill" d="M7 7H4a3 3 0 0 0-3 3v3a3 3 0 0 0 3 3h2v-3H4v-3h3zM17 7h-3a3 3 0 0 0-3 3v3a3 3 0 0 0 3 3h2v-3h-2v-3h3z"/>',
   qr:'<rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><path d="M13.5 13.5h3v3M20.5 13.5v7M16.5 20.5h4M13.5 17.5h0"/>',
   scan:'<path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M4 12h16"/>'
 };
@@ -1112,6 +1145,8 @@ const STR={
     mSurv:"مانەوە",mSurvD:"بەردەوامبە تا دڵەکانت دەمێنن — کات کەمتر دەبێتەوە",
     mBlitz:"تەقینەوە",mBlitzD:"زۆرترین وەڵامی ڕاست لە ٦٠ چرکەدا",
     mLadder:"پلیکانە",mLadderD:"١٢ پلە، خاڵ بەرز دەبێتەوە، ٢ خاڵی پارێزراو",
+    mDeep:"مێژووی قووڵ",mDeepD:"هەرە قورسترین پرسیار دەربارەی مێژوو، میرنشین و شیعری کورد — بۆ زانایان",
+    mPoetry:"شیعر و شاعیران",mPoetryD:"قووڵایی شیعری کوردی — خانی، جزیری، فاقێ قادر، شێرکۆ و «دووانە-قسە»",
     cQ:n=>`${n} پرسیار`,cHearts:n=>`${n} دڵ`,cTime:n=>`${n} چرکە`,cEndless:"بێ کۆتایی",cSafe:"٢ پارێزراو",
     student:"خوێندکار",studentDesc:"بابەتەکانت بخوێنە بە یاری",studyMode:"دۆخی خوێندن",
     chooseSubject:"بابەت هەڵبژێرە",pickOrAdd:"بابەتێک هەڵبژێرە یان نوێ زیادبکە",addSubject:"بابەتی نوێ",
@@ -1168,6 +1203,8 @@ const STR={
     mSurv:"Survival",mSurvD:"Keep going until your hearts run out — the clock speeds up",
     mBlitz:"Blitz",mBlitzD:"Most correct answers in 60 seconds",
     mLadder:"Ladder",mLadderD:"12 rungs, rising stakes, 2 safe checkpoints",
+    mDeep:"Deep History",mDeepD:"The hardest questions on Kurdish history, emirates & poetry — for true scholars",
+    mPoetry:"Poetry & Poets",mPoetryD:"The depths of Kurdish verse — Xanî, Cizîrî, Faqe Qadri, Sherko & the art of 'double-talk'",
     cQ:n=>`${n} Q`,cHearts:n=>`${n} hearts`,cTime:n=>`${n}s`,cEndless:"Endless",cSafe:"2 safe",
     student:"Student",studentDesc:"Turn your subjects into a game",studyMode:"Study mode",
     chooseSubject:"Choose a subject",pickOrAdd:"Pick a subject or add your own",addSubject:"New subject",
@@ -1215,6 +1252,7 @@ const CATS=[
   {id:"language",icon:"book",    accent:"#3f9fd4",ckb:"زمان و ئەدەب",en:"Language & Lit."},
   {id:"people",  icon:"users",   accent:"#a07bd8",ckb:"کەسایەتییەکان",en:"Famous People"},
   {id:"islam",   icon:"mosque",  accent:"#2bb39a",ckb:"ئیسلام",en:"Islam"},
+  {id:"poet",    icon:"book",    accent:"#d98cc0",ckb:"شیعر و شاعیران",en:"Poetry & Poets"},
   {id:"general", icon:"sun",     accent:"#e0a72e",ckb:"گشتی",en:"General"}
 ];
 const catOf=id=>CATS.find(c=>c.id===id)||{id,icon:"book",accent:"#f5c518",ckb:id,en:id};
@@ -1362,7 +1400,7 @@ const ISLAMQ=[
  {cat:"islam",d:2,ckb:"چەند ڕکات نوێژی بەیانی هەیە؟",en:"How many rak'ahs (units) is the Fajr prayer?",o:[["٢","2"],["٣","3"],["٤","4"],["١","1"]],c:0,fckb:"دوو ڕکاتی فەرز.",fen:"Two obligatory rak'ahs."},
  {cat:"islam",d:2,ckb:"تاوافکردن بە دەوری چی دەکرێت لە حەجدا؟",en:"What is circled (tawaf) during Hajj?",o:[["کەعبە","The Kaaba"],["جەبەلی عەرەفات","Mount Arafat"],["مزگەوتی نەبەوی","The Prophet's Mosque"],["بیری زەمزەم","The Zamzam well"]],c:0,fckb:"حەوت جار بە دەوری کەعبە.",fen:"Seven times around the Kaaba."},
  {cat:"islam",d:2,ckb:"ئاوی پیرۆز لە مەککە بە چی ناسراوە؟",en:"What is the sacred water in Mecca called?",o:[["زەمزەم","Zamzam"],["کەوسەر","Kawthar"],["سەلسەبیل","Salsabil"],["فورات","Euphrates"]],c:0,fckb:"بیری زەمزەم نزیک کەعبە.",fen:"The Zamzam well near the Kaaba."},
- {cat:"islam",d:3,ckb:"چەند سووڕەت لە قورئاندا هەیە؟",en:"How many surahs are in the Qur'an?",o:[["١١٤","114"],["١٠٠","100"],["١٢٠","120"],["٩٩","99"]],c:0,fckb:"١١٤ سووڕەت.",fen:"114 surahs."},
+ {cat:"islam",d:3,ckb:"کۆتا سووڕەتی قورئان کامەیە؟",en:"What is the final surah of the Qur'an?",o:[["الناس","An-Nas"],["الفلق","Al-Falaq"],["الإخلاص","Al-Ikhlas"],["الفاتحة","Al-Fatiha"]],c:0,fckb:"سووڕەتی الناس کۆتا سووڕەتە بەپێی ڕیزبەندی.",fen:"Surah An-Nas is the last by arrangement."},
  {cat:"islam",d:3,ckb:"کام سووڕەت بە «دڵی قورئان» ناسراوە؟",en:"Which surah is called 'the heart of the Qur'an'?",o:[["یس","Ya-Sin"],["الرحمن","Ar-Rahman"],["الفاتحة","Al-Fatiha"],["الكهف","Al-Kahf"]],c:0,fckb:"سووڕەتی یس.",fen:"Surah Ya-Sin."},
  {cat:"islam",d:3,ckb:"شەڕی یەکەمی ئیسلام لە کوێ ڕوویدا؟",en:"Where did the first major battle of Islam take place?",o:[["بەدر","Badr"],["ئوحود","Uhud"],["خەندەق","Khandaq"],["حونەین","Hunayn"]],c:0,fckb:"شەڕی بەدر لە ساڵی دووەمی کۆچی.",fen:"The Battle of Badr in 2 AH."},
  {cat:"islam",d:3,ckb:"کۆچی پێغەمبەر لە مەککەوە بۆ مەدینە بە چی ناسراوە؟",en:"The Prophet's migration to Medina is called?",o:[["هیجرە","Hijra"],["ئیسرا","Isra"],["میعراج","Mi'raj"],["فەتح","Fath"]],c:0,fckb:"هیجرە، سەرەتای ساڵنامەی کۆچی.",fen:"The Hijra, start of the Islamic calendar."},
@@ -1427,6 +1465,351 @@ const ISLAMQ=[
  {cat:"islam",d:3,ckb:"کام کۆرپە یەکەم منداڵ بوو کە باوەڕی هێنا؟",en:"Who is often named the first child to accept Islam?",o:[["عەلی","Ali"],["زەید","Zayd"],["حەسەن","Hasan"],["عەبدوللە","Abdullah"]],c:0,fckb:"عەلیی کوڕی ئەبی تالیب.",fen:"Ali ibn Abi Talib."}
 ];
 Q.push(...ISLAMQ);
+/* ===== MEGA expansion bank (appended to Q) =====
+   cat: history, geo, culture, language, people, general, islam, deep, poet
+   d: 1 easy · 2 medium · 3 hard · 4 = brutal/deep-history special */
+const MEGAQ=[
+/* ---------------- DEEP KURDISH HISTORY (special, mostly d:4) ---------------- */
+ {cat:"deep",d:4,ckb:"میری سۆران لە سەردەمی محەمەد پاشای ڕەواندزیدا کام شار کرایە پایتەخت؟",en:"During Mir Muhammad of Soran's reign, which city was his capital?",o:[["ڕەواندز","Rawanduz"],["هەولێر","Erbil"],["کۆیە","Koya"],["ئاکرێ","Akre"]],c:0,fckb:"محەمەد پاشای ڕەواندزی (میرە کۆرە) لە سەردەمی خۆیدا میرنشینێکی بەهێزی دامەزراند.",fen:"Mir Muhammad ('Mîrê Kor') built a powerful emirate centered on Rawanduz in the 1820s–30s."},
+ {cat:"deep",d:4,ckb:"میرە کۆرە (محەمەد پاشای ڕەواندزی) بە کام نازناو ناسرابوو لەبەر کوێری چاوێکی؟",en:"Mir Muhammad of Rawanduz was nicknamed 'Mîrê Kor' because…",o:[["یەک چاوی کوێر بوو","He was blind in one eye"],["پیاوێکی نەخوێندەوار بوو","He was illiterate"],["گەنج مرد","He died young"],["شاعیر بوو","He was a poet"]],c:0,fckb:"«میرە کۆرە» واتە میرە کوێرەکە.",fen:"'Mîrê Kor' means 'the blind Mir'."},
+ {cat:"deep",d:4,ckb:"بزووتنەوەی شێخ عوبەیدوللای نەهری لە چ ساڵێکدا ڕوویدا؟",en:"In which year did Sheikh Ubeydullah of Nehri's uprising take place?",o:[["١٨٨٠","1880"],["١٨٤٧","1847"],["١٩٠٨","1908"],["١٩٢٥","1925"]],c:0,fckb:"بزووتنەوەی شێخ عوبەیدوللا (١٨٨٠) یەکێکە لە یەکەم هەوڵە نەتەوەییەکانی کورد.",fen:"Sheikh Ubeydullah's 1880 movement is seen as an early Kurdish nationalist effort."},
+ {cat:"deep",d:4,ckb:"میرنشینی بۆتان لەلایەن کام میرەوە گەیشتە لووتکەی هێزی لە سەدەی ١٩؟",en:"The Botan emirate reached its peak under which mir in the 19th century?",o:[["بەدرخان بەگ","Bedirxan Beg"],["ئەزیز بەگ","Aziz Beg"],["شەرەف خان","Sharaf Khan"],["ئیسماعیل پاشا","Ismail Pasha"]],c:0,fckb:"بەدرخان بەگ، میری بۆتان، لە جزیر فەرمانڕەوایی دەکرد.",fen:"Bedirxan Beg ruled the Botan emirate from Cizre (Cizîr)."},
+ {cat:"deep",d:4,ckb:"شۆڕشی شێخ مەحموودی بەرزنجی دژی بەریتانیا لە کام شار سەرهەڵدا؟",en:"Sheikh Mahmud Barzanji's revolt against the British was centered in which city?",o:[["سلێمانی","Sulaymaniyah"],["کەرکووک","Kirkuk"],["هەولێر","Erbil"],["موسڵ","Mosul"]],c:0,fckb:"شێخ مەحموود خۆی بە پاشای کوردستان ڕاگەیاند لە سلێمانی.",fen:"Sheikh Mahmud declared himself King of Kurdistan in Sulaymaniyah."},
+ {cat:"deep",d:4,ckb:"شێخ مەحموودی بەرزنجی خۆی بە چی ڕاگەیاند لە ١٩٢٢؟",en:"In 1922 Sheikh Mahmud proclaimed himself…",o:[["پاشای کوردستان","King of Kurdistan"],["سەرۆک کۆمار","President"],["سەرۆک وەزیران","Prime Minister"],["میر","A Mir"]],c:0,fckb:"«حکمداری کوردستان».",fen:"'Ruler/King of Kurdistan'."},
+ {cat:"deep",d:4,ckb:"یەکەم ڕۆژنامەی کوردی «کوردستان» لە چ ساڵێک و لە کوێ دەرچوو؟",en:"The first Kurdish newspaper 'Kurdistan' was first published when and where?",o:[["١٨٩٨ لە قاهیرە","1898 in Cairo"],["١٩٠٨ لە ستەنبوڵ","1908 in Istanbul"],["١٩٢٠ لە سلێمانی","1920 in Sulaymaniyah"],["١٨٨٠ لە تاران","1880 in Tehran"]],c:0,fckb:"ڕۆژنامەی «کوردستان» لە ٢٢ی نیسانی ١٨٩٨ لە قاهیرە لەلایەن مەقداد مدحەت بەدرخانەوە دەرچوو.",fen:"'Kurdistan' first appeared on 22 April 1898 in Cairo, founded by Miqdad Midhat Bedirxan."},
+ {cat:"deep",d:4,ckb:"کێ دامەزرێنەری یەکەم ڕۆژنامەی کوردی «کوردستان» بوو؟",en:"Who founded the first Kurdish newspaper, 'Kurdistan'?",o:[["مەقداد مدحەت بەدرخان","Miqdad Midhat Bedirxan"],["جەلادەت بەدرخان","Celadet Bedirxan"],["عەبدوللا جەودەت","Abdullah Cevdet"],["خانی","Xanî"]],c:0,fckb:"لە بنەماڵەی بەدرخانی بۆتان.",fen:"From the Bedirxan family of Botan."},
+ {cat:"deep",d:4,ckb:"کۆمەڵەی «خۆیبوون» کە لە ١٩٢٧ دامەزرا، ئامانجی سەرەکیی چی بوو؟",en:"The 'Xoybûn' league founded in 1927 mainly aimed to…",o:[["ڕێکخستنی شۆڕشی نەتەوەیی کورد","Coordinate the Kurdish national revolt"],["بڵاوکردنەوەی ڕۆژنامە","Publish newspapers"],["فێرکردنی زمان","Teach language"],["بازرگانی","Promote trade"]],c:0,fckb:"خۆیبوون شۆڕشی ئاگری (ئارارات)ی ڕێکخست.",fen:"Xoybûn organized the Ararat (Agirî) revolt."},
+ {cat:"deep",d:4,ckb:"شۆڕشی ئاگری (ئارارات) لەژێر سەرکردایەتیی کام ئەفسەرەوە بوو؟",en:"The Ararat rebellion was militarily led by which officer?",o:[["ئیحسان نووری پاشا","Ihsan Nuri Pasha"],["سمکۆ شکاک","Simko Shikak"],["سەید ڕەزا","Seyid Riza"],["شێخ سعید","Sheikh Said"]],c:0,fckb:"ئیحسان نووری پاشا فەرماندەی سەربازیی شۆڕشی ئاگری بوو (١٩٢٧–١٩٣٠).",fen:"Ihsan Nuri Pasha commanded the Ararat revolt (1927–1930)."},
+ {cat:"deep",d:4,ckb:"شۆڕشی شێخ سعیدی پیران دژی کۆماری تورکیا لە چ ساڵێک بوو؟",en:"Sheikh Said's rebellion against the Turkish Republic was in which year?",o:[["١٩٢٥","1925"],["١٩٢٠","1920"],["١٩٣٠","1930"],["١٩٣٨","1938"]],c:0,fckb:"شۆڕشی شێخ سعید لە ١٩٢٥، یەکێک لە گەورەترین ڕاپەڕینەکان دژی ئاتاتورک.",fen:"Sheikh Said's 1925 rebellion was a major uprising against the new Turkish state."},
+ {cat:"deep",d:4,ckb:"ڕووداوی دەرسیم (١٩٣٧–١٩٣٨) لە کام ناوچەی باکووری کوردستان ڕوویدا؟",en:"The Dersim events (1937–38) occurred in which region?",o:[["دەرسیم (تونجلی)","Dersim (Tunceli)"],["وان","Van"],["دیاربەکر","Diyarbakir"],["ئاگری","Agirî"]],c:0,fckb:"دەرسیم، کە ئێستا بە تونجلی ناسراوە.",fen:"Dersim, today called Tunceli."},
+ {cat:"deep",d:4,ckb:"سەید ڕەزا سەرکردەی کام ڕاپەڕین بوو؟",en:"Seyid Riza led which uprising?",o:[["دەرسیم","Dersim"],["ئاگری","Ararat"],["بارزان","Barzan"],["مەهاباد","Mahabad"]],c:0,fckb:"سەید ڕەزا سەرکردەی عەلەویی کوردی دەرسیم بوو.",fen:"Seyid Riza was the Alevi Kurdish leader of Dersim."},
+ {cat:"deep",d:4,ckb:"سمکۆ شکاک (ئیسماعیل ئاغا) لە کام بەشی کوردستان ڕاپەڕی؟",en:"Simko Shikak (Ismail Agha) led his revolt in which part of Kurdistan?",o:[["ڕۆژهەڵات (ئێران)","Eastern (Iran)"],["باشوور (عێراق)","Southern (Iraq)"],["باکوور (تورکیا)","Northern (Turkey)"],["ڕۆژاوا (سووریا)","Western (Syria)"]],c:0,fckb:"سمکۆ لە ناوچەی ورمێ لە ڕۆژهەڵاتی کوردستان ڕاپەڕی.",fen:"Simko revolted in the Urmia region of eastern (Iranian) Kurdistan."},
+ {cat:"deep",d:4,ckb:"کۆماری مەهاباد لە چ ساڵێکدا ڕاگەیەنرا و چەند مانگ مایەوە؟",en:"The Republic of Mahabad was declared in which year and lasted about…",o:[["١٩٤٦، نزیکەی ١١ مانگ","1946, about 11 months"],["١٩٤٥، دوو ساڵ","1945, two years"],["١٩٤٧، شەش مانگ","1947, six months"],["١٩٤٢، سێ ساڵ","1942, three years"]],c:0,fckb:"کۆماری مەهاباد لە کانوونی دووەمی ١٩٤٦ ڕاگەیەنرا و تا کانوونی یەکەمی هەمان ساڵ مایەوە.",fen:"Mahabad was declared in Jan 1946 and fell by Dec 1946."},
+ {cat:"deep",d:4,ckb:"ئاڵای کۆماری مەهاباد کام هێمای لەناوەڕاستدا هەبوو؟",en:"The flag of the Republic of Mahabad featured what central emblem?",o:[["خۆر و گوڵە گەنم و قەڵەم","Sun, wheat ears and a pen"],["تەنها خۆر","Only a sun"],["شێر","A lion"],["ئەستێرە و مانگ","A star and crescent"]],c:0,fckb:"وێنای پیشەسازی و کشتوکاڵ لەگەڵ خۆردا.",fen:"It combined agricultural and industrial symbols with the sun."},
+ {cat:"deep",d:4,ckb:"قازی محەمەد لە چ ساڵێکدا لەسێدارە درا؟",en:"In what year was Qazi Muhammad executed?",o:[["١٩٤٧","1947"],["١٩٤٦","1946"],["١٩٥٠","1950"],["١٩٤٥","1945"]],c:0,fckb:"لە مەیدانی چوارچرای مەهاباد لە ٣١ی ئازاری ١٩٤٧.",fen:"In Mahabad's Chwarchira Square on 31 March 1947."},
+ {cat:"deep",d:4,ckb:"یەکەم سەرۆکی پارتی دیموکراتی کوردستانی ئێران (پدکا) کێ بوو؟",en:"Who was the first leader of the KDP of Iran (PDKI)?",o:[["قازی محەمەد","Qazi Muhammad"],["عەبدولڕەحمان قاسملوو","Abdul Rahman Ghassemlou"],["سمکۆ","Simko"],["شێخ عیزەددین","Sheikh Izzeddin"]],c:0,fckb:"قازی محەمەد، هەمان سەرۆکی کۆماری مەهاباد.",fen:"Qazi Muhammad, also leader of the Mahabad Republic."},
+ {cat:"deep",d:4,ckb:"عەبدولڕەحمان قاسملوو، سەرۆکی پدکا، لە چ شارێک تیرۆرکرا؟",en:"In which city was PDKI leader Abdul Rahman Ghassemlou assassinated?",o:[["ڤییەنا","Vienna"],["پاریس","Paris"],["بەرلین","Berlin"],["جنێڤ","Geneva"]],c:0,fckb:"لە ١٩٨٩ لە کاتی دانوستان لە ڤییەنا تیرۆرکرا.",fen:"He was killed in Vienna in 1989 during negotiations."},
+ {cat:"deep",d:4,ckb:"شۆڕشی ئەیلوول (گوڵان) لە باشووری کوردستان لە چ ساڵێک دەستیپێکرد؟",en:"The September (Aylul) revolution in Iraqi Kurdistan began in which year?",o:[["١٩٦١","1961"],["١٩٥٨","1958"],["١٩٧٠","1970"],["١٩٧٤","1974"]],c:0,fckb:"لە ١٩٦١ بەسەرکردایەتیی مستەفا بارزانی دەستیپێکرد.",fen:"It began in 1961 under Mustafa Barzani."},
+ {cat:"deep",d:4,ckb:"ڕێکەوتنی ئۆتۆنۆمی ١١ی ئازار لە نێوان کورد و حکوومەتی عێراق لە چ ساڵێک واژۆکرا؟",en:"The 11 March autonomy agreement between the Kurds and Iraq was signed in which year?",o:[["١٩٧٠","1970"],["١٩٧٥","1975"],["١٩٦٦","1966"],["١٩٨٨","1988"]],c:0,fckb:"بەیاننامەی ١١ی ئازاری ١٩٧٠، بەڵام دواتر شکستی هێنا.",fen:"The March 1970 accord, which later broke down."},
+ {cat:"deep",d:4,ckb:"ڕێکەوتنی ئەلجەزائیر (١٩٧٥) چ کاریگەرییەکی لەسەر شۆڕشی کورد هەبوو؟",en:"What effect did the 1975 Algiers Agreement have on the Kurdish revolt?",o:[["ئێران پشتگیریی ڕاگرت و شۆڕش شکستی هێنا","Iran cut support and the revolt collapsed"],["شۆڕش سەرکەوت","The revolt won"],["کوردستان سەربەخۆ بوو","Kurdistan became independent"],["هیچ کاریگەرییەک نەبوو","It had no effect"]],c:0,fckb:"دوای ڕێکەوتنی شا و سەدام، پشتگیریی ئێران بڕا و شۆڕش لەناوچوو.",fen:"After the Shah–Saddam deal, Iranian backing ended and the revolt collapsed."},
+ {cat:"deep",d:4,ckb:"کام دوو شاخ لە مێژووی شۆڕشی کوردا بنکەی سەرەکیی پێشمەرگە بوون؟",en:"Which mountains were key peshmerga strongholds in the Kurdish revolts?",o:[["هەندرێن و قەندیل","Handrin and Qandil"],["جوودی و ئاگری","Cudi and Agirî"],["زاگرۆس و تۆرۆس","Zagros and Taurus"],["گارا و سەفین","Gara and Safin"]],c:0,fckb:"چیاکانی هەندرێن و قەندیل ناوبانگیان هەیە لە شۆڕشەکاندا.",fen:"The Handrin and Qandil mountains feature prominently in the revolts."},
+ {cat:"deep",d:4,ckb:"کارەساتی ئەنفال لە چ ساڵێکدا بەسەر کوردا سەپێنرا؟",en:"In which year was the Anfal campaign carried out against the Kurds?",o:[["١٩٨٨","1988"],["١٩٨٦","1986"],["١٩٩١","1991"],["١٩٨٣","1983"]],c:0,fckb:"کەمپینی ئەنفال لە ١٩٨٨، کە ژمارەیەکی زۆری کورد لەناوبرا.",fen:"The Anfal campaign of 1988, which killed tens of thousands of Kurds."},
+ {cat:"deep",d:4,ckb:"ڕاپەڕینی گەلی کوردستان دژی ڕژێمی بەعس لە چ ساڵێکدا ڕوویدا؟",en:"The Kurdish uprising (Raperîn) against the Ba'ath regime took place in which year?",o:[["١٩٩١","1991"],["١٩٨٨","1988"],["١٩٩٢","1992"],["٢٠٠٣","2003"]],c:0,fckb:"ڕاپەڕینی ١٩٩١ دوای جەنگی کەنداو.",fen:"The 1991 uprising after the Gulf War."},
+ {cat:"deep",d:4,ckb:"یەکەم هەڵبژاردنی پەرلەمانی کوردستان لە باشوور لە چ ساڵێک بەڕێوەچوو؟",en:"The first Kurdistan parliamentary election (Iraqi Kurdistan) was held in which year?",o:[["١٩٩٢","1992"],["١٩٩١","1991"],["١٩٩٦","1996"],["٢٠٠٥","2005"]],c:0,fckb:"لە ١٩ی ئایاری ١٩٩٢.",fen:"On 19 May 1992."},
+ {cat:"deep",d:4,ckb:"«مەلا مستەفا بارزانی» لە کۆتاییدا لە کام وڵات کۆچی دوایی کرد؟",en:"In which country did Mustafa Barzani die in exile?",o:[["ئەمریکا","The United States"],["ئێران","Iran"],["ڕووسیا","Russia"],["تورکیا","Turkey"]],c:0,fckb:"لە ١٩٧٩ لە ئەمریکا کۆچی دوایی کرد.",fen:"He died in the USA in 1979."},
+ {cat:"deep",d:4,ckb:"کام ئیمپراتۆریی کوردی-ئیسلامی لە سەدەکانی ناوەڕاستدا لەلایەن مەروانییەکانەوە دامەزرا؟",en:"Which medieval Kurdish dynasty ruled Diyarbakir and Mayyafariqin?",o:[["مەروانی","Marwanid"],["شەدادی","Shaddadid"],["حەسەنوەیهی","Hasanwayhid"],["ئەیووبی","Ayyubid"]],c:0,fckb:"دەوڵەتی مەروانی (٩٩٠–١٠٨٥ز) کوردی بوو.",fen:"The Marwanid dynasty (990–1085 CE) was Kurdish."},
+ {cat:"deep",d:4,ckb:"دەوڵەتی شەدادی کە کوردی بوو، لە کام ناوچە فەرمانڕەوایی دەکرد؟",en:"The Kurdish Shaddadid dynasty ruled which region?",o:[["ئەران و ئەرمینیا (گەنجە)","Arran & Armenia (Ganja)"],["میسر","Egypt"],["خوراسان","Khorasan"],["یەمەن","Yemen"]],c:0,fckb:"شەدادییەکان لە ئەران و دەوروبەری گەنجە فەرمانڕەوا بوون.",fen:"The Shaddadids ruled in Arran around Ganja."},
+ {cat:"deep",d:4,ckb:"دەوڵەتی حەسەنوەیهی کوردی لە کام سەدەدا لە ناوچەی زاگرۆس دامەزرا؟",en:"The Kurdish Hasanwayhid dynasty arose in the Zagros in which century?",o:[["سەدەی ١٠ز","10th century CE"],["سەدەی ١٢ز","12th century"],["سەدەی ٨ز","8th century"],["سەدەی ١٤ز","14th century"]],c:0,fckb:"حەسەنوەیهییەکان لە سەدەی دەیەمدا دەسەڵاتیان هەبوو.",fen:"The Hasanwayhids held power in the 10th century."},
+ {cat:"deep",d:4,ckb:"میرنشینی ئەردەڵان پایتەختەکەی لە کوێ بوو؟",en:"What was the capital of the Ardalan principality?",o:[["سنە (سەنەندەج)","Sanandaj (Senna)"],["مەهاباد","Mahabad"],["کرماشان","Kermanshah"],["سلێمانی","Sulaymaniyah"]],c:0,fckb:"سنە (سەنەندەج) ناوەندی میرنشینی ئەردەڵان بوو.",fen:"Sanandaj was the seat of the Ardalan principality."},
+ {cat:"deep",d:4,ckb:"کام میرنشینی کوردی درێژترین تەمەنی هەبوو، نزیکەی ٨ سەدە؟",en:"Which Kurdish principality survived nearly eight centuries?",o:[["ئەردەڵان","Ardalan"],["بابان","Baban"],["سۆران","Soran"],["بۆتان","Botan"]],c:0,fckb:"میرنشینی ئەردەڵان لە سەدەی ١٤ تا ١٩.",fen:"The Ardalan principality, from the 14th to 19th centuries."},
+ {cat:"deep",d:4,ckb:"ڕێکەوتنی قەسری شیرین (١٦٣٩) چی کرد بە کوردستان؟",en:"What did the 1639 Treaty of Zuhab (Qasr-e Shirin) do to Kurdistan?",o:[["دایبەشی نێوان عوسمانی و سەفەوی","Divided it between Ottomans and Safavids"],["سەربەخۆی کرد","Made it independent"],["یەکیخستەوە","Unified it"],["دایبەشی نێوان ٤ وڵات","Split it among four states"]],c:0,fckb:"یەکەم دابەشکردنی گەورەی کوردستان نێوان دوو ئیمپراتۆری.",fen:"The first major partition of Kurdistan between two empires."},
+ {cat:"deep",d:4,ckb:"شەڕی چاڵدران (١٥١٤) چ کاریگەرییەکی درێژخایەنی لەسەر کورد هەبوو؟",en:"The Battle of Chaldiran (1514) had what lasting effect on the Kurds?",o:[["زۆربەی میرنشینەکان چوونە ژێر دەسەڵاتی عوسمانی","Most emirates came under Ottoman influence"],["کوردستان سەربەخۆ بوو","Kurdistan became independent"],["کورد بوون بە سەفەوی","Kurds joined the Safavids"],["هیچ","Nothing"]],c:0,fckb:"دوای چاڵدران، ئدریسی بدلیسی زۆر میرنشینی کوردی لەگەڵ عوسمانی هاوپەیمان کرد.",fen:"After Chaldiran, Idris Bidlisi allied many Kurdish emirates with the Ottomans."},
+ {cat:"deep",d:4,ckb:"ئدریسی بدلیسی چ ڕۆڵێکی گرنگی گێڕا دوای شەڕی چاڵدران؟",en:"What key role did Idris Bidlisi play after Chaldiran?",o:[["ڕێکخستنی پەیوەندیی میرە کوردەکان لەگەڵ عوسمانی","Organized Kurdish emirs' alliance with the Ottomans"],["دامەزراندنی کۆمار","Founded a republic"],["نووسینی مەم و زین","Wrote Mem û Zîn"],["سەرکردایەتیی شۆڕش","Led a revolt"]],c:0,fckb:"بیرمەند و دیپلۆماتێکی کورد بوو لە خزمەتی سوڵتان سەلیم.",fen:"A Kurdish scholar-diplomat in the service of Sultan Selim I."},
+ {cat:"deep",d:4,ckb:"«شەرەفنامە» لە چ ساڵێک و بە چ زمانێک نووسرا؟",en:"In what year and language was the 'Sharafnama' written?",o:[["١٥٩٧، بە فارسی","1597, in Persian"],["١٦٩٢، بە کوردی","1692, in Kurdish"],["١٤٥٠، بە عەرەبی","1450, in Arabic"],["١٧٨٤، بە تورکی","1784, in Turkish"]],c:0,fckb:"شەرەف خانی بدلیسی لە ١٥٩٧ بە فارسی نووسی.",fen:"Sharaf Khan Bidlisi wrote it in Persian in 1597."},
+ {cat:"deep",d:4,ckb:"کام شارەزای کورد لە سەدەی ١٢ز ئەستێرەناس و بیرکاریزانی ناودار بوو، نووسەری «زیج»؟",en:"Which medieval Kurdish scholar was a famed astronomer/mathematician?",o:[["ئیبن یوونس / شارەزایانی کورد","Kurdish scholars of the era"],["ئیبن سینا","Ibn Sina"],["خوارزمی","Al-Khwarizmi"],["بیرونی","Al-Biruni"]],c:0,fckb:"چەند زانای کورد بەشدار بوون لە سەردەمی زێڕینی ئیسلامی.",fen:"Several Kurdish scholars contributed during the Islamic Golden Age."},
+ {cat:"deep",d:4,ckb:"کام شار بە «مووزەی هەتاو» یان شوێنی قەڵای کۆنی هەولێر ناسراوە کە یونیسکۆ تۆماری کردووە؟",en:"Which continuously-inhabited Kurdish citadel is a UNESCO World Heritage site?",o:[["قەڵای هەولێر","Erbil Citadel"],["قەڵای دمدم","Dimdim Castle"],["قەڵای شێروانە","Sherwana Castle"],["قەڵای بەستام","Bastam"]],c:0,fckb:"قەڵای هەولێر، لە ٢٠١٤ تۆماری یونیسکۆ کرا.",fen:"Erbil Citadel, inscribed by UNESCO in 2014."},
+ {cat:"deep",d:4,ckb:"شەڕی قەڵای دمدم (١٦٠٩–١٦١٠) نێوان کێ و کێ بوو؟",en:"The Battle of Dimdim (1609–1610) was fought between the Kurds and whom?",o:[["سەفەوییەکان (شا عەباس)","The Safavids (Shah Abbas)"],["عوسمانییەکان","The Ottomans"],["مەغۆڵەکان","The Mongols"],["ڕووسەکان","The Russians"]],c:0,fckb:"بەرگریی ئەمیر خانی لەپزێرین دژی شا عەباسی سەفەوی.",fen:"Amir Khan Lepzêrîn's defense against Shah Abbas of the Safavids."},
+ {cat:"deep",d:4,ckb:"کام بنەماڵەی کوردی فەرمانڕەوایی بازرگانی و سیاسیی بەهدینان (ئامێدی)یان کرد؟",en:"Which dynasty ruled the Bahdinan (Amadiya) emirate?",o:[["بنەماڵەی عەباسی بەهدینان","The Bahdinan ruling house"],["بابان","Baban"],["ئەردەڵان","Ardalan"],["شەدادی","Shaddadid"]],c:0,fckb:"میرنشینی بەهدینان ناوەندەکەی ئامێدی بوو.",fen:"The Bahdinan emirate was centered on Amadiya (Amêdî)."},
+ {cat:"deep",d:4,ckb:"یەکەم کۆنگرەی نیشتمانیی کورد لە ئەمریکا/ئەورووپا پاش جەنگی جیهانیی یەکەم داوای چی کرد؟",en:"After WWI, Kurdish delegations to the peace talks demanded mainly…",o:[["دەوڵەتێکی کوردی سەربەخۆ","An independent Kurdish state"],["ئۆتۆنۆمی تەنها","Only autonomy"],["یەکگرتن لەگەڵ تورکیا","Union with Turkey"],["کۆچ","Emigration"]],c:0,fckb:"شەریف پاشا لە کۆنفرانسی ئاشتی پاریسدا نوێنەرایەتیی کردن.",fen:"Sherif Pasha represented Kurdish claims at the Paris Peace Conference."},
+ {cat:"deep",d:4,ckb:"خانەدانی بابان لە کێبڕکێ لەگەڵ کام میرنشین بوون لەسەر دەسەڵات لە باشوور؟",en:"The Baban dynasty competed for power against which rival emirate?",o:[["ئەردەڵان","Ardalan"],["بۆتان","Botan"],["بەهدینان","Bahdinan"],["سۆران","Soran"]],c:0,fckb:"بابان و ئەردەڵان زۆرجار لە ململانێدا بوون.",fen:"Baban and Ardalan were frequent rivals."},
+ {cat:"deep",d:4,ckb:"شاری سلێمانی لە ١٧٨٤ لەلایەن کام کەسەوە دامەزرا؟",en:"Who founded the city of Sulaymaniyah in 1784?",o:[["ئیبراهیم پاشای بابان","Ibrahim Pasha Baban"],["مەحموود پاشا","Mahmud Pasha"],["سلێمان بەگ","Sulayman Beg"],["ئەحمەد بابان","Ahmad Baban"]],c:0,fckb:"بەناوی سلێمان پاشا نرا.",fen:"Named after Sulayman Pasha."},
+ {cat:"deep",d:4,ckb:"کام کەس بە «دایکی شۆڕشی کورد» یان ئافرەتی چەکداری ناودار لە دژی داگیرکاری ناسراوە؟",en:"Adila Khanum is historically notable as…",o:[["ئافرەتێکی بەهێزی سیاسی-سەربازی لە هەڵەبجە","A powerful political-military woman leader of Halabja"],["شاعیر","A poet"],["گۆرانیبێژ","A singer"],["پزیشک","A doctor"]],c:0,fckb:"بە «شاژنی ئازایان» ناسراوە، سەرکردەی جاف.",fen:"Known as 'Princess of the Brave', a Jaff leader."},
+ {cat:"deep",d:4,ckb:"کام جەنگ لە ١٩٩٤–١٩٩٨ نێوان دوو پارتی سەرەکیی باشووری کوردستان ڕوویدا؟",en:"Which internal conflict occurred between the two main Iraqi-Kurdish parties in 1994–98?",o:[["جەنگی براکوژی","The intra-Kurdish civil war (Birakujî)"],["شۆڕشی ئەیلوول","September revolt"],["ڕاپەڕین","The Uprising"],["ئەنفال","Anfal"]],c:0,fckb:"جەنگی ناوخۆیی نێوان پارتی و یەکێتی، کە بە «براکوژی» ناسراوە.",fen:"The civil war between the KDP and PUK, called 'Birakujî'."},
+
+/* ---------------- KURDISH POETRY (special, d:3-4) ---------------- */
+ {cat:"poet",d:3,ckb:"«مەم و زین» نووسراوی کام شاعیرە و لە چ ساڵێک؟",en:"'Mem û Zîn' was written by which poet and in what year?",o:[["ئەحمەدی خانی، ١٦٩٢","Ehmedê Xanî, 1692"],["مەلای جزیری، ١٦٤٠","Melayê Cizîrî, 1640"],["نالی، ١٨٥٠","Nalî, 1850"],["فەقێ تەیران، ١٦٠٠","Feqîyê Teyran, 1600"]],c:0,fckb:"ئەپۆسی نەتەوەیی کورد، نووسراوی ئەحمەدی خانی لە ١٦٩٢.",fen:"The Kurdish national epic, written by Ehmedê Xanî in 1692."},
+ {cat:"poet",d:3,ckb:"مەلای جزیری دیوانەکەی بە کام زاراوەی کوردی نووسی؟",en:"Melayê Cizîrî wrote his Diwan in which Kurdish dialect?",o:[["کرمانجی","Kurmanji"],["سۆرانی","Sorani"],["هەورامی","Hawrami"],["زازاکی","Zazaki"]],c:0,fckb:"مەلای جزیری گەورەترین شاعیری کلاسیکی کرمانجییە.",fen:"Cizîrî is the greatest classical Kurmanji poet."},
+ {cat:"poet",d:4,ckb:"مەلای جزیری لە کام سەدەدا ژیاوە؟",en:"In which century did Melayê Cizîrî live?",o:[["سەدەی ١٦–١٧","16th–17th century"],["سەدەی ١٤","14th century"],["سەدەی ١٩","19th century"],["سەدەی ١٢","12th century"]],c:0,fckb:"مەلای جزیری لە سەدەی ١٦–١٧ لە جزیری بۆتان ژیا.",fen:"Cizîrî lived in the 16th–17th century in Cizîr of Botan."},
+ {cat:"poet",d:4,ckb:"کام شاعیر بە دامەزرێنەری شیعری کلاسیکی سۆرانی دادەنرێت؟",en:"Who is considered the founder of classical Sorani poetry?",o:[["نالی","Nalî"],["گۆران","Goran"],["پیرەمێرد","Pîremêrd"],["مەحوی","Mahwî"]],c:0,fckb:"نالی لە سەدەی ١٩ لەگەڵ سالم و کوردی.",fen:"Nalî in the 19th century, alongside Salim and Kurdî."},
+ {cat:"poet",d:4,ckb:"ناوی ڕاستەقینەی شاعیری ناودار «نالی» چی بوو؟",en:"What was the real name of the poet 'Nalî'?",o:[["مەلا خدری ئەحمەدی شاوەیسی میکائیلی","Mela Xidrî Ehmedî Şaweysî Mîkaîlî"],["عەبدوللا گۆران","Abdulla Goran"],["تەوفیق پیرەمێرد","Tewfîq Pîremêrd"],["مەحمود ئەحمەد","Mahmud Ahmad"]],c:0,fckb:"نالی نازناوی شیعرییەتی.",fen:"'Nalî' was his pen name."},
+ {cat:"poet",d:4,ckb:"کام شاعیر بە «باوکی شیعری نوێی کوردی» ناسراوە کە شێوازی نوێی هێنایە ناو شیعری سۆرانی؟",en:"Which poet is the 'father of modern Kurdish poetry'?",o:[["عەبدوللا گۆران","Abdulla Goran"],["نالی","Nalî"],["هەژار","Hejar"],["شێرکۆ بێکەس","Sherko Bekas"]],c:0,fckb:"گۆران کێشی عەرووزی بە شێوازی نوێ گۆڕی.",fen:"Goran broke from classical Aruz meter into modern forms."},
+ {cat:"poet",d:4,ckb:"شێرکۆ بێکەس کوڕی کام شاعیری ناودار بوو؟",en:"Sherko Bekas was the son of which famous poet?",o:[["فایەق بێکەس","Fayaq Bekas"],["گۆران","Goran"],["پیرەمێرد","Pîremêrd"],["هەژار","Hejar"]],c:0,fckb:"باوکی، فایەق بێکەس، خۆی شاعیرێکی نیشتمانپەروەر بوو.",fen:"His father, Fayaq Bekas, was himself a patriotic poet."},
+ {cat:"poet",d:4,ckb:"شێرکۆ بێکەس بە دامەزرێنەری کام شێوازی شیعری ناسراوە؟",en:"Sherko Bekas is associated with founding which poetic style?",o:[["ڕۆمانی شیعری (پۆستەر/ڕووان)","The 'poster poem' / free narrative style"],["عەرووزی کلاسیک","Classical aruz"],["غەزەل","The ghazal"],["ڕوباعی","The rubaiyat"]],c:0,fckb:"شێرکۆ شێوازی «شیعری ڕووان» و درێژی نوێی هێنایە کایەوە.",fen:"Sherko pioneered long free-form 'poster' poetry."},
+ {cat:"poet",d:4,ckb:"کام شاعیری کورد خەڵاتی نووسەرانی جیهانیی (تۆخۆلسکی) وەرگرت؟",en:"Which Kurdish poet received Sweden's Tucholsky Prize?",o:[["شێرکۆ بێکەس","Sherko Bekas"],["گۆران","Goran"],["هەژار","Hejar"],["نالی","Nalî"]],c:0,fckb:"شێرکۆ بێکەس لە ١٩٨٧ خەڵاتی تۆخۆلسکیی سوید وەرگرت.",fen:"Sherko Bekas received the Swedish Tucholsky Prize in 1987."},
+ {cat:"poet",d:4,ckb:"ناوی ڕاستەقینەی شاعیر و وەرگێڕی ناودار «هەژار» چی بوو؟",en:"What was the real name of the poet 'Hejar'?",o:[["عەبدولڕەحمان شەرەفکەندی","Abdurrahman Sharafkandi"],["تەوفیق پیرەمێرد","Tewfîq Pîremêrd"],["مەلا خدر","Mela Xidir"],["دلدار","Dildar"]],c:0,fckb:"هەژار قورئانیشی وەرگێڕایە سەر کوردی.",fen:"Hejar also translated the Qur'an into Kurdish."},
+ {cat:"poet",d:4,ckb:"سروودی نەتەوەیی «ئەی ڕەقیب» لەلایەن کام شاعیرەوە نووسرا؟",en:"The Kurdish anthem 'Ey Reqîb' was written by which poet?",o:[["دلدار","Dildar"],["گۆران","Goran"],["نالی","Nalî"],["هەژار","Hejar"]],c:0,fckb:"دلدار (یونس ڕەئوف) لە ١٩٣٨ نووسی.",fen:"Dildar (Yûnis Reuf) wrote it in 1938."},
+ {cat:"poet",d:4,ckb:"شاعیر «دلدار» سروودی «ئەی ڕەقیب»ی لە کام تەمەن و بارودۆخدا نووسی؟",en:"Under what circumstances did Dildar write 'Ey Reqîb'?",o:[["لە زینداندا و گەنج بوو","While young and in prison"],["لە پیریدا","In old age"],["لە دەرەوەی وڵات","Abroad"],["لە شەڕدا","During a battle"]],c:0,fckb:"کاتێک گەنج بوو و لە زیندان، دواتر بوو بە سروودی کۆماری مەهاباد.",fen:"As a young prisoner; it later became the Mahabad Republic's anthem."},
+ {cat:"poet",d:4,ckb:"کام شاعیری ژنی کورد لە سەدەی ١٩ بە مێژوونووس و دیوانەوە ناودارە؟",en:"Which 19th-century Kurdish woman poet was also a historian?",o:[["مەستوورەی ئەردەڵان","Mastura Ardalan"],["عەدیلە خانم","Adila Khanum"],["پەروین","Parvin"],["گوڵبەهار","Gulbahar"]],c:0,fckb:"مەستوورەی ئەردەڵان، نووسەری مێژووی ئەردەڵان.",fen:"Mastura Ardalan, who wrote a history of the Ardalans."},
+ {cat:"poet",d:4,ckb:"کام شاعیری کلاسیک بە «حافیزی کورد» ناسراوە؟",en:"Which classical poet is called 'the Hafez of the Kurds'?",o:[["نالی","Nalî"],["مەحوی","Mahwî"],["سالم","Salim"],["وەفایی","Wafaî"]],c:0,fckb:"نالی بەهۆی هونەری غەزەلەکانییەوە.",fen:"Nalî, for the artistry of his ghazals."},
+ {cat:"poet",d:4,ckb:"کام شاعیری سۆفی-عاشقانە بە «مەحوی» ناسراوە لە سەدەی ١٩؟",en:"The 19th-century Sufi-romantic poet known as 'Mahwî' came from?",o:[["سلێمانی","Sulaymaniyah"],["مەهاباد","Mahabad"],["جزیر","Cizîr"],["کرماشان","Kermanshah"]],c:0,fckb:"مەحوی شاعیرێکی سۆفیانەی سلێمانی بوو.",fen:"Mahwî was a Sufi poet from Sulaymaniyah."},
+ {cat:"poet",d:3,ckb:"فەقێ تەیران، شاعیری کلاسیکی کرمانج، هاوسەردەمی کام شاعیر بوو؟",en:"Feqîyê Teyran, a classical Kurmanji poet, was a contemporary of?",o:[["مەلای جزیری","Melayê Cizîrî"],["نالی","Nalî"],["گۆران","Goran"],["دلدار","Dildar"]],c:0,fckb:"هاوسەردەم و قوتابیی مەلای جزیری بوو.",fen:"He was a contemporary and student of Melayê Cizîrî."},
+ {cat:"poet",d:4,ckb:"کام شاعیری هاوچەرخی کورد بە شیعری ئازادیخوازی و فەلسەفی ناسراوە، نووسەری «دەروازەکانی...»؟",en:"Which modern Kurdish poet is famed for philosophical, freedom-themed verse?",o:[["شێرکۆ بێکەس","Sherko Bekas"],["نالی","Nalî"],["مەلای جزیری","Cizîrî"],["فەقێ تەیران","Feqîyê Teyran"]],c:0,fckb:"شێرکۆ بێکەس بە «شاعیری ئازادی» ناسراوە.",fen:"Sherko Bekas, often called 'the poet of freedom'."},
+ {cat:"poet",d:3,ckb:"کام نووسەری کورد ڕۆماننووسی هاوچەرخی ناودارە، نووسەری «دوایین هەناری دنیا»؟",en:"Which Kurdish author wrote the acclaimed novel 'The Last Pomegranate'?",o:[["بەختیار عەلی","Bachtyar Ali"],["شێرکۆ بێکەس","Sherko Bekas"],["مەحموود دەروێش","Mahmoud Darwish"],["یاشار کەمال","Yaşar Kemal"]],c:0,fckb:"بەختیار عەلی، دیارترین ڕۆماننووسی کورد.",fen:"Bachtyar Ali, the most prominent Kurdish novelist."},
+
+/* ---------------- more HISTORY (d:2-3) ---------------- */
+ {cat:"history",d:3,ckb:"کام ئیمپراتۆری لە ٦١٢ پ.ز ئاشووری ڕووخاند بە هاوکاریی بابلییەکان؟",en:"Which empire, allied with Babylon, destroyed Assyria in 612 BCE?",o:[["میدەکان","The Medes"],["پارسەکان","The Persians"],["هیتییەکان","The Hittites"],["میسرییەکان","The Egyptians"]],c:0,fckb:"میدەکان، کە زۆرجار بە باپیرانی کورد دادەنرێن.",fen:"The Medes, often regarded as Kurdish ancestors."},
+ {cat:"history",d:3,ckb:"شاری کۆنی نوزی (یۆرگان تەپە) نزیک کام شاری ئەمڕۆیە؟",en:"The ancient city of Nuzi (Yorghan Tepe) lies near which modern city?",o:[["کەرکووک","Kirkuk"],["هەولێر","Erbil"],["دهۆک","Duhok"],["موسڵ","Mosul"]],c:0,fckb:"نزیک کەرکووک، شوێنی هۆرییەکان.",fen:"Near Kirkuk, a Hurrian site."},
+ {cat:"history",d:3,ckb:"گەلی هۆری و میتانی لە کام سەردەمدا لە ناوچەی کوردستان ژیاون؟",en:"The Hurrians and Mitanni lived in the Kurdistan region in which era?",o:[["هەزارەی دووەمی پ.ز","2nd millennium BCE"],["سەدەی ١٠ز","10th century CE"],["سەردەمی ڕۆم","Roman period"],["سەردەمی عوسمانی","Ottoman period"]],c:0,fckb:"هۆری-میتانی لە هەزارەی دووەمی پێش زایندا.",fen:"The Hurrian-Mitanni flourished in the 2nd millennium BCE."},
+ {cat:"history",d:2,ckb:"قەڵای هەولێر لە چ ساڵێک تۆماری میراتی جیهانیی یونیسکۆ کرا؟",en:"In what year was Erbil Citadel inscribed as a UNESCO site?",o:[["٢٠١٤","2014"],["٢٠١٠","2010"],["٢٠٢١","2021"],["٢٠٠٥","2005"]],c:0,fckb:"لە ٢٠١٤.",fen:"In 2014."},
+ {cat:"history",d:2,ckb:"کام پیاوی کورد لە ٢٠٠٥ بووە سەرۆک کۆماری عێراق؟",en:"Which Kurd became President of Iraq in 2005?",o:[["جەلال تاڵەبانی","Jalal Talabani"],["مەسعود بارزانی","Masoud Barzani"],["فوئاد مەعسووم","Fuad Masum"],["برهەم ساڵح","Barham Salih"]],c:0,fckb:"جەلال تاڵەبانی، دامەزرێنەری یەکێتی.",fen:"Jalal Talabani, founder of the PUK."},
+ {cat:"history",d:3,ckb:"دووەمین کەسی کورد کە بووە سەرۆک کۆماری عێراق کێ بوو؟",en:"Who was the second Kurdish President of Iraq?",o:[["فوئاد مەعسووم","Fuad Masum"],["برهەم ساڵح","Barham Salih"],["جەلال تاڵەبانی","Jalal Talabani"],["لەتیف ڕەشید","Latif Rashid"]],c:0,fckb:"فوئاد مەعسووم (٢٠١٤–٢٠١٨).",fen:"Fuad Masum (2014–2018)."},
+ {cat:"history",d:2,ckb:"ڕیفراندۆمی سەربەخۆیی کوردستانی باشوور لە چ ساڵێک بەڕێوەچوو؟",en:"In what year was the Iraqi Kurdistan independence referendum held?",o:[["٢٠١٧","2017"],["٢٠١٤","2014"],["٢٠٠٥","2005"],["٢٠١٩","2019"]],c:0,fckb:"٢٥ی ئەیلوولی ٢٠١٧.",fen:"On 25 September 2017."},
+ {cat:"history",d:3,ckb:"کام میری کورد لە سەردەمی سەلجووقیدا دەسەڵاتی بەهێزی هەبوو لە دیاربەکر؟",en:"Which Kurdish dynasty held power around Diyarbakir before the Seljuks?",o:[["مەروانی","Marwanid"],["ئەرتوقی","Artuqid"],["بابان","Baban"],["ئەیووبی","Ayyubid"]],c:0,fckb:"مەروانییەکان (٩٩٠–١٠٨٥ز).",fen:"The Marwanids (990–1085 CE)."},
+ {cat:"history",d:2,ckb:"سەلاحەدینی ئەیووبی لە کام شار لەدایکبوو؟",en:"In which city was Saladin (Salah ad-Din) born?",o:[["تکریت","Tikrit"],["موسڵ","Mosul"],["دیمەشق","Damascus"],["قاهیرە","Cairo"]],c:0,fckb:"لە تکریت لەدایکبوو، بنەماڵەیەکی کوردی ڕەوادی.",fen:"Born in Tikrit, of the Kurdish Rawadiya family."},
+ {cat:"history",d:2,ckb:"هەڵەبجە لە ١٦ی ئازاری ١٩٨٨ بە چ چەکێک بۆردومان کرا؟",en:"Halabja was attacked on 16 March 1988 with what kind of weapon?",o:[["چەکی کیمیاوی","Chemical weapons"],["تۆپخانە","Artillery only"],["بۆمبی ئاسایی","Conventional bombs"],["مووشەک","Missiles"]],c:0,fckb:"گازی کیمیاوی، یەکێک لە دڵتەزێنترین کارەساتەکان.",fen:"Chemical gas, one of the gravest atrocities against Kurds."},
+
+/* ---------------- GEOGRAPHY (d:2-3) ---------------- */
+ {cat:"geo",d:3,ckb:"درێژترین ڕووباری ناو کوردستان کە دەڕژێتە دیجلە کامەیە؟",en:"Which major river within Kurdistan flows into the Tigris?",o:[["زێی گەورە","The Great Zab"],["ئاراس","Aras"],["موراد","Murat"],["دیاڵە","Diyala"]],c:0,fckb:"زێی گەورە لە چیاکانی هەکاری سەرچاوە دەگرێت.",fen:"The Great Zab rises in the Hakkari mountains."},
+ {cat:"geo",d:3,ckb:"دەریاچەی ورمێ لە کام بەشی کوردستانە؟",en:"Lake Urmia lies in which part of Kurdistan?",o:[["ڕۆژهەڵات (ئێران)","Eastern (Iran)"],["باشوور","Southern"],["باکوور","Northern"],["ڕۆژاوا","Western"]],c:0,fckb:"لە ڕۆژهەڵاتی کوردستان لە ئێران.",fen:"In eastern (Iranian) Kurdistan."},
+ {cat:"geo",d:2,ckb:"بەرزترین لووتکەی باشووری کوردستان (عێراق) کامەیە؟",en:"What is the highest peak of Iraqi Kurdistan?",o:[["چیخا دار","Cheekha Dar"],["هەڵگورد","Halgurd"],["قەندیل","Qandil"],["گارا","Gara"]],c:0,fckb:"چیخا دار نزیکەی ٣٦١١ مەتر (هەندێک هەڵگوردیش دەژمێرن).",fen:"Cheekha Dar (~3,611 m); some count Halgurd."},
+ {cat:"geo",d:3,ckb:"دیمەنی کشتوکاڵیی هەورامان لە چ ساڵێک تۆماری یونیسکۆ کرا؟",en:"In what year was the Hawraman cultural landscape inscribed by UNESCO?",o:[["٢٠٢١","2021"],["٢٠١٤","2014"],["٢٠١٨","2018"],["٢٠٠٩","2009"]],c:0,fckb:"لە ٢٠٢١.",fen:"In 2021."},
+ {cat:"geo",d:2,ckb:"شاری مەهاباد لە کام وڵاتە؟",en:"In which country is the city of Mahabad?",o:[["ئێران","Iran"],["عێراق","Iraq"],["تورکیا","Turkey"],["سووریا","Syria"]],c:0,fckb:"لە ڕۆژهەڵاتی کوردستان، ئێران.",fen:"In eastern Kurdistan, Iran."},
+ {cat:"geo",d:2,ckb:"شاری ئامەد (دیاربەکر) لە کام وڵاتە؟",en:"In which country is Amed (Diyarbakir)?",o:[["تورکیا","Turkey"],["سووریا","Syria"],["عێراق","Iraq"],["ئێران","Iran"]],c:0,fckb:"لە باکووری کوردستان، تورکیا.",fen:"In northern Kurdistan, Turkey."},
+ {cat:"geo",d:2,ckb:"شاری قامیشلۆ لە کام وڵاتە؟",en:"In which country is Qamishlo?",o:[["سووریا","Syria"],["تورکیا","Turkey"],["عێراق","Iraq"],["ئێران","Iran"]],c:0,fckb:"لە ڕۆژاوای کوردستان، سووریا.",fen:"In western Kurdistan, Syria."},
+
+/* ---------------- LANGUAGE & LIT (d:2-3) ---------------- */
+ {cat:"language",d:3,ckb:"ئەلفوبێی هاوار (لاتینی کوردی) لە چ ساڵێک دانرا؟",en:"In what year was the Hawar (Latin Kurdish) alphabet introduced?",o:[["١٩٣٢","1932"],["١٩٢٠","1920"],["١٩٤٦","1946"],["١٩٥٨","1958"]],c:0,fckb:"لەلایەن جەلادەت بەدرخان لە گۆڤاری هاوار.",fen:"By Celadet Bedirxan in the Hawar journal."},
+ {cat:"language",d:3,ckb:"زاراوەی هەورامی (گۆرانی) سەر بە کام لقی زمانی کوردییە؟",en:"The Hawrami (Gorani) variety belongs to which group?",o:[["زازا-گۆرانی","Zaza-Gorani"],["کرمانجی","Kurmanji"],["سۆرانی","Sorani"],["لەکی","Laki"]],c:0,fckb:"هەورامی لەگەڵ زازاکی لە لقی زازا-گۆرانییە.",fen:"Hawrami groups with Zazaki in the Zaza-Gorani branch."},
+ {cat:"language",d:2,ckb:"کام زاراوەی کوردی زۆرترین قسەپێکەری هەیە؟",en:"Which Kurdish dialect has the most speakers?",o:[["کرمانجی","Kurmanji"],["سۆرانی","Sorani"],["هەورامی","Hawrami"],["لەکی","Laki"]],c:0,fckb:"کرمانجی (باکوور) زۆرترین قسەپێکەری هەیە.",fen:"Kurmanji (northern) has the most speakers."},
+ {cat:"language",d:3,ckb:"کام شاعیر یەکەم جار بیرۆکەی نەتەوایەتیی کوردی لە «مەم و زین»دا دەربڕی؟",en:"Which poet first expressed Kurdish national consciousness in literature?",o:[["ئەحمەدی خانی","Ehmedê Xanî"],["نالی","Nalî"],["گۆران","Goran"],["مەلای جزیری","Cizîrî"]],c:0,fckb:"ئەحمەدی خانی لە «مەم و زین».",fen:"Ehmedê Xanî in 'Mem û Zîn'."},
+
+/* ---------------- CULTURE (d:2-3) ---------------- */
+ {cat:"culture",d:3,ckb:"«کلاش» (پێڵاوی نەریتی) بەتایبەتی لە کام ناوچە دروستدەکرێت؟",en:"Klash (traditional shoes) are especially made in which region?",o:[["هەورامان","Hawraman"],["بادینان","Badinan"],["گەرمیان","Garmian"],["موکریان","Mukrian"]],c:0,fckb:"کلاشی هەورامان ناوبانگی هەیە.",fen:"Hawraman klash are famous."},
+ {cat:"culture",d:3,ckb:"«دەنگبێژ» چ ڕۆڵێکی گرنگی لە پاراستنی مێژووی کوردا گێڕاوە؟",en:"What role did the 'dengbêj' play in preserving Kurdish history?",o:[["بە گۆرانی مێژوو و ئەفسانە دەپارێزن","They preserved history and epics through song"],["نەخشە دەکێشن","They drew maps"],["کتێب چاپ دەکەن","They printed books"],["پەرستگا دروستدەکەن","They built temples"]],c:0,fckb:"دەنگبێژەکان بەبێ نووسین، مێژوو بە دەنگ پاراستووە.",fen:"Dengbêj kept history alive orally, without writing."},
+ {cat:"culture",d:2,ckb:"کام دوو ئامێر دەنگی سەرەکیی ئاهەنگی کوردین؟",en:"Which two instruments are central to Kurdish celebrations?",o:[["زوڕنا و دەهۆڵ","Zurna and dahol"],["تەمبوور و دەف","Tanbur and daf"],["کەمانچە و نەی","Kamancheh and ney"],["عوود و قانوون","Oud and qanun"]],c:0,fckb:"زوڕنا و دەهۆڵ.",fen:"The zurna and dahol."},
+ {cat:"culture",d:3,ckb:"«تەمبوور» لە کام ئاینی ڕۆحیدا ئامێرێکی پیرۆزە؟",en:"In which spiritual tradition is the tanbur sacred?",o:[["یارسان","Yarsan"],["زەردەشتی","Zoroastrian"],["سۆفی","Sufi"],["مەسیحی","Christian"]],c:0,fckb:"لە مۆسیقای ئاینیی یارساندا.",fen:"In Yarsan religious music."},
+
+/* ---------------- PEOPLE (d:2-3) ---------------- */
+ {cat:"people",d:3,ckb:"کام دەرهێنەری کورد خەڵاتی «پاڵمی زێڕین»ی کانی بەدەستهێنا بۆ فیلمی «ڕێگا»؟",en:"Which Kurdish director won Cannes' Palme d'Or for the film 'Yol'?",o:[["یلماز گونەی","Yılmaz Güney"],["بەهمەن قوبادی","Bahman Ghobadi"],["هاینێر سالیم","Hiner Saleem"],["شەوکەت ئەمین","Shawkat Amin"]],c:0,fckb:"لە ١٩٨٢.",fen:"In 1982."},
+ {cat:"people",d:3,ckb:"کام گۆرانیبێژی کورد بە «دەنگی کوردستان» ناسراوە؟",en:"Which Kurdish singer is called 'the voice of Kurdistan'?",o:[["شیوان پەروەر","Şivan Perwer"],["محەمەد عارف جزراوی","M. Arif Cizrawî"],["عەیشە شان","Eyşe Şan"],["حەسەن زیرەک","Hasan Zirak"]],c:0,fckb:"شیوان پەروەر هێمای گۆرانیی نیشتمانپەروەرە.",fen:"Şivan Perwer is an icon of patriotic Kurdish song."},
+ {cat:"people",d:3,ckb:"کام ئافرەتی گۆرانیبێژی کورد بە ئازایەتیی هونەری ناودارە لە سەردەمێکی سەختدا؟",en:"Which pioneering Kurdish woman singer broke barriers in a difficult era?",o:[["عەیشە شان","Eyşe Şan"],["مەستوورە","Mastura"],["گوڵبەهار","Gulbahar"],["نەسرین","Nesrîn"]],c:0,fckb:"عەیشە شان بە ئازایەتی گۆرانیی کوردی گوت.",fen:"Eyşe Şan courageously performed Kurdish songs."},
+ {cat:"people",d:2,ckb:"حەسەن زیرەک بە چی ناسراوە؟",en:"What is Hasan Zirak known for?",o:[["گۆرانیبێژی خۆڕسکی کورد","A prolific folk singer"],["شاعیر","A poet"],["سەرکردە","A leader"],["وەرزشوان","An athlete"]],c:0,fckb:"بە هەزاران گۆرانیی تۆمارکردووە.",fen:"He recorded thousands of folk songs."},
+
+/* ---------------- GENERAL (d:1-2) ---------------- */
+ {cat:"general",d:2,ckb:"کام ڕۆژ وەک ڕۆژی ئاڵای کوردستان ناسراوە؟",en:"Which day is celebrated as Kurdistan Flag Day?",o:[["١٧ کانوونی یەکەم","17 December"],["٢١ ئازار","21 March"],["١ نیسان","1 April"],["١١ ئازار","11 March"]],c:0,fckb:"١٧ی کانوونی یەکەم ڕۆژی ئاڵایە.",fen:"17 December is Flag Day."},
+ {cat:"general",d:2,ckb:"ڕەنگەکانی ئاڵای کوردستان کامانەن؟",en:"What are the colors of the Kurdistan flag?",o:[["سوور، سپی، سەوز، زەرد","Red, white, green, yellow"],["سوور، سپی، ڕەش","Red, white, black"],["شین، سپی، سوور","Blue, white, red"],["سەوز، زەرد، ڕەش","Green, yellow, black"]],c:0,fckb:"سوور، سپی، سەوز لەگەڵ خۆری زەردی ٢١ تیشک.",fen:"Red, white, green with a 21-ray yellow sun."},
+ {cat:"general",d:2,ckb:"نەورۆز لە کام ڕۆژدا و بۆچی گیراوە لای کورد؟",en:"Newroz is celebrated on which day and marks what?",o:[["٢١ ئازار، سەرەتای بەهار و ئازادی","21 March, spring & freedom"],["١ کانوون، ساڵی نوێ","1 Dec, new year"],["١٥ ئاب، هاوین","15 Aug, summer"],["١ نیسان، جووتیاری","1 April, farming"]],c:0,fckb:"بیرەوەریی سەرکەوتنی کاوە بەسەر زەحاک.",fen:"It marks Kawa's victory over Zahhak and the arrival of spring."},
+ {cat:"general",d:1,ckb:"خۆری ناو ئاڵای کوردی چەند تیشکی هەیە؟",en:"How many rays are on the sun of the Kurdish flag?",o:[["٢١","21"],["١٨","18"],["٢٤","24"],["٣٢","32"]],c:0,fckb:"٢١ تیشک.",fen:"21 rays."}
+];
+
+Q.push(...MEGAQ);
+/* ===== batch 2 (more breadth) ===== */
+const MEGAQ2=[
+ {cat:"deep",d:4,ckb:"کام شار لە سەردەمی ئەیووبیدا بووە ناوەندی فەرمانڕەوایی سەلاحەدین لە میسر؟",en:"Which city was Saladin's seat of power in Egypt?",o:[["قاهیرە","Cairo"],["ئەسکەندەریە","Alexandria"],["دیمەشق","Damascus"],["حەلەب","Aleppo"]],c:0,fckb:"قاهیرە، پایتەختی ئەیووبییەکان.",fen:"Cairo, the Ayyubid capital."},
+ {cat:"deep",d:4,ckb:"سەلاحەدین لە کام شەڕدا (١١٨٧) لەشکری سەلیبی تێکشکاند پێش گرتنەوەی قودس؟",en:"At which 1187 battle did Saladin defeat the Crusaders before retaking Jerusalem?",o:[["حەتین","Hattin"],["ئەرسوف","Arsuf"],["عەکا","Acre"],["مونتجیسارد","Montgisard"]],c:0,fckb:"شەڕی حەتین.",fen:"The Battle of Hattin."},
+ {cat:"deep",d:4,ckb:"دوای داڕووخانی میرنشینەکان، عوسمانییەکان کام سیستەمی بەڕێوەبردنیان لە کوردستان دامەزراند؟",en:"After the emirates fell, what Ottoman administrative system replaced them in Kurdistan?",o:[["ویلایەتی ڕاستەوخۆ","Direct provincial (vilayet) rule"],["خۆبەڕێوەبەری تەواو","Full autonomy"],["کۆماری","Republican rule"],["دەستەی شێخان","Rule by sheikhs only"]],c:0,fckb:"دوای ١٨٤٧ عوسمانی دەسەڵاتی ڕاستەوخۆی سەپاند.",fen:"After 1847 the Ottomans imposed direct rule."},
+ {cat:"deep",d:4,ckb:"کام ئاژانسی نهێنی بەریتانی پشتیوانی لە شێخ مەحموود کرد و دواتر دژایەتی؟",en:"Which power first backed then fought Sheikh Mahmud in the 1920s?",o:[["بەریتانیا","Britain"],["فەرەنسا","France"],["ڕووسیا","Russia"],["ئەمریکا","The USA"]],c:0,fckb:"بەریتانیا لە سەرەتا پشتیوان بوو، پاشان شەڕی پێکرد.",fen:"Britain first backed, then bombed, Sheikh Mahmud."},
+ {cat:"deep",d:4,ckb:"کام سەرکردەی کورد بە «خانی شاخان» (مەلا مستەفا) ناسراوە؟",en:"Which leader is affectionately called the symbol of the peshmerga revolt?",o:[["مەلا مستەفا بارزانی","Mustafa Barzani"],["شێخ مەحموود","Sheikh Mahmud"],["سمکۆ","Simko"],["قازی محەمەد","Qazi Muhammad"]],c:0,fckb:"مەلا مستەفا بارزانی، دامەزرێنەری پدک.",fen:"Mustafa Barzani, founder of the KDP."},
+ {cat:"deep",d:4,ckb:"یەکێتیی نیشتمانیی کوردستان (یەکێتی) لە چ ساڵێک دامەزرا؟",en:"In what year was the Patriotic Union of Kurdistan (PUK) founded?",o:[["١٩٧٥","1975"],["١٩٦١","1961"],["١٩٤٦","1946"],["١٩٩١","1991"]],c:0,fckb:"لە ١٩٧٥ بەسەرۆکایەتیی جەلال تاڵەبانی.",fen:"In 1975, led by Jalal Talabani."},
+ {cat:"deep",d:4,ckb:"پارتی دیموکراتی کوردستان (پدک) لە چ ساڵێک دامەزرا؟",en:"In what year was the Kurdistan Democratic Party (KDP) founded?",o:[["١٩٤٦","1946"],["١٩٥٨","1958"],["١٩٧٥","1975"],["١٩٦١","1961"]],c:0,fckb:"لە ١٩٤٦.",fen:"In 1946."},
+ {cat:"deep",d:4,ckb:"کام ناوچەی کوردی بە «شاری چیاکان» و بنکەی بەرگری ناسراوە لە شۆڕشەکاندا؟",en:"Barzan region is historically linked to which family's resistance?",o:[["بنەماڵەی بارزانی","The Barzani family"],["بنەماڵەی تاڵەبانی","The Talabani family"],["بنەماڵەی بەدرخان","The Bedirxan family"],["بنەماڵەی بابان","The Baban family"]],c:0,fckb:"ناوچەی بارزان بنکەی بزووتنەوەی بارزانییەکان بوو.",fen:"Barzan was the base of the Barzani movement."},
+ {cat:"deep",d:4,ckb:"شێخ ئەحمەدی بارزانی برای کام سەرکردەی ناودار بوو؟",en:"Sheikh Ahmad Barzani was the brother of which famous leader?",o:[["مەلا مستەفا بارزانی","Mustafa Barzani"],["مەسعود بارزانی","Masoud Barzani"],["ئیدریس بارزانی","Idris Barzani"],["نێچیرڤان بارزانی","Nechirvan Barzani"]],c:0,fckb:"شێخ ئەحمەد برای گەورەی مەلا مستەفا بوو.",fen:"Sheikh Ahmad was Mustafa Barzani's elder brother."},
+ {cat:"deep",d:4,ckb:"کام شار لە ١٩٤٦ کاتێک کۆماری مەهاباد دامەزرا، بووە پایتەخت؟",en:"Which city was the capital of the 1946 Kurdish republic?",o:[["مەهاباد","Mahabad"],["سنە","Sanandaj"],["ورمێ","Urmia"],["کرماشان","Kermanshah"]],c:0,fckb:"مەهاباد.",fen:"Mahabad."},
+ {cat:"history",d:3,ckb:"شاری کۆنی «ئەربیلا» (هەولێر) لە کام شەڕی مەزنی مێژوویی ناوی هاتووە؟",en:"Ancient Arbela (Erbil) is linked to which famous ancient battle (331 BCE)?",o:[["شەڕی گاوگامێلا","The Battle of Gaugamela"],["شەڕی ماراتۆن","Marathon"],["شەڕی کانای","Cannae"],["شەڕی ئیسوس","Issus"]],c:0,fckb:"شەڕی گاوگامێلا نزیک هەولێر، کە ئەسکەندەر داریوشی تێکشکاند.",fen:"Gaugamela, near Erbil, where Alexander defeated Darius III."},
+ {cat:"history",d:3,ckb:"کاردووخییەکان کە زینۆفۆن باسیان دەکات، لە کام بەرهەمی مێژووییدا هاتوون؟",en:"The Carduchi appear in which ancient Greek work?",o:[["ئاناباسیسی زینۆفۆن","Xenophon's Anabasis"],["ئیلیادی هۆمەر","Homer's Iliad"],["مێژووی هیرۆدۆت","Herodotus' Histories"],["جەنگەکانی قەیسەر","Caesar's Commentaries"]],c:0,fckb:"لە ٤٠١ پ.ز لە ئاناباسیس.",fen:"In 401 BCE, in the Anabasis."},
+ {cat:"history",d:2,ckb:"گۆبەکلی تەپە نزیک کام شاری کوردنشینە؟",en:"Göbekli Tepe is near which Kurdish-populated city?",o:[["ئورفا (ڕەها)","Urfa (Riha)"],["ئامەد","Amed"],["وان","Van"],["مێردین","Mardin"]],c:0,fckb:"نزیک ئورفا، کۆنترین پەرستگای جیهان.",fen:"Near Urfa — the world's oldest known temple."},
+ {cat:"history",d:3,ckb:"ئەشکەوتی شانیدەر بەهۆی چ دۆزینەوەیەکی مرۆیی ناودارە؟",en:"Shanidar Cave is famous for the remains of which early humans?",o:[["نیئاندرتاڵ","Neanderthals"],["هۆمۆ ئیرێکتوس","Homo erectus"],["دینەسۆر","Dinosaurs"],["سۆمەری","Sumerians"]],c:0,fckb:"جەستەی نیئاندرتاڵ، بە «گۆڕی گوڵەکان».",fen:"Neanderthal remains, the 'flower burial'."},
+ {cat:"poet",d:4,ckb:"کام شاعیر دیوانی «هەردی» و شیعری نیشتمانیی نووسیوە لە باشوور؟",en:"Which poet penned patriotic verse under the name relating to homeland themes (Hardî)?",o:[["ئەحمەد هەردی","Ahmad Hardî"],["گۆران","Goran"],["نالی","Nalî"],["دلدار","Dildar"]],c:0,fckb:"ئەحمەد هەردی، شاعیری نیشتمانیی سۆرانی.",fen:"Ahmad Hardî, a patriotic Sorani poet."},
+ {cat:"poet",d:4,ckb:"کام شاعیر بە «پیرەمێرد» ناسراوە و ناوی ڕاستەقینەی تەوفیق بوو؟",en:"Which poet is known as 'Pîremêrd', real name Tewfîq?",o:[["تەوفیق محەمەد","Tewfîq Mahmûd (Pîremêrd)"],["عەبدوللا گۆران","Goran"],["نالی","Nalî"],["مەحوی","Mahwî"]],c:0,fckb:"پیرەمێرد، شاعیر و ڕۆژنامەنووسی سلێمانی.",fen:"Pîremêrd, a Sulaymaniyah poet and journalist."},
+ {cat:"poet",d:4,ckb:"کام شاعیری ژن بە یەکێک لە دەنگە دیارەکانی شیعری هاوچەرخی کورد دادەنرێت؟",en:"Kajal Ahmad is notable as a…",o:[["شاعیری ژنی هاوچەرخ","A contemporary woman poet"],["گۆرانیبێژ","A singer"],["مێژوونووس","A historian"],["دەرهێنەر","A film director"]],c:0,fckb:"کەژاڵ ئەحمەد، دەنگێکی ژنانەی شیعری نوێ.",fen:"Kajal Ahmad, a distinctive modern woman poet."},
+ {cat:"poet",d:3,ckb:"«ئەی ڕەقیب» دواتر بووە سروودی فەرمیی کام دەسەڵات؟",en:"'Ey Reqîb' later became the official anthem of what?",o:[["کۆماری مەهاباد و هەرێمی کوردستان","Mahabad Republic & Kurdistan Region"],["تورکیا","Turkey"],["عێراق","Iraq"],["ئێران","Iran"]],c:0,fckb:"سروودی مەهاباد و دواتر هەرێمی کوردستان.",fen:"Anthem of Mahabad, later the Kurdistan Region."},
+ {cat:"culture",d:3,ckb:"جلوبەرگی نەریتیی پیاوی کورد بە چی ناسراوە؟",en:"Kurdish men's traditional dress is called?",o:[["ڕانک و چۆخە","Rank û choxa"],["کیراس و فیستان","Kiras û fistan"],["شاڵ و شەپک","Shal û shepik"],["هەردووکیان (ناوچەیی)","Both, by region"]],c:0,fckb:"ناوەکان بەپێی ناوچە دەگۆڕێن (شاڵ و شەپک/ڕانک و چۆخە).",fen:"Names vary by region (shal û shepik / rank û choxa)."},
+ {cat:"culture",d:2,ckb:"«دۆڵمە» چ خواردنێکە؟",en:"What kind of dish is dolma?",o:[["سەوزە و گەڵای پڕکراو","Stuffed vegetables and leaves"],["شۆربا","A soup"],["شیرینی","A sweet"],["نان","A bread"]],c:0,fckb:"بەرنج و گۆشت لەناو گەڵا و سەوزەدا.",fen:"Rice and meat wrapped in leaves and vegetables."},
+ {cat:"people",d:3,ckb:"فیلمی «لاکپۆشتەکانیش دەفڕن» دەرهێنراوی کام دەرهێنەری کوردە؟",en:"The film 'Turtles Can Fly' was directed by which Kurdish director?",o:[["بەهمەن قوبادی","Bahman Ghobadi"],["یلماز گونەی","Yılmaz Güney"],["هاینێر سالیم","Hiner Saleem"],["شەوکەت ئەمین کۆرکی","Shawkat Amin Korki"]],c:0,fckb:"بەهمەن قوبادی، یەکەم فیلم لە عێراقی دوای سەدام.",fen:"Bahman Ghobadi; the first film shot in post-Saddam Iraq."},
+ {cat:"general",d:2,ckb:"کام شار پایتەختی هەرێمی کوردستانی عێراقە؟",en:"Which city is the capital of the Kurdistan Region of Iraq?",o:[["هەولێر","Erbil"],["سلێمانی","Sulaymaniyah"],["دهۆک","Duhok"],["کەرکووک","Kirkuk"]],c:0,fckb:"هەولێر (بە کوردی: هەولێر).",fen:"Erbil (Hewlêr)."},
+ {cat:"general",d:2,ckb:"کام دوو ڕووباری مەزن سەرچاوەیان لە کوردستانە؟",en:"Which two great rivers rise in Kurdistan?",o:[["دیجلە و فورات","Tigris and Euphrates"],["نیل و کۆنگۆ","Nile and Congo"],["ئاراس و کوڕا","Aras and Kura"],["ئەمازۆن و پارانا","Amazon and Paraná"]],c:0,fckb:"دیجلە و فورات.",fen:"The Tigris and Euphrates."}
+];
+Q.push(...MEGAQ2);
+/* ===== DEEP POETRY BANK (focused) — appended to Q =====
+   cat:"poet"  ·  d: 2 medium · 3 hard · 4 deep/scholar */
+const POETQ=[
+/* ---- Ehmedê Xanî ---- */
+ {cat:"poet",d:2,ckb:"«مەم و زین» نووسراوی کام شاعیرە؟",en:"Who wrote the epic 'Mem û Zîn'?",o:[["ئەحمەدی خانی","Ehmedê Xanî"],["مەلای جزیری","Melayê Cizîrî"],["نالی","Nalî"],["شێرکۆ بێکەس","Sherko Bekas"]],c:0,fckb:"ئەحمەدی خانی (١٦٥٠–١٧٠٧).",fen:"Ehmedê Xanî (1650–1707)."},
+ {cat:"poet",d:3,ckb:"چیرۆکی «مەم و زین» لە ڕواڵەتدا چ بابەتێکە، بەڵام لە قووڵاییدا هێمای چییە؟",en:"On the surface 'Mem û Zîn' is a love story; what is it an allegory for?",o:[["نەتەوەیەک کە لە چارەنووسی خۆی جیاکراوەتەوە","A nation kept from its destiny"],["جەنگێکی ئاینی","A religious war"],["گەشتێکی بازرگانی","A trade journey"],["ئەفسانەی ئاژەڵان","An animal fable"]],c:0,fckb:"دوو دڵدار کە لێکجیادەکرێنەوە = نەتەوەیەک کە لە چارەنووسی خۆی بێبەش دەکرێت.",fen:"Two lovers kept apart = a nation kept from its destiny."},
+ {cat:"poet",d:4,ckb:"بۆچی ئەحمەدی خانی بە ئەنقەست «مەم و زین»ی بە کوردی نووسی؟",en:"Why did Xanî deliberately write 'Mem û Zîn' in Kurdish?",o:[["بۆ سەلماندنی ئەوەی کوردی هاوتای فارسییە","To prove Kurdish equalled Persian"],["چونکە عەرەبی نەدەزانی","Because he knew no Arabic"],["بۆ منداڵان","For children"],["بەهۆی فەرمانی پاشا","By a king's order"]],c:0,fckb:"خانی ویستی نیشانی بدات کوردی دەتوانێت ئەدەبی پایەبەرز بهێنێتە بەرهەم.",fen:"He wanted to show Kurdish could produce high literature, equal to Persian."},
+ {cat:"poet",d:4,ckb:"کام دێڕی ناودار لە خانییەوە خەونی دەوڵەتی نیشتمانی دەردەبڕێت؟",en:"Which famous line by Xanî expresses the dream of statehood?",o:[["«ئەگەر دەوڵەتمان هەبووایە، مانگ و خۆر دەبوون بە خزمەتکارمان»","'If we had a state, the moon and sun would be our servants'"],["«من بولبولی باخی زیندانم»","'I am the nightingale of the prison garden'"],["«ئاوێنەی مێژوو پشتی نییە»","'The mirror of history has no back'"],["«عەقڵ یەخەی خۆی دڕاند»","'Reason tore its collar'"]],c:0,fckb:"ئەم دێڕە کۆنترین دەربڕینی هۆشیاریی نەتەوەیی کوردە لە شیعردا.",fen:"This line is among the earliest expressions of Kurdish national consciousness."},
+ {cat:"poet",d:3,ckb:"ئەحمەدی خانی لە چ سەدەیەکدا ژیاوە؟",en:"In which period did Ehmedê Xanî live?",o:[["١٦٥٠–١٧٠٧","1650–1707"],["١٥٧٠–١٦٤٠","1570–1640"],["١٨٠٠–١٨٦٥","1800–1865"],["١٩٤٠–٢٠١٣","1940–2013"]],c:0,fckb:"لە نیمەی دووەمی سەدەی ١٧.",fen:"The latter 17th century."},
+ {cat:"poet",d:4,ckb:"خانی لە «مەم و زین»دا گلەیی لە چی دەکات سەبارەت بە نەبوونی یەکێتیی کورد؟",en:"In 'Mem û Zîn', what does Xanî lament about the Kurds?",o:[["بێ یەکێتی و بێ سەرۆکایەتیی نەتەوەیی","Their disunity and lack of national leadership"],["نەبوونی ئاو","Lack of water"],["نەبوونی شیعر","Lack of poetry"],["زۆریی شار","Too many cities"]],c:0,fckb:"خانی داوای یەکگرتوویی کوردی دەکات وەک ڕێگای ڕزگاری.",fen:"Xanî calls for Kurdish unity as the path to deliverance."},
+ {cat:"poet",d:3,ckb:"دوو کارەکتەری سەرەکیی ئەپۆسی «مەم و زین» کێن؟",en:"Who are the two central lovers of 'Mem û Zîn'?",o:[["مەم و زین","Mem and Zîn"],["خەج و سیامەند","Xej and Siyamend"],["لەیلا و مەجنوون","Layla and Majnun"],["فەرهاد و شیرین","Farhad and Shirin"]],c:0,fckb:"مەم و زین، دوو دڵداری جیاکراوە.",fen:"Mem and Zîn, the separated lovers."},
+
+/* ---- Melayê Cizîrî ---- */
+ {cat:"poet",d:2,ckb:"مەلای جزیری دیوانەکەی بە کام زاراوەی کوردی نووسی؟",en:"In which Kurdish dialect did Melayê Cizîrî write his Diwan?",o:[["کرمانجی","Kurmanji"],["سۆرانی","Sorani"],["هەورامی","Hawrami"],["زازاکی","Zazaki"]],c:0,fckb:"کرمانجی، لە جزیری بۆتان.",fen:"Kurmanji, from Cizîr of Botan."},
+ {cat:"poet",d:4,ckb:"شێوازی شیعری مەلای جزیری بە چی دەناسرێتەوە؟",en:"What characterizes Melayê Cizîrî's poetic style?",o:[["سەرخۆشیی خوایی و عیرفانی سۆفیانە","Divine intoxication, pure Sufi ecstasy"],["هەجوی سیاسی","Political satire"],["شیعری منداڵان","Children's verse"],["وەسفی شەڕ","War description"]],c:0,fckb:"جزیری ئەدەبی عیرفانیی سۆفیانەی گەیاندە لووتکە.",fen:"Cizîrî brought Sufi mystical poetry to its peak."},
+ {cat:"poet",d:4,ckb:"لە شیعری جزیریدا، ڕووی «دڵدار» (المعشوق) هاوکاتە بە چی؟",en:"In Cizîrî's verse, the face of the Beloved is simultaneously…",o:[["خودا و جوانییەکی کوردی","God and a Kurdish beauty"],["تەنها مرۆڤ","Only a human"],["تەنها خودا","Only God"],["وێنەیەکی خەیاڵی","A pure abstraction"]],c:0,fckb:"هیچ جیاوازییەک نییە نێوان عەشقی زەمینی و یەکبوونی کۆزمیک.",fen:"No separation between earthly love and cosmic union."},
+ {cat:"poet",d:4,ckb:"کام دێڕ لە جزیرییەوە سەرخۆشیی عەقڵ لەبەردەم جوانیی دڵدار وەسف دەکات؟",en:"Which line by Cizîrî describes reason undone before the Beloved's beauty?",o:[["«بەر بۆنی عەشقت، عەقڵ یەخەی دڕاند؛ هیچ عەقڵ نەماوە لە شاری جوانیت»","'Before the scent of your love, reason tore its collar; no mind remains in the city of your beauty'"],["«ئەگەر دەوڵەتمان هەبووایە...»","'If we had a state…'"],["«من بولبولی زیندانم»","'I am the nightingale of the prison'"],["«ئاوێنەی مێژوو پشتی نییە»","'The mirror of history has no back'"]],c:0,fckb:"وەسفی نەمانی عەقڵ لەبەردەم تیشکی جوانیی خوایی.",fen:"It depicts reason dissolving before divine beauty's light."},
+ {cat:"poet",d:4,ckb:"مەلای جزیری چی کرد بۆ زمانی کوردی لە ڕووی مەعنەوییەوە؟",en:"What did Cizîrî achieve for the Kurdish language?",o:[["کردی بە زمانی عیرفانی ڕووناکی","He made it a language of light-mysticism"],["یەکەم ڕۆژنامەی نووسی","He wrote the first newspaper"],["ئەلفوبێی دانا","He invented the alphabet"],["وەرگێڕانی قورئان","He translated the Qur'an"]],c:0,fckb:"کوردیی کرد بە ئامرازی دەربڕینی عیرفانی پایەبەرز.",fen:"He turned Kurdish into a vehicle for high mysticism."},
+ {cat:"poet",d:3,ckb:"مەلای جزیری لە چ سەردەمێکدا ژیاوە؟",en:"When did Melayê Cizîrî live?",o:[["١٥٧٠–١٦٤٠","1570–1640"],["١٦٥٠–١٧٠٧","1650–1707"],["١٨٠٠–١٨٦٥","1800–1865"],["١٩٢٠–١٩٩٠","1920–1990"]],c:0,fckb:"لە سەدەی ١٦–١٧.",fen:"The 16th–17th century."},
+
+/* ---- Faqe Qadri Hamawand (Faqî Qadir) ---- */
+ {cat:"poet",d:3,ckb:"فاقێ قادری هەمەوەند بە چ جۆرە شاعیرێک ناسراوە؟",en:"Faqe Qadri Hamawand is known as what kind of poet?",o:[["شاعیری یاخی و بەرگری","The rebel/resistance poet"],["شاعیری دەربار","A court poet"],["شاعیری منداڵان","A children's poet"],["شاعیری ئاینی تەنها","Purely a religious poet"]],c:0,fckb:"شاعیری یاخیی سلێمانی، دەنگی بەرگری.",fen:"The rebel poet of Sulaymaniyah, a voice of resistance."},
+ {cat:"poet",d:4,ckb:"بۆچی فاقێ قادر دوورخرایەوە (سۆرگوون کرا)؟",en:"Why was Faqe Qadri exiled?",o:[["بەهۆی وتنی ڕاستی بەرامبەر زۆرداری","For speaking truth against tyranny"],["بەهۆی دزی","For theft"],["بەهۆی نەخۆشی","For illness"],["بەخۆویستی","By his own choice"]],c:0,fckb:"شیعرەکانی نەخشی زیندان و بەرگرین، بێ پەردە.",fen:"His poems are raw prison etchings of defiance."},
+ {cat:"poet",d:4,ckb:"کام دێڕ نموونەی شیعری فاقێ قادرە دەربارەی زیندان و هیوا؟",en:"Which line exemplifies Faqe Qadri's prison verse?",o:[["«من بولبولی باخی زیندانم؛ هەرچەند قەفەسم ئاسنە، گۆرانیم بۆ گوڵە»","'I am the nightingale of the prison garden; though my cage is iron, my song is for the rose'"],["«ئەگەر دەوڵەتمان هەبووایە...»","'If we had a state…'"],["«ئاوێنەی مێژوو پشتی نییە»","'The mirror of history has no back'"],["«عەقڵ یەخەی خۆی دڕاند»","'Reason tore its collar'"]],c:0,fckb:"قەفەسی ئاسنین = زۆرداری؛ گۆرانی بۆ گوڵ = هیوا و ئازادی.",fen:"The iron cage = tyranny; the song for the rose = hope and freedom."},
+ {cat:"poet",d:4,ckb:"شیعری فاقێ قادر نموونەی چ بیرۆکەیەکە لە ئەدەبی کوردیدا؟",en:"Faqe Qadri's work embodies which idea about poetry?",o:[["شیعر وەک بەرگری لە دژی زۆرداری","Poetry as resistance against tyranny"],["شیعر وەک کاتبردنەوە","Poetry as entertainment"],["شیعر وەک بازرگانی","Poetry as commerce"],["شیعر وەک یاری","Poetry as a game"]],c:0,fckb:"ژیان لە دژی زۆرداری، بێ هیچ پەردەیەک.",fen:"Life versus tyranny, with no filter."},
+ {cat:"poet",d:3,ckb:"فاقێ قادری هەمەوەند خەڵکی کام شارە؟",en:"Faqe Qadri Hamawand is associated with which city?",o:[["سلێمانی","Sulaymaniyah"],["هەولێر","Erbil"],["مەهاباد","Mahabad"],["جزیر","Cizîr"]],c:0,fckb:"شاعیری یاخیی سلێمانی.",fen:"The rebel poet of Sulaymaniyah."},
+
+/* ---- Sherko Bekas ---- */
+ {cat:"poet",d:2,ckb:"شێرکۆ بێکەس بە چی ناسراوە لە ئەدەبی کوردیدا؟",en:"What is Sherko Bekas known as?",o:[["باوکی شیعری ئازادی نوێی کوردی","Father of modern Kurdish free verse"],["یەکەم ڕۆژنامەنووس","The first journalist"],["مێژوونووس","A historian"],["دەرهێنەر","A film director"]],c:0,fckb:"شێرکۆ بێکەس (١٩٤٠–٢٠١٣).",fen:"Sherko Bekas (1940–2013)."},
+ {cat:"poet",d:4,ckb:"شێرکۆ بێکەس کارەساتی هەڵەبجە و ئەنفالی کردە چی؟",en:"What did Sherko Bekas do with the trauma of Halabja and Anfal?",o:[["کردی بە جۆرێکی نوێی جوانی و شایەتی","Turned it into a new kind of beauty and witness"],["بێدەنگی لێکرد","Stayed silent about it"],["تەنها ئاماری دانا","Only listed statistics"],["نکۆڵیی لێکرد","Denied it"]],c:0,fckb:"شیعرەکەی بوو بە شایەتحاڵ کە ئازارە بێوێنەکان هەڵدەگرێت بێ شکان.",fen:"He proved poetry could hold unspeakable trauma without breaking — the poem as witness."},
+ {cat:"poet",d:4,ckb:"کام دێڕ لە شێرکۆوە دەربارەی شایەتیی مردووان لە مێژوودایە؟",en:"Which line by Sherko speaks of witnessing the dead through history?",o:[["«ئاوێنەی مێژوو پشتی نییە؛ مردووەکانمان لە هەموو لایەکەوە دەبینین»","'The mirror of history has no back; we see our dead from all sides'"],["«من بولبولی زیندانم»","'I am the nightingale of the prison'"],["«ئەگەر دەوڵەتمان هەبووایە...»","'If we had a state…'"],["«عەقڵ یەخەی دڕاند»","'Reason tore its collar'"]],c:0,fckb:"ئاوێنەیەک بێ پشت = مێژوویەک کە لە هیچ لایەکەوە ناشاردرێتەوە.",fen:"A mirror with no back = a history that hides nothing from any side."},
+ {cat:"poet",d:4,ckb:"شێرکۆ بێکەس دامەزرێنەری کام شێوازی شیعرییە؟",en:"Which poetic form is Sherko Bekas credited with developing?",o:[["شیعری ڕووان/پۆستەر (ئازادی درێژ)","Free 'poster' / long narrative verse"],["غەزەلی کلاسیک","Classical ghazal"],["ڕوباعی","Rubaiyat"],["قەسیدەی عەرووزی","Aruz qasida"]],c:0,fckb:"شێوازی شیعری درێژ و ئازادی هێنایە کایەوە.",fen:"He pioneered long, free-form poetry."},
+ {cat:"poet",d:3,ckb:"شێرکۆ بێکەس لە چ ساڵانێکدا ژیاوە؟",en:"What were Sherko Bekas's years?",o:[["١٩٤٠–٢٠١٣","1940–2013"],["١٦٥٠–١٧٠٧","1650–1707"],["١٩٠٤–١٩٤٧","1904–1947"],["١٨٠٠–١٨٦٥","1800–1865"]],c:0,fckb:"١٩٤٠–٢٠١٣.",fen:"1940–2013."},
+ {cat:"poet",d:3,ckb:"شێرکۆ بێکەس کوڕی کام شاعیر بوو؟",en:"Sherko Bekas was the son of which poet?",o:[["فایەق بێکەس","Fayaq Bekas"],["گۆران","Goran"],["نالی","Nalî"],["پیرەمێرد","Pîremêrd"]],c:0,fckb:"فایەق بێکەس، شاعیری نیشتمانپەروەر.",fen:"Fayaq Bekas, a patriotic poet."},
+ {cat:"poet",d:3,ckb:"شێرکۆ بێکەس کام خەڵاتی نێودەوڵەتیی وەرگرت لە ١٩٨٧؟",en:"Which international prize did Sherko Bekas win in 1987?",o:[["خەڵاتی تۆخۆلسکیی سوید","Sweden's Tucholsky Prize"],["نۆبڵ","The Nobel"],["پولیتزەر","Pulitzer"],["بووکەر","The Booker"]],c:0,fckb:"خەڵاتی تۆخۆلسکی بۆ نووسەرانی دەربەدەر.",fen:"The Tucholsky Prize for writers in exile."},
+
+/* ---- THE DEEPEST CONCEPT: poet, dengbêj, double-talk ---- */
+ {cat:"poet",d:4,ckb:"لە کلتووری کوردیدا، شاعیر (شاعر) لە بنەڕەتدا گەشەسەندووی کام ڕۆڵە؟",en:"In Kurdish culture, the poet is the evolved form of which figure?",o:[["دەنگبێژ (گێڕەرەوەی زارەکیی مێژوو)","The dengbêj (oral chronicler of history)"],["پاشا","The king"],["بازرگان","The merchant"],["جەنگاوەر","The warrior"]],c:0,fckb:"شاعیر = دەنگبێژی گەشەسەندوو، نەک تەنها کاتبەرکەرەوە.",fen:"The poet is the evolved dengbêj — not merely an entertainer."},
+ {cat:"poet",d:4,ckb:"کاتێک دەوڵەت دوژمنکارە، شیعر دەبێتە چی لە کلتووری کوردیدا؟",en:"When the state is hostile, what does the poem become for Kurds?",o:[["ئەرشیف، پاسپۆرت و گۆڕەپانی شەڕ","The archive, the passport, the battlefield"],["تەنها سەرگەرمی","Mere entertainment"],["تەنها مۆسیقا","Just music"],["شتێکی بێ کەڵک","Something useless"]],c:0,fckb:"کاتێک دەوڵەت ڕێگری دەکات، شیعر دەبێتە ئەرشیفی نەتەوە.",fen:"When the state suppresses, the poem becomes the nation's archive."},
+ {cat:"poet",d:4,ckb:"«دووانە-قسە» (double-talk) لە شیعری کوردیدا واتای چییە؟",en:"What is 'double-talk' in Kurdish poetry?",o:[["هەر شیعر دوو واتای شاراوەی هەیە: یەک بۆ دڵدار، یەک بۆ نیشتمان","Each poem hides two meanings: one for the beloved, one for the homeland"],["قسەکردن بە دوو زمان","Speaking in two languages"],["دووجار وتنەوەی دێڕ","Repeating each line twice"],["شیعری بێ واتا","Meaningless verse"]],c:0,fckb:"ئەم تەکنیکە بۆ سەدەکان زمانی کوردیی پاراست لەژێر زەختدا.",fen:"This technique preserved the language for centuries under repression."},
+ {cat:"poet",d:4,ckb:"بۆچی «دووانە-قسە» تەکنیکێکی پاراستن بوو بۆ کورد؟",en:"Why was 'double-talk' a survival technique for Kurds?",o:[["دەیانتوانی نیشتمان بپارێزن لەژێر چاودێریی داگیرکاردا","It let them voice the homeland under the censor's eye"],["بۆ کاتبردنەوە","Just for fun"],["بۆ فێرکردنی زمان","To teach grammar"],["بۆ بازرگانی","For trade"]],c:0,fckb:"عاشقانە لە ڕواڵەت، نیشتمانی لە قووڵایی — لەبەردەم سانسۆردا.",fen:"Romantic on the surface, national underneath — past the censor."},
+ {cat:"poet",d:4,ckb:"دەنگبێژ پێش هاتنی نووسین چ ڕۆڵێکی گرنگی گێڕا؟",en:"Before writing spread, what did the dengbêj preserve?",o:[["مێژوو، ئەفسانە و نەسەبی نەتەوە بە دەنگ","History, epics and lineage — orally"],["تەنها گۆرانیی شادی","Only happy songs"],["نەخشەی جوگرافی","Geographic maps"],["یاساکان","Written laws"]],c:0,fckb:"دەنگبێژ ئەرشیفی زیندووی نەتەوە بوو.",fen:"The dengbêj was the living archive of the nation."},
+ {cat:"poet",d:3,ckb:"لە شیعری دووانە-قسەدا، «دڵدار/معشوق» زۆرجار هێمای چییە؟",en:"In double-talk verse, the 'beloved' often secretly symbolizes what?",o:[["نیشتمان/کوردستان","The homeland / Kurdistan"],["پارە","Money"],["پاشا","The king"],["دوژمن","The enemy"]],c:0,fckb:"دڵدار = نیشتمان؛ دووری دڵدار = نەبوونی ئازادی.",fen:"The beloved = the homeland; separation = the lack of freedom."},
+
+/* ---- comparisons & cross-poet (deep) ---- */
+ {cat:"poet",d:4,ckb:"کام شاعیر هۆشیاریی نەتەوەییی کوردی زۆر پێش هەموان لە ئەدەبدا دەربڕی؟",en:"Which poet expressed Kurdish national consciousness earliest in literature?",o:[["ئەحمەدی خانی","Ehmedê Xanî"],["شێرکۆ بێکەس","Sherko Bekas"],["فاقێ قادر","Faqe Qadri"],["گۆران","Goran"]],c:0,fckb:"خانی لە سەدەی ١٧، زۆر پێش بزووتنەوە سیاسییەکان.",fen:"Xanî in the 17th century, long before political movements."},
+ {cat:"poet",d:4,ckb:"کام دوو شاعیر بەرامبەرن: یەکێک عیرفانی سۆفیانە، ئەوی تر شایەتیی ژینۆساید؟",en:"Which pair contrasts Sufi mysticism with witnessing genocide?",o:[["مەلای جزیری و شێرکۆ بێکەس","Melayê Cizîrî & Sherko Bekas"],["خانی و نالی","Xanî & Nalî"],["گۆران و دلدار","Goran & Dildar"],["فاقێ قادر و پیرەمێرد","Faqe Qadri & Pîremêrd"]],c:0,fckb:"جزیری ڕووناکیی خوایی، شێرکۆ شایەتیی هەڵەبجە و ئەنفال.",fen:"Cizîrî's divine light vs. Sherko's witness to Halabja and Anfal."},
+ {cat:"poet",d:4,ckb:"کام شاعیر شیعری بە بەرگری لە دژی زۆرداری ناساند، نەک تەنها عەشق؟",en:"Which poet most embodies poetry as raw political resistance?",o:[["فاقێ قادری هەمەوەند","Faqe Qadri Hamawand"],["مەلای جزیری","Melayê Cizîrî"],["ئەحمەدی خانی","Ehmedê Xanî"],["نالی","Nalî"]],c:0,fckb:"فاقێ قادر، شاعیری یاخی و زیندانی.",fen:"Faqe Qadri, the rebel and prisoner-poet."},
+ {cat:"poet",d:4,ckb:"کام دێڕ دەربڕینی خەونی دەوڵەتداری کوردە و کام دەربڕینی شایەتیی مردووانە؟ (دێڕی خانی = ؟)",en:"Whose line is 'If we had a state, the moon and sun would be our servants'?",o:[["ئەحمەدی خانی","Ehmedê Xanî"],["شێرکۆ بێکەس","Sherko Bekas"],["مەلای جزیری","Melayê Cizîrî"],["فاقێ قادر","Faqe Qadri"]],c:0,fckb:"دێڕێکی خانییە لە «مەم و زین».",fen:"It is Xanî's line from 'Mem û Zîn'."},
+ {cat:"poet",d:4,ckb:"دێڕی «ئاوێنەی مێژوو پشتی نییە؛ مردووەکانمان لە هەموو لایەکەوە دەبینین» هی کێیە؟",en:"Whose line is 'The mirror of history has no back; we see our dead from all sides'?",o:[["شێرکۆ بێکەس","Sherko Bekas"],["خانی","Xanî"],["جزیری","Cizîrî"],["فاقێ قادر","Faqe Qadri"]],c:0,fckb:"شێرکۆ بێکەس، دەربارەی شایەتیی مێژوویی.",fen:"Sherko Bekas, on historical witness."},
+ {cat:"poet",d:4,ckb:"دێڕی «من بولبولی باخی زیندانم...» هی کام شاعیرە؟",en:"Whose line is 'I am the nightingale of the prison garden…'?",o:[["فاقێ قادر","Faqe Qadri"],["شێرکۆ","Sherko"],["خانی","Xanî"],["جزیری","Cizîrî"]],c:0,fckb:"فاقێ قادری هەمەوەند، شاعیری زیندان.",fen:"Faqe Qadri Hamawand, the prison poet."},
+ {cat:"poet",d:4,ckb:"دێڕی «بەر بۆنی عەشقت، عەقڵ یەخەی دڕاند» هی کام شاعیرە؟",en:"Whose line is 'Before the scent of your love, reason tore its collar'?",o:[["مەلای جزیری","Melayê Cizîrî"],["شێرکۆ","Sherko"],["خانی","Xanî"],["فاقێ قادر","Faqe Qadri"]],c:0,fckb:"مەلای جزیری، عیرفانی سۆفیانە.",fen:"Melayê Cizîrî, Sufi mysticism."},
+ {cat:"poet",d:3,ckb:"بەپێی ڕیزبەندیی مێژوویی، کام شاعیر کۆنترینە؟",en:"Which of these poets is the earliest chronologically?",o:[["مەلای جزیری","Melayê Cizîrî"],["ئەحمەدی خانی","Ehmedê Xanî"],["فاقێ قادر","Faqe Qadri"],["شێرکۆ بێکەس","Sherko Bekas"]],c:0,fckb:"جزیری (١٥٧٠–١٦٤٠) پێش خانی (١٦٥٠–١٧٠٧).",fen:"Cizîrî (1570–1640) precedes Xanî (1650–1707)."},
+ {cat:"poet",d:3,ckb:"کام شاعیر هاوچەرخترینە لەمانە؟",en:"Which of these poets is the most modern?",o:[["شێرکۆ بێکەس","Sherko Bekas"],["مەلای جزیری","Melayê Cizîrî"],["ئەحمەدی خانی","Ehmedê Xanî"],["فاقێ قادر","Faqe Qadri"]],c:0,fckb:"شێرکۆ (١٩٤٠–٢٠١٣).",fen:"Sherko (1940–2013)."},
+
+/* ---- guess-the-poet style (theme → poet) ---- */
+ {cat:"poet",d:3,ckb:"شاعیرێک کە دڵداری و یەکبوونی خوایی تێکەڵ دەکات — کێیە؟",en:"A poet who fuses earthly love with divine union — who?",o:[["مەلای جزیری","Melayê Cizîrî"],["شێرکۆ","Sherko"],["فاقێ قادر","Faqe Qadri"],["خانی","Xanî"]],c:0,fckb:"جزیری، مەعشووق = خودا و جوانی.",fen:"Cizîrî — the beloved is both God and beauty."},
+ {cat:"poet",d:3,ckb:"شاعیرێک کە ئەپۆسی نەتەوەیی نووسی بۆ سەلماندنی کوردی — کێیە؟",en:"A poet who wrote a national epic to prove Kurdish's worth — who?",o:[["ئەحمەدی خانی","Ehmedê Xanî"],["جزیری","Cizîrî"],["شێرکۆ","Sherko"],["فاقێ قادر","Faqe Qadri"]],c:0,fckb:"خانی، نووسەری «مەم و زین».",fen:"Xanî, author of 'Mem û Zîn'."},
+ {cat:"poet",d:3,ckb:"شاعیرێک کە لە زیندانەوە شیعری بەرگری نووسی — کێیە؟",en:"A poet who wrote defiant verse from prison — who?",o:[["فاقێ قادر","Faqe Qadri"],["جزیری","Cizîrî"],["خانی","Xanî"],["شێرکۆ","Sherko"]],c:0,fckb:"فاقێ قادری هەمەوەند.",fen:"Faqe Qadri Hamawand."},
+ {cat:"poet",d:3,ckb:"شاعیرێک کە کارەساتی هەڵەبجەی کردە شیعر — کێیە؟",en:"A poet who turned the Halabja tragedy into verse — who?",o:[["شێرکۆ بێکەس","Sherko Bekas"],["خانی","Xanî"],["جزیری","Cizîrî"],["فاقێ قادر","Faqe Qadri"]],c:0,fckb:"شێرکۆ بێکەس، شایەتی ژینۆساید.",fen:"Sherko Bekas, witness to genocide."},
+
+/* ---- meaning / interpretation (deep) ---- */
+ {cat:"poet",d:4,ckb:"لە دێڕی خانیدا «مانگ و خۆر دەبوون بە خزمەتکارمان» هێمای چییە؟",en:"In Xanî's line, what do 'the moon and sun as servants' symbolize?",o:[["شکۆ و سەروەریی نەتەوەیەکی خاوەن دەوڵەت","The glory and sovereignty of a nation with a state"],["کشتوکاڵ","Agriculture"],["ئاسمانناسی","Astronomy"],["جەنگ","War"]],c:0,fckb:"دەوڵەتداری = کۆنترۆڵی چارەنووس، تەنانەت ئاسمانیش.",fen:"Statehood = command over one's destiny, even the heavens."},
+ {cat:"poet",d:4,ckb:"«قەفەسی ئاسنین» لە شیعری فاقێ قادردا هێمای چییە؟",en:"What does the 'iron cage' symbolize in Faqe Qadri's verse?",o:[["زۆرداری و داگیرکاری","Tyranny and occupation"],["ماڵ","A home"],["باخچە","A garden"],["مزگەوت","A mosque"]],c:0,fckb:"قەفەس = زۆرداری؛ گۆرانیی بولبول = بەرخۆدان و هیوا.",fen:"The cage = tyranny; the nightingale's song = defiance and hope."},
+ {cat:"poet",d:4,ckb:"«گۆرانیم بۆ گوڵە» لە شیعری زیندانیدا چی دەگەیەنێت؟",en:"What does 'my song is for the rose' convey in prison verse?",o:[["هیوا و ئازادی سەرەڕای بەند","Hope and freedom despite captivity"],["خۆشەویستیی گوڵ","Literal love of flowers"],["بازرگانی","Trade"],["تەنیایی","Loneliness only"]],c:0,fckb:"گوڵ = ئازادی/نیشتمان؛ گۆرانی بەردەوامە سەرەڕای قەفەس.",fen:"The rose = freedom/homeland; the song continues despite the cage."},
+ {cat:"poet",d:4,ckb:"«ئاوێنەی مێژوو پشتی نییە» چ پەیامێک دەگەیەنێت دەربارەی ژینۆساید؟",en:"What does 'the mirror of history has no back' say about genocide?",o:[["مێژوو ناتوانرێت بشاردرێتەوە؛ مردووان لە هەموو لایەکەوە دەبینرێن","History cannot be hidden; the dead are seen from every side"],["مێژوو بێ کەڵکە","History is useless"],["دەبێت لەبیر بکرێت","It should be forgotten"],["تەنها لایەک ڕاستە","Only one side is true"]],c:0,fckb:"شایەتیی هەمیشەیی بۆ قوربانیان.",fen:"An eternal witness for the victims."},
+
+/* ---- broader Kurdish poetry canon (still poet cat) ---- */
+ {cat:"poet",d:2,ckb:"کام شاعیر بە دامەزرێنەری شیعری کلاسیکی سۆرانی دادەنرێت؟",en:"Who founded classical Sorani poetry?",o:[["نالی","Nalî"],["گۆران","Goran"],["شێرکۆ","Sherko"],["جزیری","Cizîrî"]],c:0,fckb:"نالی لە سەدەی ١٩.",fen:"Nalî, in the 19th century."},
+ {cat:"poet",d:3,ckb:"کام شاعیر بە «باوکی شیعری نوێی سۆرانی» ناسراوە (کێشی کلاسیکی گۆڕی)؟",en:"Who is the 'father of modern Sorani poetry', breaking classical meter?",o:[["عەبدوللا گۆران","Abdulla Goran"],["نالی","Nalî"],["پیرەمێرد","Pîremêrd"],["مەحوی","Mahwî"]],c:0,fckb:"گۆران شێوازی نوێی هێنا.",fen:"Goran introduced modern forms."},
+ {cat:"poet",d:3,ckb:"سروودی «ئەی ڕەقیب» نووسراوی کام شاعیرە؟",en:"Who wrote the anthem 'Ey Reqîb'?",o:[["دلدار","Dildar"],["گۆران","Goran"],["نالی","Nalî"],["هەژار","Hejar"]],c:0,fckb:"دلدار (یونس ڕەئوف) لە ١٩٣٨.",fen:"Dildar (Yûnis Reuf) in 1938."},
+ {cat:"poet",d:4,ckb:"ناوی ڕاستەقینەی «نالی» چی بوو؟",en:"What was the real name of 'Nalî'?",o:[["مەلا خدری ئەحمەد","Mela Xidrî Ehmed"],["تەوفیق محەمەد","Tewfîq Mahmûd"],["یونس ڕەئوف","Yûnis Reuf"],["عەبدوللا سلێمان","Abdulla Sileman"]],c:0,fckb:"نالی نازناوی بوو.",fen:"'Nalî' was a pen name."},
+ {cat:"poet",d:4,ckb:"ناوی ڕاستەقینەی «هەژار» شاعیر و وەرگێڕ چی بوو؟",en:"What was the real name of the poet-translator 'Hejar'?",o:[["عەبدولڕەحمان شەرەفکەندی","Abdurrahman Sharafkandi"],["تەوفیق","Tewfîq"],["یونس ڕەئوف","Yûnis Reuf"],["مەلا خدر","Mela Xidir"]],c:0,fckb:"هەژار قورئانیشی وەرگێڕایە کوردی.",fen:"Hejar also translated the Qur'an into Kurdish."},
+ {cat:"poet",d:4,ckb:"کام شاعیری ژنی کورد لە سەدەی ١٩ هاوکات شاعیر و مێژوونووس بوو؟",en:"Which 19th-c. Kurdish woman was both poet and historian?",o:[["مەستوورەی ئەردەڵان","Mastura Ardalan"],["عەدیلە خانم","Adila Khanum"],["کەژاڵ ئەحمەد","Kajal Ahmad"],["عەیشە شان","Eyşe Şan"]],c:0,fckb:"مەستوورەی ئەردەڵان.",fen:"Mastura Ardalan."},
+ {cat:"poet",d:3,ckb:"کام نووسەری کورد ڕۆمانی «دوایین هەناری دنیا»ی نووسی؟",en:"Who wrote the novel 'The Last Pomegranate'?",o:[["بەختیار عەلی","Bachtyar Ali"],["شێرکۆ","Sherko"],["مەحوی","Mahwî"],["گۆران","Goran"]],c:0,fckb:"بەختیار عەلی.",fen:"Bachtyar Ali."},
+ {cat:"poet",d:4,ckb:"فەقێ تەیران لە ڕووی ئەدەبییەوە پەیوەستە بە کام شاعیرەوە؟",en:"Feqîyê Teyran is literarily linked to which poet?",o:[["مەلای جزیری","Melayê Cizîrî"],["نالی","Nalî"],["شێرکۆ","Sherko"],["گۆران","Goran"]],c:0,fckb:"قوتابی و هاوسەردەمی جزیری بوو.",fen:"A student and contemporary of Cizîrî."},
+ {cat:"poet",d:4,ckb:"کام شاعیر بە «حافیزی کورد» ناسراوە بەهۆی غەزەلەکانییەوە؟",en:"Which poet is dubbed 'the Hafez of the Kurds' for his ghazals?",o:[["نالی","Nalî"],["مەحوی","Mahwî"],["گۆران","Goran"],["دلدار","Dildar"]],c:0,fckb:"نالی.",fen:"Nalî."},
+ {cat:"poet",d:3,ckb:"کام شاعیری ژنی هاوچەرخ دەنگێکی دیاری شیعری نوێی کوردە؟",en:"Which contemporary woman is a distinctive modern Kurdish poet?",o:[["کەژاڵ ئەحمەد","Kajal Ahmad"],["مەستوورە","Mastura"],["عەیشە شان","Eyşe Şan"],["عەدیلە","Adila"]],c:0,fckb:"کەژاڵ ئەحمەد.",fen:"Kajal Ahmad."},
+ {cat:"poet",d:4,ckb:"شاعیر «پیرەمێرد» جگە لە شیعر بە چی ناسراوبوو؟",en:"Besides poetry, Pîremêrd was known as a…",o:[["ڕۆژنامەنووس","A journalist"],["پاشا","A king"],["سەرباز","A soldier"],["پزیشک","A doctor"]],c:0,fckb:"ڕۆژنامەنووس و فۆلکلۆرناسی سلێمانی.",fen:"A Sulaymaniyah journalist and folklorist."},
+ {cat:"poet",d:4,ckb:"کام مەزنی شیعر سروودی نەتەوەیی نووسی کە بووە هی کۆماری مەهاباد؟",en:"Whose poem became the anthem of the Mahabad Republic?",o:[["دلدار","Dildar"],["گۆران","Goran"],["نالی","Nalî"],["هەژار","Hejar"]],c:0,fckb:"دلدار، «ئەی ڕەقیب».",fen:"Dildar's 'Ey Reqîb'."},
+ {cat:"poet",d:4,ckb:"بەرهەمی مەلای جزیری بەناوی چی ناسراوە؟",en:"Cizîrî's collected works are known as his…",o:[["دیوان","Diwan"],["مەسنەوی","Mesnewî"],["شەرەفنامە","Sharafnama"],["ڕۆمان","Novel"]],c:0,fckb:"دیوانی مەلای جزیری.",fen:"The Diwan of Melayê Cizîrî."},
+ {cat:"poet",d:4,ckb:"خانی لە «مەم و زین»دا کام بیرۆکەی سیاسی-فەلسەفیی پێشکەش کرد کە سەردەمی خۆی بەسەردەکەوێت؟",en:"What forward-looking idea does Xanî present in 'Mem û Zîn'?",o:[["پێویستیی یەکێتی و دەوڵەتی نەتەوەیی","The need for unity and a national state"],["پێویستیی بازرگانی","The need for trade"],["گرنگیی ئاو","The importance of water"],["باشیی شەڕ","The virtue of war"]],c:0,fckb:"خانی سەدەها ساڵ پێش نەتەوەیەتیی نوێ، بیری یەکێتیی هێنایەوە.",fen:"Centuries ahead of modern nationalism, he argued for unity."},
+ {cat:"poet",d:4,ckb:"بۆچی شاعیرانی کلاسیک زۆرجار عەشق و ئاینیان تێکەڵ دەکرد؟",en:"Why did classical poets often blend love and religion?",o:[["بۆ گەیاندنی یەکبوونی خوایی لە ڕێی وێنەی عاشقانەوە","To express divine union through the language of love"],["بۆ شاردنەوەی هەژاری","To hide poverty"],["بۆ کاتبردنەوە","For entertainment only"],["بەهۆی نەزانین","Out of confusion"]],c:0,fckb:"عیرفانی سۆفیانە، مەعشووق = خودا.",fen:"Sufi mysticism — the beloved stands for God."},
+ {cat:"poet",d:3,ckb:"کام دوو شاعیر هەردووکیان لە جزیری بۆتانەوەن و پەیوەستن بە ئەدەبی کرمانجییەوە؟",en:"Which two poets are both tied to Cizîr and Kurmanji literature?",o:[["مەلای جزیری و فەقێ تەیران","Melayê Cizîrî & Feqîyê Teyran"],["نالی و سالم","Nalî & Salim"],["گۆران و دلدار","Goran & Dildar"],["شێرکۆ و بەختیار","Sherko & Bachtyar"]],c:0,fckb:"هەردووکیان لە سەنتەری ئەدەبی کرمانجیی بۆتان.",fen:"Both central to the Kurmanji literary tradition of Botan."},
+ {cat:"poet",d:4,ckb:"کام تایبەتمەندی شیعری شێرکۆی جیادەکاتەوە لە شاعیرانی کلاسیک؟",en:"What sets Sherko's poetry apart from the classical poets?",o:[["کێش و قافیەی کلاسیکی بەجێهێشت بۆ ئازادی فۆرم","He abandoned classical meter/rhyme for free form"],["تەنها بە عەرەبی نووسی","He wrote only in Arabic"],["تەنها غەزەلی نووسی","He wrote only ghazals"],["شیعری نەنووسی","He didn't write poetry"]],c:0,fckb:"شێرکۆ شۆڕشی فۆرمی هێنایە شیعری کوردی.",fen:"Sherko revolutionized poetic form in Kurdish."},
+ {cat:"poet",d:4,ckb:"لە کلتووری کوردیدا، گرنگترین ئەرکی شاعیر چی بوو لە سەردەمی زەختدا؟",en:"Under repression, what was the poet's most vital duty in Kurdish culture?",o:[["پاراستنی زمان و بیری نەتەوەیی","Preserving the language and national memory"],["سەرگەرمکردنی خەڵک","Amusing the crowd"],["کۆکردنەوەی پارە","Collecting money"],["نووسینی یاسا","Writing laws"]],c:0,fckb:"شیعر بووە ئەرشیف و بەرگری.",fen:"Poetry became the archive and the resistance."},
+ {cat:"poet",d:3,ckb:"«دڵدار» نازناوی کام شاعیرە کە سروودی نەتەوەیی نووسی؟",en:"'Dildar' is the pen name of which anthem-writing poet?",o:[["یونس ڕەئوف","Yûnis Reuf"],["مەلا خدر","Mela Xidir"],["تەوفیق","Tewfîq"],["عەبدولڕەحمان","Abdurrahman"]],c:0,fckb:"یونس ڕەئوف (دلدار).",fen:"Yûnis Reuf (Dildar)."},
+ {cat:"poet",d:4,ckb:"کام شاعیر نموونەی «شیعر وەک شایەت» (the poem as witness) ە؟",en:"Which poet best embodies 'the poem as witness'?",o:[["شێرکۆ بێکەس","Sherko Bekas"],["جزیری","Cizîrî"],["خانی","Xanî"],["نالی","Nalî"]],c:0,fckb:"شێرکۆ، شایەتی هەڵەبجە و ئەنفال.",fen:"Sherko, witness to Halabja and Anfal."},
+ {cat:"poet",d:4,ckb:"کام بیرۆکە دەڵێت شیعری کوردی هەمیشە دوو واتای هەیە؟",en:"Which concept holds that Kurdish poetry always carries two meanings?",o:[["دووانە-قسە (double-talk)","Double-talk"],["عەرووز","Aruz meter"],["ڕەدیف","Radif"],["تەشبیه","Simile"]],c:0,fckb:"یەک بۆ دڵدار، یەک بۆ نیشتمان.",fen:"One for the beloved, one for the homeland."},
+ {cat:"poet",d:3,ckb:"کام شاعیر شیعری سۆفیانەی بە کرمانجی گەیاندە لووتکە؟",en:"Who raised Sufi poetry in Kurmanji to its peak?",o:[["مەلای جزیری","Melayê Cizîrî"],["نالی","Nalî"],["شێرکۆ","Sherko"],["گۆران","Goran"]],c:0,fckb:"مەلای جزیری.",fen:"Melayê Cizîrî."},
+ {cat:"poet",d:2,ckb:"«مەم و زین» بە چی دادەنرێت لە ئەدەبی کوردیدا؟",en:"What is 'Mem û Zîn' considered in Kurdish literature?",o:[["ئەپۆسی نەتەوەیی","The national epic"],["گۆرانیی منداڵان","A children's song"],["کتێبی مێژوو","A history book"],["فەرهەنگ","A dictionary"]],c:0,fckb:"ئەپۆسی نەتەوەیی کورد.",fen:"The Kurdish national epic."},
+ {cat:"poet",d:4,ckb:"کام شاعیر گەنج و لە زیندان سروودی «ئەی ڕەقیب»ی نووسی؟",en:"Which poet wrote 'Ey Reqîb' while young and imprisoned?",o:[["دلدار","Dildar"],["نالی","Nalî"],["گۆران","Goran"],["شێرکۆ","Sherko"]],c:0,fckb:"دلدار لە تەمەنی گەنجیدا لە زیندان.",fen:"Dildar, as a young prisoner."},
+ {cat:"poet",d:4,ckb:"کام شاعیر دەربڕی کە کوردی دەتوانێت هاوتای فارسی و عەرەبی ئەدەب بهێنێتە بەرهەم؟",en:"Which poet argued Kurdish could rival Persian and Arabic in literature?",o:[["ئەحمەدی خانی","Ehmedê Xanî"],["شێرکۆ","Sherko"],["فاقێ قادر","Faqe Qadri"],["مەحوی","Mahwî"]],c:0,fckb:"خانی، بەهۆی نووسینی «مەم و زین» بە کوردی.",fen:"Xanî, by writing 'Mem û Zîn' in Kurdish."},
+ {cat:"poet",d:3,ckb:"شێرکۆ بێکەس زۆرتر دەربارەی چ بابەتێک نووسی؟",en:"Sherko Bekas wrote most powerfully about what?",o:[["ئازادی، ژان و شایەتیی نەتەوە","Freedom, pain and national witness"],["بازرگانی","Commerce"],["وەرزش","Sports"],["خواردن","Food"]],c:0,fckb:"ئازادی و ژانی نەتەوەی کورد.",fen:"Freedom and the suffering of the Kurdish nation."},
+ {cat:"poet",d:4,ckb:"بۆچی شیعر لە کوردستان «پاسپۆرت»ی نەتەوە بوو؟",en:"Why was poetry called the nation's 'passport'?",o:[["ناسنامەی نەتەوەیی پاراست کاتێک دەوڵەت ڕێگری دەکرد","It preserved national identity when statehood was denied"],["بۆ گەشت بەکاردەهات","It was used for travel"],["پارەی هەبوو","It had monetary value"],["بۆ یاری","For games"]],c:0,fckb:"شیعر بووە ناسنامە و ئەرشیفی نەتەوە.",fen:"Poetry became the nation's identity and archive."}
+];
+Q.push(...POETQ);
+/* ===== VERSE BANK (real verses → poet) — appended to Q, cat:"poet" ===== */
+const VERSEQ=[
+ {cat:"poet",d:3,verse:{ckb:"مامۆستا\nلە ساتی مردندا\nتەباشیر بەدەست مابوو\nتەختەڕەش هەورێکی گازی بوو\nئەلفوبێ هاواری دەکرد …",en:"The teacher, at the moment of death, still held the chalk. The blackboard was a cloud of gas, the alphabet was screaming…",by:"؟"},
+   ckb:"ئەم دێڕانە لە شیعری «مامۆستا» دەربارەی هەڵەبجە، نووسراوی کام شاعیرە؟",en:"These lines from 'The Teacher' about Halabja were written by which poet?",
+   o:[["شێرکۆ بێکەس","Sherko Bekas"],["عەبدوللا پەشێو","Abdulla Pashew"],["لەتیف هەڵمەت","Latif Halmat"],["نالی","Nalî"]],c:0,
+   fckb:"شێرکۆ بێکەس دوای کیمیابارانی هەڵەبجە (١٩٨٨) نووسی.",fen:"Sherko Bekas wrote it after the 1988 Halabja chemical attack."},
+
+ {cat:"poet",d:4,verse:{ckb:"خەریبی\nخاکێک نییە بەجێی بهێڵیت\nو بڕۆیت بۆ وڵاتێکی تر …\nخەریبی برینێکە لە گیانتدا",en:"Strangeness is not a piece of earth you leave behind and walk to another country… Strangeness is a wound in your soul.",by:"؟"},
+   ckb:"شیعری «خەریبی» (بێگانەیی) کە مانای دەربەدەری دەردەخات، هی کام شاعیرە؟",en:"The poem 'Strangeness', defining exile as an inner wound, is by which poet?",
+   o:[["عەبدوللا پەشێو","Abdulla Pashew"],["شێرکۆ بێکەس","Sherko Bekas"],["جەلال مەلەکشا","Jalal Malaksha"],["مەحوی","Mahwî"]],c:0,
+   fckb:"عەبدوللا پەشێو، دەربەدەری دەکاتە برینێکی ناوخۆیی.",fen:"Abdulla Pashew turns exile into an internal wound."},
+
+ {cat:"poet",d:4,verse:{ckb:"هەر کەسێک بڵێ «وا دێمەوە»\nبا بزانێ درۆ دەکات\nچونکە ئێمە تەنها بەڵێنێک بووین\nکە لە دەمماندا وشک بوو.",en:"Anyone who says 'I will come back' should know they are lying. Because we were only a promise that dried up on our lips.",by:"؟"},
+   ckb:"شیعری «بۆنی خاک» کە بەڵێنی گەڕانەوەی دەکاتە درۆ، هی کام شاعیرە؟",en:"'The Smell of Soil', where the promise of return becomes a lie, is by which poet?",
+   o:[["عەبدوللا پەشێو","Abdulla Pashew"],["شێرکۆ بێکەس","Sherko Bekas"],["هێمن موکریانی","Hemin Mukriyani"],["قەدریجان","Qedrîcan"]],c:0,
+   fckb:"عەبدوللا پەشێو، جوگرافیای ڕۆحی دەربەدەری.",fen:"Abdulla Pashew — the geography of a soul in permanent transit."},
+
+ {cat:"poet",d:4,verse:{ckb:"دەڵێی کۆتایی هات،\nبەڵام من هێشتا لە سەرەتای تامەزرۆییدا گیری خواردووم.\nوەکو گەڵایەک لە بەهەشتێکی ونبوودا،\nتەنها زەوییەک بە شێوەی تۆ دەبینم.",en:"You say the end has come, but I am still caught in the beginning of longing. Like a leaf in a lost paradise, I see only a piece of earth in the shape of you.",by:"؟"},
+   ckb:"شیعری «تا ئەبەد» کە دڵدار لە یەکەم ساتی ئارەزوودا بەستراوەتەوە، هی کام شاعیرە؟",en:"'Until Eternity', where the lover is frozen at the first moment of longing, is by which poet?",
+   o:[["جەلال مەلەکشا","Jalal Malaksha"],["عەبدوللا پەشێو","Abdulla Pashew"],["لەتیف هەڵمەت","Latif Halmat"],["شێرکۆ","Sherko"]],c:0,
+   fckb:"جەلال مەلەکشا، زیندانی بێ کۆتاییی عەشق.",fen:"Jalal Malaksha — the infinite prison of a love that cannot move."},
+
+ {cat:"poet",d:4,verse:{ckb:"دڵدار بە دڵی پڕ بە خەم و دەرد و بەڵامان\nوەک شەمعی شەوی تار، دەکوژێ و پەشیمان\nباسی سەری زولفی شەوی یەڵدایە مەکەن لێم\nمن خۆ لە سەری زولفی شەوی یەڵدا پەریشان",en:"A lover, heart full of sorrow, is like a candle on a dark night — it burns and repents. Do not speak to me of the tresses of the Yalda night, for I am already dishevelled by them.",by:"؟"},
+   ckb:"ئەم غەزەلە کلاسیکییە کە زولفی دڵدار بە «شەوی یەڵدا» وەسف دەکات، هی کام شاعیرە؟",en:"This classical ghazal comparing the beloved's hair to the 'Yalda night' is by which poet?",
+   o:[["نالی","Nalî"],["مەلای جزیری","Melayê Cizîrî"],["مەحوی","Mahwî"],["گۆران","Goran"]],c:0,
+   fckb:"نالی، دامەزرێنەری شیعری کلاسیکی سۆرانی.",fen:"Nalî, founder of classical Sorani poetry."},
+
+ {cat:"poet",d:4,verse:{ckb:"دەردی من تێ ناگەرێ بێ دەردی\nوا لە دەردا بوومە بێگانەیی دەرد\nچاوەکەم وا کەوریا، نازانێ\nچەندە شەرمەندە بە ئەڵماسی سەرد",en:"My pain doesn't reach the painless; I've become, in my pain, a stranger to pain itself. My eye has grown so blind it doesn't know how shamed it is by the diamond of the cold.",by:"؟"},
+   ckb:"ئەم غەزەلە کە «بێگانەیی دەرد» دەردەبڕێت، هی کام شاعیری سۆفییە؟",en:"This ghazal of becoming 'a stranger to pain itself' is by which Sufi poet?",
+   o:[["مەحوی","Mahwî"],["نالی","Nalî"],["مەلای جزیری","Cizîrî"],["شێرکۆ","Sherko"]],c:0,
+   fckb:"مەحوی (مەلا هادی موکریانی)، شاعیری سۆفیانە.",fen:"Mahwî (Mala Hadi Mukriyani), a Sufi poet."},
+
+ {cat:"poet",d:4,verse:{ckb:"سنوور\nئەی ئەو کەسەی دەتپەرستم و لێم ونی!\nتۆ خودا نی، تۆ خۆشەویستی منی\nتۆی لە من ون کرد و منی لە تۆ دوور\nئەو بستۆکەی دوژمن ناوی نا سنوور",en:"Border — the one whom I worshipped, taken from me; you are no God but my love. Who took her from me… nothing but the border the enemy set upon us.",by:"؟"},
+   ckb:"شیعری «سنوور» کە نیشتمانی دابەشکراو دەکاتە دڵدارێکی ونبوو، هی کام شاعیرە؟",en:"'Border', which turns a divided homeland into a lost beloved, is by which poet?",
+   o:[["هێمن موکریانی","Hemin Mukriyani"],["شێرکۆ بێکەس","Sherko Bekas"],["قەدریجان","Qedrîcan"],["نالی","Nalî"]],c:0,
+   fckb:"هێمن موکریانی، شاعیری کۆماری مەهاباد (نووسراوی ١٩٧٢).",fen:"Hemin Mukriyani, poet laureate of the Mahabad Republic (written 1972)."},
+
+ {cat:"poet",d:3,ckb:"هێمن موکریانی شاعیری دیاری کام دەسەڵاتی کوردی بوو؟",en:"Hemin Mukriyani was the poet laureate of which Kurdish state?",
+   o:[["کۆماری مەهاباد","The Republic of Mahabad"],["هەرێمی کوردستان","Kurdistan Region"],["میرنشینی بۆتان","The Botan emirate"],["کۆماری ئارارات","Ararat republic"]],c:0,
+   fckb:"کۆماری مەهاباد (١٩٤٦)، دواتر دەربەدەر بوو.",fen:"The Mahabad Republic (1946); later he lived in exile."},
+
+ {cat:"poet",d:4,verse:{ckb:"خۆشترین ماچ\nئەو ماچەیە\nناگاتە دەم.\nخۆشترین شێعریش\nئەو شێعرەیە\nکە نانووسرێ بە قەڵەم.",en:"The sweetest kiss is the one that never happened. The sweetest poem is the one not yet written. The deepest sea is the one frozen in the heart.",by:"؟"},
+   ckb:"شیعری «خۆشترین ماچ» کە خۆشی لە شتە نەبووەکاندا دەبینێت، هی کام شاعیرە؟",en:"'The Sweetest Kiss', finding beauty in the unrealized, is by which poet?",
+   o:[["لەتیف هەڵمەت","Latif Halmat"],["عەبدوللا پەشێو","Abdulla Pashew"],["شێرکۆ","Sherko"],["جەلال مەلەکشا","Jalal Malaksha"]],c:0,
+   fckb:"لەتیف هەڵمەت، شاعیری ڕاستەوخۆ و ناسک.",fen:"Latif Halmat, a poet of poignant directness."},
+
+ {cat:"poet",d:4,verse:{ckb:"گوڵی سوور؛ هەستا بەرز؛ بۆنی دایە دەور…\nگوڵی سوور… گوڵی سوور…\nلە پشت چیای قاف گەشایەوە،\nجیهان بووی خۆشەویست…\nئێمە پێی ئازاد دەبین…",en:"The Red Rose; it rose high; its scent spread… It flourished behind Mount Qaf, the world was enamored with it… With it, we become free…",by:"؟"},
+   ckb:"شیعری «گوڵی سوور» کە شۆڕش بە دڵداری دەشارێتەوە، هی کام شاعیرە؟",en:"'The Red Rose', a revolution disguised as a love lyric, is by which poet?",
+   o:[["قەدریجان","Qedrîcan"],["هێمن","Hemin"],["شێرکۆ","Sherko"],["نالی","Nalî"]],c:0,
+   fckb:"قەدریجان، پێشەنگی شیعری ئازادی نوێ بە کرمانجی.",fen:"Qedrîcan, a pioneer of modern free verse in Kurmanji."},
+
+ {cat:"poet",d:4,verse:{ckb:"بەربەرەکانێی هەژاری و بێدەرەتانی و ئازار دەکەم.\nمن چاوی فریشتە خۆشناوێ…\nبەرد و گرد و لووتکەی لە هەوردا ونم خۆشدەوێ.\nبە هەموو هێزمەوە هاوار دەکەم: من کوردم.",en:"I challenge poverty, privation, pain. I do not love angel eyes… I love the rocks, the hills, the peaks lost among the clouds. With all my strength I scream: I am Kurdish.",by:"؟"},
+   ckb:"شیعری «من کوردم» کە جوانیی نەرم ڕەتدەکاتەوە و چیا دەخۆشەوێت، هی کام شاعیرە؟",en:"'I Am Kurdish', rejecting soft beauty for the harsh mountains, is by which poet?",
+   o:[["هێمن موکریانی","Hemin Mukriyani"],["قەدریجان","Qedrîcan"],["شێرکۆ","Sherko"],["نالی","Nalî"]],c:0,
+   fckb:"هێمن موکریانی، لە سەردەمی کۆماری مەهاباد.",fen:"Hemin Mukriyani, from the Mahabad era."},
+
+ {cat:"poet",d:4,verse:{ckb:"بەتەنیا نەبووم… شەو… لە تەنیشتم،\nتەرمێک ڕاکشابوو. کات… تەم، مژ و ناڵین بوو.\nوڵاتەکەشم مستەیەک تۆزی بەر با بوو.",en:"I was not alone… at night, beside me a corpse lay. Time was a fever, a fog, a lament. My homeland too was nothing but a speck of dust blown by the wind.",by:"؟"},
+   ckb:"شیعری «بەتەنیا نەبووم» کە وڵات دەکاتە مستەیەک تۆز، هی کام شاعیرە؟",en:"'I Was Not Alone', reducing the homeland to a speck of dust, is by which poet?",
+   o:[["ڕەفیق سابیر","Refîq Sabir"],["شێرکۆ","Sherko"],["هێمن","Hemin"],["لەتیف هەڵمەت","Latif Halmat"]],c:0,
+   fckb:"ڕەفیق سابیر، دەنگی ئەنفال و هەڵەبجە.",fen:"Refîq Sabir, a voice of the Anfal and Halabja."},
+
+ {cat:"poet",d:4,verse:{ckb:"ئەو گوڵە سپییانە مەنێژن هەتا دێم.\nچاوەڕێ بکەن! مەیاندەنە بێشکەی مێژوو.\nئاسمانی چاویان داخەن مەکەن، هەتا دێم.",en:"Don't bury those white flowers till I come. Wait! Don't give them up to the cradle of history. Don't close the sky of their eyes, till I come.",by:"؟"},
+   ckb:"ئەم دێڕانە لە «دۆڵی پەپوولە» کە «گوڵە سپییەکان» تەرمی قوربانیانن، هی کام شاعیرە؟",en:"These lines from 'Butterfly Valley', where the 'white flowers' are the dead, are by which poet?",
+   o:[["شێرکۆ بێکەس","Sherko Bekas"],["عەبدوللا پەشێو","Abdulla Pashew"],["ڕەفیق سابیر","Refîq Sabir"],["هێمن","Hemin"]],c:0,
+   fckb:"شێرکۆ بێکەس، وەڵامی ئەنفال و هەڵەبجە.",fen:"Sherko Bekas, his response to Anfal and Halabja."},
+
+ {cat:"poet",d:4,verse:{ckb:"وەرە هەیران، ئەرێ بابە هەیران\nپەرچەمت وەک هەزی کێوان دادەبارێ\nگەردنت زەردە، مەرجانیان پێ ناوێ\nدوو چاوی ڕەشکۆکەت، کلیان قەت ناوێ",en:"Come, my beloved, yes, my dear beloved — your hair cascades like the mountain vine; around your neck yellow corals glow; your two dark eyes have no equal in the world.",by:"؟"},
+   ckb:"ئەم شیعرە کلاسیکییە کە عەشق دەکاتە نزا، هی کام شاعیری ژنی کرمانجە؟",en:"This classical poem turning love into prayer is by which woman Kurmanji poet?",
+   o:[["هەیران (عەڤدرەحیم ڕەحمی)","Heyran (Evdirehîm Rehmî)"],["مەستوورەی ئەردەڵان","Mastura Ardalan"],["کەژاڵ ئەحمەد","Kajal Ahmad"],["چنار مەردۆخی","Chinar Mardokhy"]],c:0,
+   fckb:"هەیران (١٨٥٦–١٩١٦)، دەنگێکی ژنی ناودار لە ئەدەبی کلاسیکی کرمانجی لە هەکاری.",fen:"Heyran (1856–1916), an iconic female voice of classical Kurmanji literature from Hakkari."},
+
+ {cat:"poet",d:3,verse:{ckb:"… من لە کانیاوی خوێنەوە هاتووم …\nتەرمی سووتاوی ئافرەتێک لە هەڵەبجە،\nبوو بە پشکۆی تووڕەیی …",en:"…I have come from the spring of blood… the burnt-out corpse of a woman from Halabja, that became like ash-coal of anger…",by:"؟"},
+   ckb:"ئەم شیعرە کە دەنگی ئافرەتی هەڵەبجە دەداتەوە، هی کام شاعیری هاوچەرخە؟",en:"This poem voicing a woman of Halabja is by which contemporary poet?",
+   o:[["کەژاڵ ئیبراهیم خدر","Kazhal Ebrahim Khidre"],["چنار مەردۆخی","Chinar Mardokhy"],["هەیران","Heyran"],["مەستوورە","Mastura"]],c:0,
+   fckb:"کەژاڵ ئیبراهیم خدر، دەنگی شایەتیی باشووری کوردستان.",fen:"Kazhal Ebrahim Khidre, a witness-voice from South Kurdistan."},
+
+ {cat:"poet",d:3,ckb:"شاعیر «چنار مەردۆخی» لە شیعری «نیسانی سەرسوڕهێنەرم»دا نیسان دەکاتە چی؟",en:"In 'My Breath-taking April', how does Chinar Mardokhy portray April?",
+   o:[["پارادۆکس: وەرزی نوێبوونەوە و هاوکات مەرگەساتی ئەنفال/هەڵەبجە","A paradox: renewal and the nightmare of Anfal/Halabja"],["تەنها وەرزی خۆشی","Only a happy season"],["وەرزی بازرگانی","A trading season"],["بێ واتا","Meaningless"]],c:0,
+   fckb:"نیسان هاوکات «نوێبوونەوە» و «نایتمێر»ە — شایەتیی ئەنفال.",fen:"April is both renewal and 'nightmare' — a survivor's testimony of Anfal."},
+
+ {cat:"poet",d:4,verse:{ckb:"ماریا، ئەگەر فاتیمەت بینی، پێی بڵێ\nهێشتا لێرەن، بکوژانی ئافرەتان، بە چەقۆوە، چاوەڕێ.\n… دوای مردنیشیان، شیعرە ئەپۆسەکانمان سووتاند …",en:"Maria, if you see Fatima, tell her: they are still here, the women-killers, with knives, waiting… after her death, we lit our epic poems on fire…",by:"؟"},
+   ckb:"شیعری «ئەگەر فاتیمەت بینی» کە دژی کوشتنی ئافرەتانە، هی کام شاعیرە؟",en:"'If You See Fatima', a howl against femicide, is by which poet?",
+   o:[["جەمال خەمبار","Jamal Khambar"],["کەژاڵ ئیبراهیم","Kazhal Ebrahim"],["شێرکۆ","Sherko"],["لەتیف هەڵمەت","Latif Halmat"]],c:0,
+   fckb:"جەمال خەمبار، شاعیری کورد-ئوسترالی، دەربارەی مافی ئافرەتان.",fen:"Jamal Khambar, a Kurdish-Australian poet on women's rights."},
+
+ /* interpretation / meaning */
+ {cat:"poet",d:4,ckb:"لە شیعری «سنوور»ی هێمندا، «سنوور» هێمای چییە؟",en:"In Hemin's 'Border', what does the single word 'border' symbolize?",
+   o:[["دابەشکردنی نیشتمان بە دەستی دوژمن","The homeland's division by the enemy's hand"],["سنووری باخچە","A garden fence"],["کۆتاییی ڕۆژ","The end of day"],["دیوارێک","A wall in a house"]],c:0,
+   fckb:"تراژیدیای سیاسی دەکاتە برینی کەسی، هەمووی لە یەک وشەدا.",fen:"It compresses a political tragedy into one personal wound."},
+ {cat:"poet",d:4,ckb:"لە «گوڵی سوور»ی قەدریجاندا، «گوڵی سوور» هێمای چییە؟",en:"In Qedrîcan's 'Red Rose', what does the red rose symbolize?",
+   o:[["شۆڕش و سۆسیالیزم","Revolution and socialism"],["خۆشەویستیی ساکار","Simple romance"],["بەهار","Spring"],["مەرگ","Death"]],c:0,
+   fckb:"شیعرێکی شۆڕشگێڕە لە کراسی دڵداریدا.",fen:"A revolutionary poem dressed as a love lyric."},
+ {cat:"poet",d:4,ckb:"لە «بۆنی خاک»ی پەشێودا، گەڕانەوەی ڕاستەقینە بۆ کێ/چی دەبێت؟",en:"In Pashew's 'Smell of Soil', who/what actually returns home?",
+   o:[["تەنها ئێسکەکان، نەک خودی زیندوو","Only the bones, not the living self"],["هەموو کەس","Everyone"],["هیچ کەس","No one at all"],["تەنها منداڵان","Only children"]],c:0,
+   fckb:"دەربەدەری نەبوونی کاتییە؛ تەنها ئێسک دەگەڕێتەوە.",fen:"Exile is not temporary; only the bones return."},
+ {cat:"poet",d:4,ckb:"لە «خۆشترین ماچ»ی لەتیف هەڵمەتدا، «دەریای قووڵ» هێمای چییە؟",en:"In Halmat's 'Sweetest Kiss', what is the 'deepest sea'?",
+   o:[["زریانی هەستی دەربڕاونەکراو لە دڵدا","An inner ocean of unexpressed emotion"],["دەریای ڕاستەقینە","A real ocean"],["ئاو بۆ خواردنەوە","Drinking water"],["بارانی زۆر","Heavy rain"]],c:0,
+   fckb:"عەشقی دەرنەبڕاو، ژانی نەگوتراو، نیشتمانی نەگەڕاوە.",fen:"Unexpressed love, unmourned loss, the homeland not yet returned to."},
+ {cat:"poet",d:3,ckb:"لە شیعری «مامۆستا»ی شێرکۆدا، «تەباشیر بەدەست مابوو» چی دەگەیەنێت؟",en:"In Sherko's 'Teacher', what does 'still held the chalk' convey?",
+   o:[["وەفاداری بۆ فێرکردن تەنانەت لە ساتی مردنیشدا","Devotion to teaching even at the moment of death"],["ترس","Fear"],["تووڕەیی","Anger"],["خۆشی","Joy"]],c:0,
+   fckb:"مامۆستا لە کاتی کیمیابارانیشدا مامۆستایەتی دەکات.",fen:"The teacher remains a teacher even as the gas falls."}
+];
+Q.push(...VERSEQ);
 
 /* ========== state ========== */
 let lang=store.get("lang")||"ckb";
@@ -1526,6 +1909,7 @@ function isDailyDone(){return store.get("dailyDone")===todayKey();}
 
 /* ========== nav ========== */
 function show(id){if(id!=="live"&&liveStream)stopLive();if(id!=="joinScan"&&scanStream)stopScan();
+  if(id!=="quiz")document.body.classList.remove("poetic");
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active");$("scrollArea").scrollTop=0;}
 
 /* ========== modes ========== */
@@ -1533,7 +1917,9 @@ const MODES={
   quick:   {icon:"play",  mc:"#f5c518",k:"mQuick", count:10,hearts:3,time:20,ll:{fifty:1,skip:1,freeze:1}},
   survival:{icon:"shield",mc:"#27a35a",k:"mSurv",  endless:true,hearts:3,time:18,ll:{fifty:1,skip:1,freeze:1},ramp:true},
   blitz:   {icon:"bolt",  mc:"#3f9fd4",k:"mBlitz", blitz:60,hearts:0,time:0,ll:{skip:2}},
-  ladder:  {icon:"stairs",mc:"#e23b34",k:"mLadder",ladder:true,count:12,hearts:1,time:25,ll:{fifty:1,skip:1,freeze:1},checkpoints:[3,7]}
+  ladder:  {icon:"stairs",mc:"#e23b34",k:"mLadder",ladder:true,count:12,hearts:1,time:25,ll:{fifty:1,skip:1,freeze:1},checkpoints:[3,7]},
+  deep:    {icon:"crown", mc:"#b07cd0",k:"mDeep",  count:15,hearts:2,time:30,ll:{fifty:1,skip:1,freeze:1},deepcat:true},
+  poetry:  {icon:"book",  mc:"#d98cc0",k:"mPoetry",count:12,hearts:2,time:60,ll:{fifty:1,skip:1,freeze:1},poetcat:true}
 };
 const LADDER_PRIZES=[100,200,350,550,800,1100,1500,2000,2800,3800,5200,7000];
 function modeChips(id){const m=MODES[id];const cs=[];
@@ -1560,6 +1946,23 @@ function renderModeList(){
 
 /* ========== selection ========== */
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+/* a stable key for each question (so we can remember which were recently shown) */
+function qKey(q){return (q.cat||"")+"|"+(q.en||"").slice(0,40);}
+function seenSet(){return store.getJSON("seenQ",{});}
+function markSeen(q){const s=seenSet();s[qKey(q)]=Date.now();
+  // keep the map from growing unbounded: cap at 400 most-recent
+  const ents=Object.entries(s);if(ents.length>400){ents.sort((a,b)=>b[1]-a[1]);const keep={};ents.slice(0,400).forEach(([k,v])=>keep[k]=v);store.setJSON("seenQ",keep);}
+  else store.setJSON("seenQ",s);}
+/* shuffle, but bias questions the user hasn't seen recently toward the front,
+   so repeats across rounds are rare (true variety per user) */
+function freshOrder(list){
+  const seen=seenSet();
+  const fresh=[],old=[];
+  shuffle(list).forEach(q=>{(seen[qKey(q)]?old:fresh).push(q);});
+  // oldest-seen first within the 'old' group
+  old.sort((a,b)=>(seen[qKey(a)]||0)-(seen[qKey(b)]||0));
+  return [...fresh,...old];
+}
 function seeded(a,seed){a=[...a];let s=seed||1;const r=()=>{s=(s*9301+49297)%233280;return s/233280;};
   for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function prep(q){const order=shuffle([0,1,2,3]);return{...q,order,newC:order.indexOf(q.c)};}
@@ -1580,11 +1983,19 @@ function startRound(mode,cat,deck){
   let pool;
   if(isDeck||isJoin)pool=shuffle(deck);
   else if(mode==="daily")pool=seeded(Q,todayKey().split("-").reduce((a,b)=>a+ +b,0));
-  else if(mode==="category")pool=shuffle(Q.filter(q=>q.cat===cat));
+  else if(mode==="category")pool=freshOrder(Q.filter(q=>q.cat===cat));
+  else if(mode==="deep"){
+    // the special deep-history mode: deep + poetry + hardest history, hardest-weighted
+    const deep=Q.filter(q=>q.cat==="deep"||q.cat==="poet"||((q.cat==="history"||q.cat==="geo"||q.cat==="language")&&q.d>=3));
+    pool=freshOrder(deep);
+  }
+  else if(mode==="poetry"){
+    pool=freshOrder(Q.filter(q=>q.cat==="poet"));
+  }
   else if(mode==="ladder"){
-    const e=shuffle(Q.filter(q=>q.d===1)),m=shuffle(Q.filter(q=>q.d===2)),h=shuffle(Q.filter(q=>q.d===3));
+    const e=shuffle(Q.filter(q=>q.d===1)),m=shuffle(Q.filter(q=>q.d===2)),h=shuffle(Q.filter(q=>q.d>=3));
     pool=[...e.slice(0,4),...m.slice(0,4),...h.slice(0,4)];
-  } else pool=shuffle(Q);
+  } else pool=freshOrder(Q);
 
   state={mode,cat,cfg,deck,hearts:cfg.hearts||0,score:0,combo:0,bestCombo:0,correct:0,answered:0,
     ll:Object.assign({},cfg.ll),curTime:cfg.time,timeLeft:cfg.time,timeMax:cfg.time,
@@ -1606,7 +2017,7 @@ function nextQuestion(){const c=state.cfg;
   if(c.hearts&&state.hearts<=0)return endRound();
   if(c.blitz&&state.blitzLeft<=0)return endRound();
   const raw=getRaw();if(!raw)return endRound();
-  state.cur=prep(raw);state.answered_q=false;
+  state.cur=prep(raw);state.answered_q=false;markSeen(raw);
   if(c.ramp)state.curTime=Math.max(7,c.time-Math.floor(state.answered/3));
   else if(!c.blitz)state.curTime=c.time;
   renderQuestion();
@@ -1618,6 +2029,8 @@ function scoreHTML(){const c=state.cfg;
   return `<div class="qscore">${icon("star")}${v}</div>`;}
 function renderQuestion(){
   const q=state.cur,c=state.cfg;
+  // poetry mode gets its own visual skin (this mode only)
+  document.body.classList.toggle("poetic", state.mode==="poetry");
   $("nextBtn").style.display="none";$("factSlot").innerHTML="";
   $("qLeft").innerHTML=c.blitz?`<div class="blitzclock${state.blitzLeft<=10?' low':''}" id="blitzClock">${icon("clock")}${Math.ceil(state.blitzLeft)}s</div>`:(c.hearts?heartsHTML():"");
   $("qRight").innerHTML=scoreHTML();
@@ -1634,7 +2047,13 @@ function renderQuestion(){
   const cat=catOf(q.cat);
   $("qCat").innerHTML=cat?icon(cat.icon)+cat[lang]:"";
   $("qDiff").innerHTML=[1,2,3].map(n=>`<i class="${n<=q.d?'on':''}"></i>`).join("");
-  $("qText").textContent=lang==="ckb"?q.ckb:q.en;
+  // a verse, if present, is shown above the question in an ornate panel
+  let head="";
+  if(q.verse){head=`<div class="verse"><div class="vquote">${icon("quote")}</div>`+
+    `<div class="vckb">${escapeHTML(q.verse.ckb||"")}</div>`+
+    (q.verse.en?`<div class="ven">${escapeHTML(q.verse.en)}</div>`:"")+
+    (q.verse.by?`<div class="vby">— ${escapeHTML(q.verse.by)}</div>`:"")+`</div>`;}
+  $("qText").innerHTML=head+`<span class="qmain">${escapeHTML(lang==="ckb"?q.ckb:q.en)}</span>`;
   $("opts").innerHTML=q.order.map((orig,pos)=>{const key=["A","B","C","D"][pos];
     return `<button class="opt" data-pos="${pos}"><span class="k">${key}</span><span class="ot">${QT(q.o[orig])}</span><span class="kx"></span></button>`;}).join("");
   $("opts").querySelectorAll(".opt").forEach(b=>b.onclick=()=>answer(+b.dataset.pos));
@@ -1774,7 +2193,7 @@ function renderLb(){
   if(lbTab==="online")return renderLbOnline();
   const lb=store.getJSON("lb",[]);
   if(!lb.length){$("lbList").innerHTML=`<div class="empty">${icon("chart")}<span>${T().emptyLb}</span></div>`;return;}
-  const mn={quick:T().mQuick,survival:T().mSurv,blitz:T().mBlitz,ladder:T().mLadder,daily:T().daily,category:T().categories,deck:T().studyMode,join:T().joinMode};
+  const mn={quick:T().mQuick,survival:T().mSurv,blitz:T().mBlitz,ladder:T().mLadder,daily:T().daily,category:T().categories,deck:T().studyMode,join:T().joinMode,deep:T().mDeep,poetry:T().mPoetry};
   $("lbList").innerHTML=lb.map((x,i)=>`<div class="lbrow ${i<3?'top'+(i+1):''}">
     <div class="rk">${i===0?icon("crown"):i+1}</div><div class="ls">${x.s}</div>
     <div class="lm">${x.n?escapeHTML(x.n)+" · ":""}${x.mq?escapeHTML(x.mq)+" · ":""}${mn[x.m]||x.m}<br>${x.d}</div></div>`).join("");}
